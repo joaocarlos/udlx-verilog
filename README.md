@@ -10,23 +10,17 @@ The uDLX hardware structure has a five-deep pipeline architecture, and was highl
 
 DLX is built under the perspective of RISC Load-Store/Register-Register processor architecture. CPU instructions are 32-bits long word and organized into the following functional groups:
 
-(1) Load and store
-
-(2) Computational
-
-(3) Jump and branch
+* Load and store
+* Computational
+* Jump and branch
 
 Pipeline Architecutre
 ------------
 
 The DLX core processor uses a five-deep parallel pipeline on its architecture. The current pipeline is divided into the following stages:
 
-  (1) Instruction Fetch
-  
-  (2) Instruction Decode
-  
-  (3) Arithmetic operation (Execution)
-  
-  (4) Memory access
-  
-  (5) Write back
+* Instruction Fetch
+* Instruction Decode
+* Arithmetic operation (Execution)
+* Memory access
+* Write back

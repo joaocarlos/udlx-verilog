@@ -107,7 +107,7 @@
 	GPR & General Purpose Registers \\ \hline
 	FPGA & Field Gate Programmable Array \\ \hline
 	GPPU & General Purpose Processing Unit \\ \hline
-	SDRAM & \\ \hline
+	SDRAM & Synchronous Dynamic Random Access Memory\\ \hline
 	HDL & Hardware Description Language \\ \hline
 	RAW & Read After Write \\ \hline
 	CPU & Central Processing Unit \\ \hline
@@ -122,14 +122,16 @@
   
   \newpage
   \section{Architecture Overview}
+  \label{sec:architecture_overview}
   
+  \subsection{Block Diagram}
  
- \subsection{Pin/Port Definitions}
- \FloatBarrier
+  \subsection{Pin/Port Definitions}
+  \FloatBarrier
   \begin{table}[H]
     \begin{center}
       \begin{tabular}[pos]{| c | c | c | m{7cm} |} \hline 	
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
@@ -144,37 +146,41 @@
   \begin{table}[H]
     \begin{center}
       \begin{tabular}[pos]{| l | l | m{8cm} |} \hline 	
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Value}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
 	  & &  	\\ \hline
       \end{tabular}
     \end{center}
   \end{table} 
-  
-  \subsection{Basic Operation and Protocol}
-  
+    
   \newpage
-  \section{Architecture Data Path}
+  \section{Architecture Description}
+  \label{sec:architecture_description}
+  
   The data path developed to perform the synchronization is composed by:
   
-  \subsection{Stage 1 - Instruction Fetch}
+  \subsection{Instructions Layout}
   
-  \subsection{Stage 2 - Instruction Decoding}
+  \subsection{Functional Data Path Description}
   
-  \subsection{Stage 3 - Execution}
+  \subsubsection{Stage 1 - Instruction Fetch}
   
-  \subsection{Stage 4 - Memory}
+  \subsubsection{Stage 2 - Instruction Decoding}
   
-  \subsection{Stage 5 - Write Back}
+  \subsubsection{Stage 3 - Execution}
   
-  \newpage
-  \section{Timing}
+  \subsubsection{Stage 4 - Memory}
   
-  \newpage
-  \section{Licenses}
-  The uDLX soft core license of usage are free through provided LGPL v3. There is no external IP-core licenses related to uDLX core system development.
+  \subsubsection{Stage 5 - Write Back}
   
+  \subsection{Pipeline Register Description}
+  
+  \subsection{Control Micro-instructions Description}
+ 
+  %\newpage
+  %\section{Timing}
+    
 % \bibliographystyle{ieeetr}
 % \bibliography{ipprocess}
 

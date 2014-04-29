@@ -125,17 +125,32 @@
   \label{sec:architecture_overview}
   
   \subsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/udlx_block.eps}
+  \label{fig:datapath}
+  \end{figure}
+ 
  
   \subsection{Pin/Port Definitions}
   \FloatBarrier
   \begin{table}[H]
     \begin{center}
-      \begin{tabular}[pos]{| c | c | c | m{7cm} |} \hline 	
+      \begin{tabular}[pos]{| l | c | c | m{7cm} |} \hline 	
       \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
-	  & & &  	\\ \hline
+	 clock 		& 1 	& input 	& CPU core clock  	\\ \hline
+	 reset 		& 1	& input		& CPU core reset  	\\ \hline
+	 sram\_data\_io 	& 16	& in/out 	& SRAM data \\ \hline
+	 sdram\_data\_io 	& 32	& in/out 	& SDRAM data \\ \hline
+	 sram\_addr 	& 20	& input 	& SRAM address \\ \hline
+	 sram\_we\_n 	& 1	& output 	& SRAM write enable  \\ \hline
+	 sram\_oe\_n 	& 1	& output 	& SRAM output enable  \\ \hline
+	 sdram\_addr 	& 13	& in/out	& SDRAM address \\ \hline
+	 sdram\_we 	& 1	& output 	& SDRAM write enable  \\ \hline
+	 sdram\_oe 	& 1	& output 	& SDRAM output enable  \\ \hline
       \end{tabular}
     \end{center}
   \end{table}  

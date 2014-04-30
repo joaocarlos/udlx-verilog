@@ -91,3 +91,4 @@ sympy-plots-for-*.tex/
 # misc files
 *.backup
 .directory
+*converted*

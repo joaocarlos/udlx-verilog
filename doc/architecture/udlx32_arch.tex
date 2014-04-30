@@ -66,7 +66,8 @@
   \cellcolor[gray]{0.9}
   \textbf{Date} & \cellcolor[gray]{0.9}\textbf{Description} & \cellcolor[gray]{0.9}\textbf{Author(s)}\\ \hline
   \hline
-  \small 04/14/2014 & \small Conception & \small João Carlos Bittencourt \\ \hline
+  \small 04/27/2014 & \small Conception & \small João Carlos Bittencourt \\ \hline
+  \small 04/30/2014 & \small Instruction layout description & \small João Carlos Bittencourt \\ \hline
   \end{tabular}
   \label{tab:revisoes}
   \end{table}
@@ -170,24 +171,138 @@
   \end{table} 
     
   \newpage
+  \section{Instructions Layout}
+  
+  \subsection{ALU}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/alu_instruction.eps}
+  \end{figure} 
+  
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| c | l | l | l |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} &
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Flags Update}} \\ \hline
+	 000 & $R_D = R_D + R_F$ 	& add d, f 	& all	 \\ \hline
+	 001 & $R_D = R_D - R_F$ 	& sub d, f 	& all 	\\ \hline
+	 010 & $R_D = R_D * R_F$ 	& mul d, f 	& all	\\ \hline
+	 011 & $R_D = R_D / R_F$ 	& div d, f 	& all	\\ \hline
+	 100 & $R_D = R_D~and~R_F$ 	& and d, f 	& above, equal, error \\ \hline
+	 101 & $R_D = R_D~or~R_F$ 	& or d, f 	& above, equal, error \\ \hline
+	 110 & $R_flags = R_D~cmp~R_F$ 	& cmp d, f 	& above, equal, error \\ \hline
+	 111 & $R_D =~not~R_D $		& not d 	& above, equal, error \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table} 
+  
+  \subsection{Immediate}
+  
+  
+  \textbf{Type I}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/immediate_type_1.eps}
+  \end{figure}  
+  
+  \hspace{-36px}\textbf{Type II}  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/immediate_type_2.eps}
+  \end{figure}  
+  
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| c | l | l |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Type}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
+	 I 	& $R_D = I_{16}$ 	 & load immediate, d \\ \hline
+	 II 	& $R_D = [I_{16} + R_B]$ & load immediate, d, b \\ \hline
+	 II 	& $[I_{16} + R_B] = R_D$ & load d, immediate, b \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table} 
+  
+  \subsection{Control Transfer}
+  The $\mu$DLX core processor has five control transfer instructions encoded using the following three types. The first encoding type is used for unconditional jump and subroutine call. The second one is used for conditional branch, based on ALU flags. The third one reffers to the unconditional jump related to PC by an immediate value offset.
+
+  \hspace{-36px}\textbf{Type I}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/control_type_1.eps}
+  \end{figure}  
+  
+  \hspace{-36px}\textbf{Type II}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/control_type_2.eps}
+  \end{figure}  
+  
+  \hspace{-36px}\textbf{Type III}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/control_type_3.eps}
+  \end{figure}  
+  
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| c | l | l | l |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Type}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} &
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
+	 I 	& 00 & Jump Register	& jr r \\ \hline
+	 II 	& 01 & Jump PC 		& jpc immediate\\ \hline
+	 II 	& 10 & Branch flags 	& brfl r, const\\ \hline
+	 II 	& 11 & Subroutine call  & call r \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table}   
+  
   \section{Architecture Description}
-  \label{sec:architecture_description}
   
-  The data path developed to perform the synchronization is composed by:
+  \subsection{Stage 1 - Instruction Fetch}
+  \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\linewidth]{pictures/blocks/if_block.eps}
+  \end{figure}    
   
-  \subsection{Instructions Layout}
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| l | c | c | m{7cm} |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+	 clock 		& 1 	& input 	& CPU core clock  	\\ \hline
+	 reset 		& 1	& input		& CPU core reset  	\\ \hline
+	 sram\_data\_io 	& 16	& in/out 	& SRAM data \\ \hline
+	 branch\_pc 	& 20	& input 	& Branch address PC relative \\ \hline
+	 branch\_reg 	& 20	& input 	& Branch address loaded from registers \\ \hline
+	 npc 		& 20	& output 	& New program counter value  \\ \hline
+	 instruction 	& 32	& output 	& CPU core instruction  \\ \hline
+	 sram\_addr 	& 20	& output	& SRAM address \\ \hline
+	 sram\_we 	& 1	& output 	& SRAM write enable  \\ \hline
+	 sram\_oe 	& 1	& output 	& SRAM output enable  \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table}  
+  \subsection{Stage 2 - Instruction Decoding}
   
-  \subsection{Functional Data Path Description}
+  \subsection{Stage 3 - Execution}
   
-  \subsubsection{Stage 1 - Instruction Fetch}
+  \subsection{Stage 4 - Memory}
   
-  \subsubsection{Stage 2 - Instruction Decoding}
-  
-  \subsubsection{Stage 3 - Execution}
-  
-  \subsubsection{Stage 4 - Memory}
-  
-  \subsubsection{Stage 5 - Write Back}
+  \subsection{Stage 5 - Write Back}
   
   \subsection{Pipeline Register Description}
   

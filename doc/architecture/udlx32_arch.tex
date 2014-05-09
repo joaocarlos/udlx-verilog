@@ -2,7 +2,7 @@
 
 \usepackage{ipprocess}
 %\usepackage{lmodern}
-%\usepackage{longtable}
+\usepackage{longtable}
 \usepackage[latin1]{inputenc} 
 \usepackage[T1]{fontenc}
 \pagestyle{fancy}
@@ -285,11 +285,11 @@
   
   \section{Architecture Description}
   
-  \subsection{Stage 1 - Instruction Fetch}
+  \subsection{Instruction Fetch}
   \subsubsection{Block Diagram}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.6\linewidth]{pictures/blocks/if_block.eps}
+    \includegraphics[width=\linewidth]{pictures/blocks/if_block.eps}
   \end{figure}    
   
   \subsubsection{Pin/Port Definitions}
@@ -310,11 +310,63 @@
 	 instruction 	& 32	& output 	& CPU core instruction  \\ \hline
 	 sram\_addr 	& 20	& output	& SRAM address \\ \hline
 	 sram\_we 	& 1	& output 	& SRAM write enable  \\ \hline
-	 sram\_oe 	& 1	& output 	& SRAM output enable  \\ \hline
       \end{tabular}
     \end{center}
   \end{table}  
-  \subsection{Stage 2 - Instruction Decoding}
+  \subsection{Instruction Decoding}
+  \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/id_block.eps}
+  \end{figure} 
+  
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline       	
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+      	clock 		          & 1 	& input 	& CPU core clock  	\\ \hline
+      	reset 		          & 1	& input		& CPU core reset  	\\ \hline
+      	instruction\_reg    & 32	& input 	& SRAM data \\ \hline
+      	new\_pc 	          & 20	& input 	& Branch address PC relative \\ \hline
+      	w\_en 	            & 1	& input 	& Branch address loaded from registers \\ \hline
+      	w\_reg\_addr 	      & 4	& input 	& New program counter value  \\ \hline
+      	reg\_data 	        & 32	& input 	& CPU core instruction  \\ \hline
+      	fwd\_mem\_data 	    & 32	& input	  & SRAM address \\ \hline
+      	fwd\_ex\_data 	    & 32	& input 	& SRAM write enable  \\ \hline
+      	select\_rd 	        & TBD& output 	& SRAM output enable  \\ \hline
+        reg\_w\_en          & TBD& output  &   \\ \hline
+        data\_mem\_w\_en    & 1  & output  &   \\ \hline
+        alu\_opcode         & 3  & output  &   \\ \hline
+        select\_mux\_alu\_a & TBD& output  &   \\ \hline
+        select\_mux\_alu\_b & TBD& output  &   \\ \hline
+        instruction\_reg    & 32 & output  &   \\ \hline
+        constant            & 32 & output  &   \\ \hline
+        data\_alu\_a        & 32 & output  &   \\ \hline
+        data\_alu\_b        & 32 & output  &   \\ \hline
+        new\_pc             & 20 & output  &   \\ 
+      \end{longtable}
+    \end{center}
   
   \subsection{Stage 3 - Execution}
   

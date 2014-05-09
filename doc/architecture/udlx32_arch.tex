@@ -301,19 +301,21 @@
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
-	 clock 		& 1 	& input 	& CPU core clock  	\\ \hline
-	 reset 		& 1	& input		& CPU core reset  	\\ \hline
-	 sram\_data\_io 	& 16	& in/out 	& SRAM data \\ \hline
-	 branch\_pc 	& 20	& input 	& Branch address PC relative \\ \hline
-	 branch\_reg 	& 20	& input 	& Branch address loaded from registers \\ \hline
-	 npc 		& 20	& output 	& New program counter value  \\ \hline
-	 instruction 	& 32	& output 	& CPU core instruction  \\ \hline
-	 sram\_addr 	& 20	& output	& SRAM address \\ \hline
-	 sram\_we 	& 1	& output 	& SRAM write enable  \\ \hline
+	 clock 		      & 1 	& input 	& CPU core clock  	\\ \hline
+	 reset 		      & 1	  & input		& CPU core reset  	\\ \hline
+	 sram\_data\_io & 16	& in/out 	& SRAM data \\ \hline
+	 branch\_pc 	  & 20	& input 	& Branch address PC relative \\ \hline
+	 branch\_reg 	  & 20	& input 	& Branch address loaded from registers \\ \hline
+	 new\_pc 		    & 20	& output 	& Updated value of PC \\ \hline
+	 instruction 	  & 32	& output 	& CPU core instruction  \\ \hline
+	 sram\_addr 	  & 20	& output	& SRAM address \\ \hline
+	 sram\_we 	    & 1	  & output 	& SRAM write enable  \\ \hline
       \end{tabular}
     \end{center}
   \end{table}  
-  \subsection{Instruction Decoding}
+
+  \newpage
+  \subsection{Instruction Decode/Register Fetch}
   \subsubsection{Block Diagram}
   \begin{figure}[H]
     \centering
@@ -346,35 +348,129 @@
         \endlastfoot
 
       	clock 		          & 1 	& input 	& CPU core clock  	\\ \hline
-      	reset 		          & 1	& input		& CPU core reset  	\\ \hline
-      	instruction\_reg    & 32	& input 	& SRAM data \\ \hline
-      	new\_pc 	          & 20	& input 	& Branch address PC relative \\ \hline
-      	w\_en 	            & 1	& input 	& Branch address loaded from registers \\ \hline
-      	w\_reg\_addr 	      & 4	& input 	& New program counter value  \\ \hline
-      	reg\_data 	        & 32	& input 	& CPU core instruction  \\ \hline
-      	fwd\_mem\_data 	    & 32	& input	  & SRAM address \\ \hline
-      	fwd\_ex\_data 	    & 32	& input 	& SRAM write enable  \\ \hline
-      	select\_rd 	        & TBD& output 	& SRAM output enable  \\ \hline
-        reg\_w\_en          & TBD& output  &   \\ \hline
-        data\_mem\_w\_en    & 1  & output  &   \\ \hline
-        alu\_opcode         & 3  & output  &   \\ \hline
-        select\_mux\_alu\_a & TBD& output  &   \\ \hline
-        select\_mux\_alu\_b & TBD& output  &   \\ \hline
-        instruction\_reg    & 32 & output  &   \\ \hline
-        constant            & 32 & output  &   \\ \hline
-        data\_alu\_a        & 32 & output  &   \\ \hline
-        data\_alu\_b        & 32 & output  &   \\ \hline
-        new\_pc             & 20 & output  &   \\ 
+      	reset 		          & 1	  & input		& CPU core reset  	\\ \hline
+      	instruction\_reg    & 32	& input 	& CPU core instruction \\ \hline
+      	new\_pc 	          & 20	& input 	& Updated value of PC \\ \hline
+      	w\_en 	            & 1	  & input 	& GPR bank write enable signal \\ \hline
+      	w\_reg\_addr 	      & 4	  & input 	& GPR bank destiny address  \\ \hline
+      	reg\_data 	        & 32	& input 	& GPR bank write data  \\ \hline
+      	fwd\_mem\_data 	    & 32	& input	  & Forwarding data from DRAM output \\ \hline
+      	fwd\_ex\_data 	    & 32	& input 	& Forwarding data from ALU output  \\ \hline
+      	select\_rd 	        & TBD& output 	& TBD  \\ \hline
+        reg\_file\_w\_en    & TBD& output  & GPR bank write enable \\ \hline
+        write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline
+        data\_mem\_w\_en    & 1  & output  & SDRAM write enable  \\ \hline
+        alu\_opcode         & 3  & output  & ALU opperation code  \\ \hline
+        select\_mux\_alu\_a & TBD& output  & ALU input A data select  \\ \hline
+        select\_mux\_alu\_b & TBD& output  & ALU input B data select \\ \hline
+        instruction\_reg    & 32 & output  & CPU core instruction  \\ \hline
+        constant            & 32 & output  & 32-bit Sign-extended constant  \\ \hline
+        data\_alu\_a        & 32 & output  & ALU input A data  \\ \hline
+        data\_alu\_b        & 32 & output  & ALU input B data  \\ \hline
+        new\_pc             & 20 & output  & Updated value of PC  \\ 
       \end{longtable}
     \end{center}
   
-  \subsection{Stage 3 - Execution}
+  \subsection{Execute/Address Calculate}
   
-  \subsection{Stage 4 - Memory}
+  \subsection{Memory Access}
+  \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/mem_block.eps}
+  \end{figure} 
+
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        clock               & 1   & input  & CPU core clock    \\ \hline
+        reset               & 1   & input  & CPU core reset    \\ \hline
+        sdram\_dara\_ready  & 1   & input  & SDRAM data ready control \\ \hline        
+        sdram\_w\_en        & 1   & input  & SDRAM write enable \\ \hline        
+        sdram\_addr         & 13  & input  & SDRAM read/write address \\ \hline
+        sdram\_data_io      & 32  & input  & SDRAM I/O data \\ \hline
+        alu\_data           & 32  & input  & ALU data output \\ \hline       
+        mem\_data           & 32  & output & Memory output data  \\ \hline
+        sdram\_addr         & 13  & output & SDRAM read/write address  \\ \hline
+        sdram\_w\_en        & 1   & output & SDRAM write enable  \\ \hline
+      \end{longtable}
+    \end{center}  
   
-  \subsection{Stage 5 - Write Back}
+  \subsection{Write Back}
+  \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/wb_block.eps}
+  \end{figure} 
+
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        clock               & 1   & input  & CPU core clock    \\ \hline
+        reset               & 1   & input  & CPU core reset    \\ \hline
+        mem\_data           & 32  & input  & SDRAM data output \\ \hline
+        alu\_data           & 32  & input  & ALU data output \\ \hline
+        w\_file\_w\_en      & 4   & input  & GPR bank write enable signal \\ \hline
+        w\_reg\_addr        & 1   & input  & GPR bank destiny address  \\ \hline
+        write\_back\_mux\_sel  & TBD & input  & Write back mux select  \\ \hline
+        select\_reg\_data     & TBD & input  & Select data to be writen in GPR bank \\ \hline
+        w\_reg\_addr        & 4   & output & GPR bank destiny address  \\ \hline
+        reg\_data           & 32  & output & GPR bank write data  \\ \hline
+        reg\_file\_w\_en    & 1  & output  & GPR bank write enable signal  \\ \hline
+      \end{longtable}
+    \end{center}  
   
   \subsection{Pipeline Register Description}
+
+  \subsection{Forwarding Unit}
+  TBD in further releases.
+
+  \subsection{Branch Prediction Buffer}
+  TBD in further releases.
   
   \subsection{Control Micro-instructions Description}
  

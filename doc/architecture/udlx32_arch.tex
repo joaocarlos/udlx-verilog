@@ -101,7 +101,7 @@
       \caption{Acronym and descriptions of elements in this document.}
       \label{tab:definitions}
 
-      \begin{tabular}[pos]{|m{2cm} | m{8cm}|} 
+      \begin{tabular}[pos]{|m{2cm} | m{9cm}|} 
 	\hline % este comando coloca uma linha na tabela
 	\cellcolor[gray]{0.9}\textbf{Acronym} & \cellcolor[gray]{0.9}\textbf{Description} \\ \hline
 	RISC & Reduced Instruction Set Computer \\ \hline
@@ -176,7 +176,7 @@
   \subsection{ALU}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/alu_instruction.eps}
+    \includegraphics[width=\linewidth]{pictures/alu_instruction.eps}
   \end{figure} 
   
   \FloatBarrier
@@ -187,31 +187,30 @@
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Flags Update}} \\ \hline
-	 000 & $R_D = R_D + R_F$ 	& add d, f 	& all	 \\ \hline
-	 001 & $R_D = R_D - R_F$ 	& sub d, f 	& all 	\\ \hline
-	 010 & $R_D = R_D * R_F$ 	& mul d, f 	& all	\\ \hline
-	 011 & $R_D = R_D / R_F$ 	& div d, f 	& all	\\ \hline
-	 100 & $R_D = R_D~and~R_F$ 	& and d, f 	& above, equal, error \\ \hline
-	 101 & $R_D = R_D~or~R_F$ 	& or d, f 	& above, equal, error \\ \hline
-	 110 & $R_flags = R_D~cmp~R_F$ 	& cmp d, f 	& above, equal, error \\ \hline
-	 111 & $R_D =~not~R_D $		& not d 	& above, equal, error \\ \hline
+	 0000 & $R_D = R_D + R_F$ 	& add d, f 	& all	 \\ \hline
+	 0001 & $R_D = R_D - R_F$ 	& sub d, f 	& all 	\\ \hline
+	 0010 & $R_D = R_D * R_F$ 	& mul d, f 	& all	\\ \hline
+	 0011 & $R_D = R_D / R_F$ 	& div d, f 	& all	\\ \hline
+	 0100 & $R_D = R_D~and~R_F$ 	& and d, f 	& above, equal, error \\ \hline
+	 0101 & $R_D = R_D~or~R_F$ 	& or d, f 	& above, equal, error \\ \hline
+	 0110 & $R_flags = R_D~cmp~R_F$ 	& cmp d, f 	& above, equal, error \\ \hline
+	 0111 & $R_D =~not~R_D $		& not d 	& above, equal, error \\ \hline
       \end{tabular}
     \end{center}
   \end{table} 
   
   \subsection{Immediate}
   
-  
   \textbf{Type I}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/immediate_type_1.eps}
+    \includegraphics[width=\linewidth]{pictures/immediate_type_1.eps}
   \end{figure}  
   
   \hspace{-36px}\textbf{Type II}  
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/immediate_type_2.eps}
+    \includegraphics[width=\linewidth]{pictures/immediate_type_2.eps}
   \end{figure}  
   
   \FloatBarrier
@@ -234,19 +233,19 @@
   \hspace{-36px}\textbf{Type I}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/control_type_1.eps}
+    \includegraphics[width=\linewidth]{pictures/control_type_1.eps}
   \end{figure}  
   
   \hspace{-36px}\textbf{Type II}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/control_type_2.eps}
+    \includegraphics[width=\linewidth]{pictures/control_type_2.eps}
   \end{figure}  
   
   \hspace{-36px}\textbf{Type III}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/control_type_3.eps}
+    \includegraphics[width=\linewidth]{pictures/control_type_3.eps}
   \end{figure}  
   
   \FloatBarrier
@@ -258,9 +257,28 @@
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
 	 I 	& 00 & Jump Register	& jr r \\ \hline
-	 II 	& 01 & Jump PC 		& jpc immediate\\ \hline
+	 I 	& 01 & Subroutine call  & call r \\ \hline
 	 II 	& 10 & Branch flags 	& brfl r, const\\ \hline
-	 II 	& 11 & Subroutine call  & call r \\ \hline
+	 III 	& 11 & Jump PC 		& jpc destiny\\ \hline	 
+      \end{tabular}
+    \end{center}
+  \end{table}   
+  
+  \subsection{Memory}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/alu_instruction.eps}
+  \end{figure} 
+  
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| c | l | l |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
+	 1000 & $R_D = Mem[R_B]$ 	& load d, b 	 \\ \hline
+	 1100 & $Mem[R_B] = R_D$ 	& store b, d 	\\ \hline
       \end{tabular}
     \end{center}
   \end{table}   

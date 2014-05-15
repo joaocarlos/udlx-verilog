@@ -375,8 +375,8 @@ instruction time.
       	reg\_data 	        & 32	& input 	& GPR bank write data  \\ \hline
       	fwd\_mem\_data 	    & 32	& input	  & Forwarding data from DRAM output \\ \hline
       	fwd\_ex\_data 	    & 32	& input 	& Forwarding data from ALU output  \\ \hline
-      	select\_rd 	        & TBD& output 	& TBD  \\ \hline
-        reg\_file\_w\_en    & TBD& output  & GPR bank write enable \\ \hline
+      	select\_rd 	        & TBD & output 	& TBD  \\ \hline
+        reg\_file\_w\_en    & 1   & output  & GPR bank write enable \\ \hline
         write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline
         data\_mem\_w\_en    & 1  & output  & SDRAM write enable  \\ \hline
         alu\_opcode         & 3  & output  & ALU opperation code  \\ \hline
@@ -429,11 +429,20 @@ instruction time.
         sdram\_dara\_ready  & 1   & input  & SDRAM data ready control \\ \hline        
         sdram\_w\_en        & 1   & input  & SDRAM write enable \\ \hline        
         sdram\_addr         & 13  & input  & SDRAM read/write address \\ \hline
-        sdram\_data\_io      & 32  & input  & SDRAM I/O data \\ \hline
-        alu\_data           & 32  & input  & ALU data output \\ \hline       
+        sdram\_data\_io     & 32  & input  & SDRAM I/O data \\ \hline
+        alu\_data           & 32  & input  & ALU data output \\ \hline  
+        select\_rd          & TBD & input  & Select data to be writen in GPR bank \\ \hline                     
+        reg\_file\_w\_en      & 4   & input  & GPR bank write enable signal \\ \hline
+        write\_back\_mux\_sel  & TBD & input  & Write back mux select  \\ \hline
+
         mem\_data           & 32  & output & Memory output data  \\ \hline
         sdram\_addr         & 13  & output & SDRAM read/write address  \\ \hline
         sdram\_w\_en        & 1   & output & SDRAM write enable  \\ \hline
+        select\_rd          & TBD & output & Select data to be writen in GPR bank \\ \hline                     
+        reg\_file\_w\_en      & 4   & output  & GPR bank write enable signal \\ \hline
+        write\_back\_mux\_sel  & TBD & output  & Write back mux select  \\ \hline
+
+        alu\_data           & 32  & output & ALU data output \\ \hline 
       \end{longtable}
     \end{center}  
   
@@ -476,14 +485,162 @@ instruction time.
         w\_file\_w\_en      & 4   & input  & GPR bank write enable signal \\ \hline
         w\_reg\_addr        & 1   & input  & GPR bank destiny address  \\ \hline
         write\_back\_mux\_sel  & TBD & input  & Write back mux select  \\ \hline
-        select\_reg\_data     & TBD & input  & Select data to be writen in GPR bank \\ \hline
+        select\_rd          & TBD & input  & Select data to be writen in GPR bank \\ \hline
         w\_reg\_addr        & 4   & output & GPR bank destiny address  \\ \hline
         reg\_data           & 32  & output & GPR bank write data  \\ \hline
         reg\_file\_w\_en    & 1  & output  & GPR bank write enable signal  \\ \hline
       \end{longtable}
     \end{center}  
+
+  \subsubsection{Internal Datapath} 
+  The internal data path is composed by the following components.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/datapath/wb_datapath.eps}
+  \end{figure}      
   
   \subsection{Pipeline Register Description}
+  \subsubsection{Instruction Fetch/Instruction Decode}
+
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        new\_pc           & 20  & Stores the next program counter value.\\ \hline
+        instruction\_reg  & 32  & Stores the intruction word.    \\ \hline
+      \end{longtable}
+    \end{center} 
+
+  \subsubsection{Instruction Decode/Execute}
+
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        new\_pc                 & 20  & Stores the next program counter value.\\ \hline
+        data\_alu\_reg\_a       & 32  & Stores the value of ALU input port A.  \\ \hline
+        data\_alu\_reg\_b       & 32  & Stores the value of ALU input port B. \\ \hline
+        constant                & 32  & Stores the signed extended integer constant. \\ \hline
+        instruction\_reg        & 32  & Stores the intruction word.    \\ \hline
+        select\_rd\_reg           & 1   & TBD  \\ \hline
+        reg\_file\_w\_en\_reg       & 1   & Stores the signal to enable GPR write back. \\ \hline
+        write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
+        alu\_opcode              & 3   & Stores the ALU opperation code. \\ \hline
+        select\_mux\_alu\_a        & TBD & Stores the ALU input data select signal \\ \hline
+        select\_mux\_alu\_b        & TBD & Stores the ALU input data select signal \\ \hline
+
+      \end{longtable}
+    \end{center} 
+
+\subsubsection{Execute/Memory Access}
+
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        instruction\_reg        & 32  & Stores the intruction word.    \\ \hline
+        select\_rd\_reg         & 1   & TBD  \\ \hline
+        reg\_file\_w\_en\_reg   & 1   & Stores the signal to enable GPR write back. \\ \hline
+        write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
+        alu\_data\_reg          & 32  & Stores the ALU output data. \\ \hline
+      \end{longtable}
+    \end{center}  
+
+\subsubsection{Memory Access/Write Back}
+
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        instruction\_reg        & 32  & Stores the intruction word.    \\ \hline
+        select\_rd\_reg         & 1   & TBD  \\ \hline
+        reg\_file\_w\_en\_reg   & 1   & Stores the signal to enable GPR write back. \\ \hline
+        write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
+        mem\_data\_reg          & 32  & Stores the memory output data. \\ \hline
+        alu\_data\_reg          & 32  & Stores the ALU output data. \\ \hline
+        w\_reg\_addr\_reg       & 4   & Stores the GPR data write address. \\ \hline
+
+      \end{longtable}
+    \end{center}   
+
+  \subsection{SRAM Controller}
+  TBD in further releases?
+
+  \subsection{SDRAM Controller}
+  TBD in further releases?
 
   \subsection{Forwarding Unit}
   TBD in further releases.
@@ -493,6 +650,9 @@ instruction time.
   
   \subsection{Control Micro-instructions Description}
  
+  \subsection{Bootloader}
+  TBD in further releases.
+
   %\newpage
   %\section{Timing}
     

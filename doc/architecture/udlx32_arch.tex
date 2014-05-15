@@ -301,18 +301,37 @@
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
-	 clock 		      & 1 	& input 	& CPU core clock  	\\ \hline
-	 reset 		      & 1	  & input		& CPU core reset  	\\ \hline
-	 sram\_data\_io & 16	& in/out 	& SRAM data \\ \hline
-	 branch\_pc 	  & 20	& input 	& Branch address PC relative \\ \hline
-	 branch\_reg 	  & 20	& input 	& Branch address loaded from registers \\ \hline
-	 new\_pc 		    & 20	& output 	& Updated value of PC \\ \hline
-	 instruction 	  & 32	& output 	& CPU core instruction  \\ \hline
-	 sram\_addr 	  & 20	& output	& SRAM address \\ \hline
-	 sram\_we 	    & 1	  & output 	& SRAM write enable  \\ \hline
+	 clock 		          & 1 	& input 	& CPU core clock  	\\ \hline
+	 reset 		          & 1	  & input		& CPU core reset  	\\ \hline
+	 sram\_data\_io     & 16	& in/out 	& SRAM data \\ \hline
+	 branch\_pc 	      & 20	& input 	& Branch address PC relative \\ \hline
+	 branch\_reg 	      & 20	& input 	& Branch address loaded from registers \\ \hline
+   select\_new\_pc    & 1   & input   & Signal used for branch not taken \\ \hline
+   bpb\_branch\_taken & 1   & input   & Branch prediction buffer result \\ \hline
+   alu\_branch\_taken & 1   & input   & Branch result from execution \\ \hline
+	 new\_pc 		        & 20	& output 	& Updated value of PC \\ \hline
+	 instruction 	      & 32	& output 	& CPU core instruction  \\ \hline
+	 sram\_addr 	      & 20	& output	& SRAM address \\ \hline
+	 sram\_we 	        & 1	  & output 	& SRAM write enable  \\ \hline
       \end{tabular}
     \end{center}
-  \end{table}  
+  \end{table} 
+
+  \subsubsection{Internal Datapath} 
+  The internal data path is composed by the following components.
+
+  \begin{description}
+    \item [Program Counter]: During the instruction time of an instruction this is the
+address of the instruction word. The address of the instruction that occurs during
+the next instruction time is determined by assigning a value to PC during an instruction time. If no value is assigned to PC during an instruction time by any pseudocode statement, it is automatically incremented by 2 before the next
+instruction time.
+
+  \end{description}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/datapath/if_datapath.eps}
+  \end{figure}   
 
   \newpage
   \subsection{Instruction Decode/Register Fetch}
@@ -410,7 +429,7 @@
         sdram\_dara\_ready  & 1   & input  & SDRAM data ready control \\ \hline        
         sdram\_w\_en        & 1   & input  & SDRAM write enable \\ \hline        
         sdram\_addr         & 13  & input  & SDRAM read/write address \\ \hline
-        sdram\_data_io      & 32  & input  & SDRAM I/O data \\ \hline
+        sdram\_data\_io      & 32  & input  & SDRAM I/O data \\ \hline
         alu\_data           & 32  & input  & ALU data output \\ \hline       
         mem\_data           & 32  & output & Memory output data  \\ \hline
         sdram\_addr         & 13  & output & SDRAM read/write address  \\ \hline

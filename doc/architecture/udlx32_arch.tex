@@ -87,11 +87,19 @@
       \item Fix memory access stage pin/port definitions;
       \item Include write back data path;
     \end{itemize}
-  \end{small} & João Carlos Bittencourt \\ \hline
+  \end{small} & \small João Carlos Bittencourt \\ \hline
+  \small 04/15/2014 & \small Add execute block diagram & \small Igo Amauri Luz \\ \hline
+  \small 04/16/2014 & \small   \begin{small}
+    \begin{itemize}
+      \item Add branch prediction signal to ID and IF blocks and pin definitions;
+      \item Add table for pin definitions in Execute stage
+      \item Add branch prediction signal in pipeline registers definitions;
+    \end{itemize}
+  \end{small} & \small João Carlos Bittencourt \\ \hline  
   \end{tabular}
   \label{tab:revisoes}
   \end{table}
-  
+
   \newpage
   
   \tableofcontents
@@ -108,8 +116,9 @@
   This document is outlined as follow:
 	
 	\begin{itemize}
-	  \item Section : 
-	  \item Section : 
+	  \item Section \color{black}{\ref{sec:architecture_overview}}: This section presents the core processor block diagram, Pin/Port definitions and global parameters and configuration directives.
+	  \item Section \color{black}{\ref{sec:instruction_layout}}: This section presents the $\mu$DLX instruction layout and specifications. 
+    \item Section \color{black}{\ref{sec:architecture_description}}: This section presents a description of each pipeline stage block, including pin definitions, signals and internal datapath.
 	\end{itemize}
 		
   \subsection{Acronyms and Abbreviations}
@@ -193,7 +202,8 @@
     
   \newpage
   \section{Instructions Layout}
-  
+  \label{sec:instruction_layout}
+
   \subsection{ALU}
   \begin{figure}[H]
     \centering
@@ -305,7 +315,8 @@
   \end{table}   
   
   \section{Architecture Description}
-  
+  \label{sec:architecture_description}
+
   \subsection{Instruction Fetch}
   \subsubsection{Block Diagram}
   \begin{figure}[H]

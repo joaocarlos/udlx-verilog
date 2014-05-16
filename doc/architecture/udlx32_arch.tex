@@ -68,6 +68,26 @@
   \hline
   \small 04/27/2014 & \small Conception & \small João Carlos Bittencourt \\ \hline
   \small 04/30/2014 & \small Instruction layout description & \small João Carlos Bittencourt \\ \hline
+  \small 05/09/2014 & 
+  \begin{small}
+    \begin{itemize}
+      \item Text revision;
+      \item Update diagrams and instruction layout;
+      \item Update instruction fetch I/O definitions;
+      \item Missing pictures inclusion;
+      \item Include memory access and write back pin/port definitions;
+    \end{itemize}
+  \end{small} & \small João Carlos Bittencourt \\ \hline
+  \small 04/13/2014 & \small Missing pictures & \small João Carlos Bittencourt \\ \hline
+  \small 04/15/2014 & \small   \begin{small}
+    \begin{itemize}
+      \item Fix instruction fetch pin definitions;
+      \item Include instruction fetch datapath;
+      \item Include pipeline registers definitions;
+      \item Fix memory access stage pin/port definitions;
+      \item Include write back data path;
+    \end{itemize}
+  \end{small} & João Carlos Bittencourt \\ \hline
   \end{tabular}
   \label{tab:revisoes}
   \end{table}
@@ -117,6 +137,7 @@
 	PC  & Program Counter \\ \hline
 	RFlags & Flags Register \\ \hline
 	Const  & Constant \\ \hline
+  BPM    & Branch Prediction Buffer \\ \hline
       \end{tabular}
     \end{center}
   \end{table}
@@ -313,6 +334,7 @@
 	 instruction 	      & 32	& output 	& CPU core instruction  \\ \hline
 	 sram\_addr 	      & 20	& output	& SRAM address \\ \hline
 	 sram\_we 	        & 1	  & output 	& SRAM write enable  \\ \hline
+   bpb\_branch\_taken & 1   & output  & Branch prediction buffer result \\ \hline
       \end{tabular}
     \end{center}
   \end{table} 
@@ -375,7 +397,8 @@ instruction time.
       	reg\_data 	        & 32	& input 	& GPR bank write data  \\ \hline
       	fwd\_mem\_data 	    & 32	& input	  & Forwarding data from DRAM output \\ \hline
       	fwd\_ex\_data 	    & 32	& input 	& Forwarding data from ALU output  \\ \hline
-      	select\_rd 	        & TBD & output 	& TBD  \\ \hline
+      	bpb\_branch\_taken  & 1   & input   & Branch prediction buffer result \\ \hline
+        select\_rd 	        & TBD & output 	& TBD  \\ \hline
         reg\_file\_w\_en    & 1   & output  & GPR bank write enable \\ \hline
         write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline
         data\_mem\_w\_en    & 1  & output  & SDRAM write enable  \\ \hline
@@ -386,12 +409,71 @@ instruction time.
         constant            & 32 & output  & 32-bit Sign-extended constant  \\ \hline
         data\_alu\_a        & 32 & output  & ALU input A data  \\ \hline
         data\_alu\_b        & 32 & output  & ALU input B data  \\ \hline
-        new\_pc             & 20 & output  & Updated value of PC  \\ 
+        new\_pc             & 20 & output  & Updated value of PC  \\ \hline
+        bpb\_branch\_taken  & 1   & output   & Branch prediction buffer result \\ \hline
+
       \end{longtable}
     \end{center}
-  
+
+  \newpage
   \subsection{Execute/Address Calculate}
-  
+  \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/ex_block.eps}
+  \end{figure} 
+
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        clock               & 1   & input   & CPU core clock    \\ \hline
+        reset               & 1   & input   & CPU core reset    \\ \hline
+        alu\_opcode         & 3  & input  & ALU opperation code  \\ \hline
+        data\_alu\_a        & 32 & input  & ALU input A data  \\ \hline
+        data\_alu\_b        & 32 & input  & ALU input B data  \\ \hline
+        alu\_a\_mux\_sel & TBD& input  & ALU input A data select  \\ \hline
+        alu\_b\_mux\_sel & TBD& input  & ALU input B data select \\ \hline
+        instruction\_reg    & 32 & input  & CPU core instruction  \\ \hline        
+        constant            & 32 & input  & 32-bit Sign-extended constant  \\ \hline
+        write\_back\_mux\_sel & TBD & input & Write back mux select \\ \hline  
+        reg\_file\_w\_en    & 1   & input  & GPR bank write enable \\ \hline 
+        select\_rd          & TBD & input  & TBD  \\ \hline
+        bpb\_branch\_taken  & 1   & input   & Branch prediction buffer result \\ \hline
+        new\_pc             & 20 & input  & Updated value of PC  \\ \hline    
+        data\_alu\_a        & 32 & output  & ALU input A data  \\ \hline         
+        alu\_data           & 32  & output  & ALU data output \\ \hline
+        instruction\_reg    & 32 & output  & CPU core instruction  \\ \hline  
+        write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline  
+        reg\_file\_w\_en    & 1   & output  & GPR bank write enable \\ \hline 
+        select\_rd          & TBD & output  & TBD  \\ \hline 
+        branch\_result      & 1   & output  & Branch result after flag over ALU execution check
+
+      \end{longtable}
+    \end{center}  
+
+  \newpage
   \subsection{Memory Access}
   \subsubsection{Block Diagram}
   \begin{figure}[H]
@@ -446,6 +528,7 @@ instruction time.
       \end{longtable}
     \end{center}  
   
+  \newpage
   \subsection{Write Back}
   \subsubsection{Block Diagram}
   \begin{figure}[H]
@@ -500,6 +583,7 @@ instruction time.
     \includegraphics[width=\linewidth]{pictures/datapath/wb_datapath.eps}
   \end{figure}      
   
+  \newpage
   \subsection{Pipeline Register Description}
   \subsubsection{Instruction Fetch/Instruction Decode}
 
@@ -527,6 +611,8 @@ instruction time.
 
         new\_pc           & 20  & Stores the next program counter value.\\ \hline
         instruction\_reg  & 32  & Stores the intruction word.    \\ \hline
+        bpb\_branch\_taken       & 1   & Stores BPB result. \\ \hline
+
       \end{longtable}
     \end{center} 
 
@@ -565,6 +651,7 @@ instruction time.
         alu\_opcode              & 3   & Stores the ALU opperation code. \\ \hline
         select\_mux\_alu\_a        & TBD & Stores the ALU input data select signal \\ \hline
         select\_mux\_alu\_b        & TBD & Stores the ALU input data select signal \\ \hline
+        bpb\_branch\_taken       & 1   & Stores BPB result. \\ \hline
 
       \end{longtable}
     \end{center} 
@@ -597,6 +684,7 @@ instruction time.
         select\_rd\_reg         & 1   & TBD  \\ \hline
         reg\_file\_w\_en\_reg   & 1   & Stores the signal to enable GPR write back. \\ \hline
         write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
+        data\_alu\_a            & 32  & Stores the ALU input data A for memory addressing. \\ \hline
         alu\_data\_reg          & 32  & Stores the ALU output data. \\ \hline
       \end{longtable}
     \end{center}  

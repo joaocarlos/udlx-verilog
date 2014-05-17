@@ -94,6 +94,7 @@
       \item Add branch prediction signal to ID and IF blocks and pin definitions;
       \item Add table for pin definitions in Execute stage
       \item Add branch prediction signal in pipeline registers definitions;
+      \item Include architecture interface figure;
     \end{itemize}
   \end{small} & \small João Carlos Bittencourt \\ \hline  
   \end{tabular}
@@ -155,11 +156,23 @@
   \section{Architecture Overview}
   \label{sec:architecture_overview}
   
+  \subsection{Interface Architecture}
+  The $\mu$DLX architecture interface is composed by the following components.
+  \begin{itemize}
+    \item \textbf{$\mu$DLX 32-bit Core:} The core four-deep pipeline processor.
+    \item \textbf{Memory Interface:} Provides a middle layer between the core processor and the external memories. This interface also controls the bootloader process.
+    \item \textbf{SDRAM Controller:} Provides the interface for controlling the external SDRAM.
+    \item \textbf{SRAM Controller:} Provides the interface for controlling the external SRAM.
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/architecture_interface.eps}
+  \end{figure}
+
   \subsection{Block Diagram}
   \begin{figure}[H]
     \centering
     \includegraphics[width=.8\linewidth]{pictures/udlx_block.eps}
-  \label{fig:datapath}
   \end{figure}
  
  
@@ -174,14 +187,14 @@
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
 	 clock 		& 1 	& input 	& CPU core clock  	\\ \hline
 	 reset 		& 1	& input		& CPU core reset  	\\ \hline
-	 sram\_data\_io 	& 16	& in/out 	& SRAM data \\ \hline
-	 sdram\_data\_io 	& 32	& in/out 	& SDRAM data \\ \hline
-	 sram\_addr 	& 20	& input 	& SRAM address \\ \hline
-	 sram\_we\_n 	& 1	& output 	& SRAM write enable  \\ \hline
-	 sram\_oe\_n 	& 1	& output 	& SRAM output enable  \\ \hline
-	 sdram\_addr 	& 13	& in/out	& SDRAM address \\ \hline
-	 sdram\_we 	& 1	& output 	& SDRAM write enable  \\ \hline
-	 sdram\_oe 	& 1	& output 	& SDRAM output enable  \\ \hline
+	 instruction 	& 32	& input 	& SRAM instruction data \\ \hline
+	 data\_read 	& 32	& input 	& SDRAM read data \\ \hline
+	 instr\_addr 	& 20	& input 	& SRAM address \\ \hline
+	 instr\_rd\_en 	& 1	& output 	& SRAM read enable  \\ \hline
+	 data\_addr 	& 13	& output	& SDRAM address \\ \hline
+	 data\_wr\_en 	& 1	& output 	& SDRAM write enable  \\ \hline
+	 data\_rd\_en 	& 1	& output 	& SDRAM read enable  \\ \hline
+   data\_write   & 32 & output  & SDRAM write data  \\ \hline
       \end{tabular}
     \end{center}
   \end{table}  

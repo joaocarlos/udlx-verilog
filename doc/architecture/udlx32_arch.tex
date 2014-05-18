@@ -96,9 +96,9 @@
       \item Add branch prediction signal in pipeline registers definitions;
       \item Include architecture interface figure;
     \end{itemize}
-  \end{small} & \small João Carlos Bittencourt \\ \hline  
+  \end{small} & \small João Carlos Bittencourt \\ \hline 
+  \small 04/18/2014 & \small Add execute datapath diagram & \small Igo Amauri Luz \\ \hline
   \end{tabular}
-  \label{tab:revisoes}
   \end{table}
 
   \newpage
@@ -434,7 +434,7 @@ instruction time.
         data\_alu\_a        & 32 & output  & ALU input A data  \\ \hline
         data\_alu\_b        & 32 & output  & ALU input B data  \\ \hline
         new\_pc             & 20 & output  & Updated value of PC  \\ \hline
-        bpb\_branch\_taken  & 1   & output   & Branch prediction buffer result \\ \hline
+        bpb\_branch\_taken  & 1   & output   & Branch prediction buffer result \\
 
       \end{longtable}
     \end{center}
@@ -492,10 +492,18 @@ instruction time.
         write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline  
         reg\_file\_w\_en    & 1   & output  & GPR bank write enable \\ \hline 
         select\_rd          & TBD & output  & TBD  \\ \hline 
-        branch\_result      & 1   & output  & Branch result after flag over ALU execution check
+        branch\_result      & 1   & output  & Branch result after flag check \\
 
       \end{longtable}
     \end{center}  
+
+  \subsubsection{Internal Datapath} 
+  The internal data path is composed by the following components.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth]{pictures/datapath/ex_datapath.eps}
+  \end{figure}  
 
   \newpage
   \subsection{Memory Access}

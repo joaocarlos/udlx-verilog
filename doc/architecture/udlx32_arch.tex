@@ -7,6 +7,7 @@
 \usepackage[T1]{fontenc}
 \pagestyle{fancy}
 \usepackage{libertine}
+\usepackage{epstopdf}
 
 %\usepackage[author={João Carlos Nunes Bittencourt}]{pdfcomment}
 
@@ -14,7 +15,7 @@
 
 \title{32-bit uDLX Core Processor}
 
-\graphicspath{{./pictures/}} % Diretório padrão de figuras.
+\graphicspath{{./pictures/}} % Diret???rio padr???o de figuras.
 \makeindex
 \begin{document}
   \capa{1.0}{abril}{2014}{32-bit uDLX Core Processor}{Architecture Specification}{Universidade Federal da Bahia}
@@ -55,11 +56,11 @@
 \newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Histórico de Revisões
+%% Revision History
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \section*{\center Histórico de Revisões}
+  \section*{\center Revision History}
   \vspace*{1cm}
-  \begin{table}[ht] % aqui começa o ambiente tabela
+  \begin{table}[ht] % aqui come???a o ambiente tabela
   \centering
   \begin{tabular}[pos]{|m{2cm} | m{7.2cm} | m{3.8cm}|} 
   \hline % este comando coloca uma linha na tabela
@@ -126,7 +127,7 @@
   Along this and other documents part of this project, it will be recurrent the usage of some acronyms and abbreviations. In order to keep track of this elements the Table \ref{tab:definitions} presents a set of abbreviations used and its corresponding meaning.
   
   \FloatBarrier
-  \begin{table}[H] % aqui começa o ambiente tabela
+  \begin{table}[H] % aqui come???a o ambiente tabela
     \begin{center}
       \caption{Acronym and descriptions of elements in this document.}
       \label{tab:definitions}
@@ -166,7 +167,7 @@
   \end{itemize}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/architecture_interface.eps}
+    \includegraphics[width=\linewidth]{pictures/architecture_interface.eps}
   \end{figure}
 
   \subsection{Block Diagram}
@@ -215,117 +216,143 @@
     
   \newpage
   \section{Instructions Layout}
+  In order to be the most close to the DLX and also be as compatible as possible to MIPS R2000 and R3000 architecture few instructions were added to the instruction set. Instructions that are not present in DLX and MIPS architecture are added in not used OPCODES.
   \label{sec:instruction_layout}
 
-  \subsection{ALU}
+  \subsection{Instructions Set}
+  DLX instruction structure has 5 types of instructions, the floating point instructions were removed. The 3 DLX instructions types supported in the project are shown in figure below.
+  
   \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{pictures/alu_instruction.eps}
+    \includegraphics[width=\linewidth]{pictures/instruction_set.eps}
   \end{figure} 
   
-  \FloatBarrier
-  \begin{table}[H]
-    \begin{center}
-      \begin{tabular}[pos]{| c | l | l | l |} \hline 	
-      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} &
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Flags Update}} \\ \hline
-	 0000 & $R_D = R_D + R_F$ 	& add d, f 	& all	 \\ \hline
-	 0001 & $R_D = R_D - R_F$ 	& sub d, f 	& all 	\\ \hline
-	 0010 & $R_D = R_D * R_F$ 	& mul d, f 	& all	\\ \hline
-	 0011 & $R_D = R_D / R_F$ 	& div d, f 	& all	\\ \hline
-	 0100 & $R_D = R_D~and~R_F$ 	& and d, f 	& above, equal, error \\ \hline
-	 0101 & $R_D = R_D~or~R_F$ 	& or d, f 	& above, equal, error \\ \hline
-	 0110 & $R_flags = R_D~cmp~R_F$ 	& cmp d, f 	& above, equal, error \\ \hline
-	 0111 & $R_D =~not~R_D $		& not d 	& above, equal, error \\ \hline
-      \end{tabular}
-    \end{center}
-  \end{table} 
+NOP instruction has zero in all bits and will not be mapped to an instruction type.
   
-  \subsection{Immediate}
-  
-  \textbf{Type I}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/immediate_type_1.eps}
-  \end{figure}  
-  
-  \hspace{-36px}\textbf{Type II}  
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/immediate_type_2.eps}
-  \end{figure}  
-  
-  \FloatBarrier
-  \begin{table}[H]
-    \begin{center}
-      \begin{tabular}[pos]{| c | l | l |} \hline 	
-      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Type}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
-	 I 	& $R_D = I_{16}$ 	 & load immediate, d \\ \hline
-	 II 	& $R_D = [I_{16} + R_B]$ & load immediate, d, b \\ \hline
-	 II 	& $[I_{16} + R_B] = R_D$ & load d, immediate, b \\ \hline
-      \end{tabular}
-    \end{center}
-  \end{table} 
-  
-  \subsection{Control Transfer}
-  The $\mu$DLX core processor has five control transfer instructions encoded using the following three types. The first encoding type is used for unconditional jump and subroutine call. The second one is used for conditional branch, based on ALU flags. The third one reffers to the unconditional jump related to PC by an immediate value offset.
+  \subsection{I-type Instruction}
+  Immediate instructions use the immediate data to address a load and store operation, make arithmetic operations and make brachs using 
+Some arithmetic immediate instructions were added because they make easier assembly programming. The conditional branch operations BEQZ and BNEQZ were added to enable some compiler compatibility and future core improvement.
 
-  \hspace{-36px}\textbf{Type I}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/control_type_1.eps}
-  \end{figure}  
-  
-  \hspace{-36px}\textbf{Type II}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/control_type_2.eps}
-  \end{figure}  
-  
-  \hspace{-36px}\textbf{Type III}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/control_type_3.eps}
-  \end{figure}  
-  
-  \FloatBarrier
-  \begin{table}[H]
-    \begin{center}
-      \begin{tabular}[pos]{| c | l | l | l |} \hline 	
-      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Type}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} &
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
-	 I 	& 00 & Jump Register	& jr r \\ \hline
-	 I 	& 01 & Subroutine call  & call r \\ \hline
-	 II 	& 10 & Branch flags 	& brfl r, const\\ \hline
-	 III 	& 11 & Jump PC 		& jpc destiny\\ \hline	 
-      \end{tabular}
-    \end{center}
-  \end{table}   
-  
-  \subsection{Memory}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/alu_instruction.eps}
-  \end{figure} 
-  
   \FloatBarrier
   \begin{table}[H]
     \begin{center}
       \begin{tabular}[pos]{| c | l | l |} \hline 	
-      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
-	 1000 & $R_D = Mem[R_B]$ 	& load d, b 	 \\ \hline
-	 1100 & $Mem[R_B] = R_D$ 	& store b, d 	\\ \hline
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OPCODE}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mneumonic}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
+	 100011/0x23 	& lw & $R_D = mem$ \\ \hline
+	 101011/0x2b 	& sw & $mem = R_D$ \\ \hline
+	 101010/0x2A 	& brfl & $???$ \\ \hline
+	 001000/0x08 & addi & $R_D = R_S1 + Sext(imm)$ \\ \hline
+	 001010/0x10 & subi & $R_D = R_S1 - Sext(imm)$ \\ \hline
+	 001101/0x12 & andi & $R_D = R_S1 ?? Sext(imm)$ \\ \hline
+	 001101/0x13 & ori & $R_D = R_S1 ?? Sext(imm)$ \\ \hline
+	 000100/0x04 & beqz & $PC = PC + 4 +(R_S1 = 0 ? Sext(imm): 0)$ \\ \hline
+	 000101/0x05 & bnez & $??$ \\ \hline
+	 000111/0x16 & jr & $PC = R_S1$ \\ \hline
       \end{tabular}
     \end{center}
-  \end{table}   
+  \end{table} 
+
+Only LW, SW, BRFL, and JR instructions are in the p?oject requirements, the other were added to make compatibility and some codes easier.
+  
+  \subsection{R-type Instruction}
+This instructions realize registers operations, most operations are arithmetic. All arithmetic opcodes are zero, differing only in the function value.
+
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| c | l | l |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OPCODE}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mneumonic}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
+	 100000/0x20 	& add & $R_D = R_S1 + R_S2$ \\ \hline
+	 100010/0x22 	& sub & $R_D = R_S1 - R_S2$ \\ \hline
+	 100100/0x24 	& and & $R_D = R_S1 and R_S2$ \\ \hline
+	 100101/0x25 & or & $R_D = R_S1 or R_S2$ \\ \hline
+	 011000/0x18 & mult & $R_D = R_S1 x R_S2$ \\ \hline
+	 011010/0x1A & div & $R_D = R_S1 / R_S2$ \\ \hline
+	 011100/0x1C & cmp & $R_D = R_S1 cmp R_S2$ \\ \hline
+	 011101/0x1D & not & $R_D = R_S1 not R_S2$ \\ \hline
+
+      \end{tabular}
+    \end{center}
+  \end{table} 
+
+The MULT, DIV, CMP, and NOT instructions were added in DLX instruction set
+
+  \subsection{J-type Instruction}
+Instructions related with instruction memory jump. The instructions are JPC (J),RET (RFE), CALL (TRAP).
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{| c | l | l |} \hline 	
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OPCODE}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mneumonic}} & 
+      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
+	 000010/0x02 	& jpc(j) & $PC = PC + 4$ \\ \hline
+	 111110/0x3e 	& call(trap) & $trap = 1;   EPC = PC;   PC = SISR; ESR = SR;   ECA = masked CA;   SR = 0; EDATA = Sext(imm);clear CA but catch new interrupt events$ \\ \hline
+	 111111/0x3f 	& ret(rfe) & $SR = ESR;   PC = EPC$ \\ \hline
+
+      \end{tabular}
+    \end{center}
+  \end{table} 
+
+%  \subsection{Control Transfer}
+%  The $\mu$DLX core processor has five control transfer instructions encoded using the following three types. The first encoding type is used for unconditional jump and subroutine call. The second one is used for conditional branch, based on ALU flags. The third one reffers to the unconditional jump related to PC by an immediate value offset.
+%
+%  \hspace{-36px}\textbf{Type I}
+%  \begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\linewidth]{pictures/control_type_1.eps}
+%  \end{figure}  
+%  
+%  \hspace{-36px}\textbf{Type II}
+%  \begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\linewidth]{pictures/control_type_2.eps}
+%  \end{figure}  
+%  
+%  \hspace{-36px}\textbf{Type III}
+%  \begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\linewidth]{pictures/control_type_3.eps}
+%  \end{figure}  
+%  
+%  \FloatBarrier
+%  \begin{table}[H]
+%    \begin{center}
+%      \begin{tabular}[pos]{| c | l | l | l |} \hline 	
+%      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Type}} & 
+%      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
+%      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} &
+%      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
+%	 I 	& 00 & Jump Register	& jr r \\ \hline
+%	 I 	& 01 & Subroutine call  & call r \\ \hline
+%	 II 	& 10 & Branch flags 	& brfl r, const\\ \hline
+%	 III 	& 11 & Jump PC 		& jpc destiny\\ \hline	 
+%      \end{tabular}
+%    \end{center}
+%  \end{table}   
+%  
+%  \subsection{Memory}
+%  \begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\linewidth]{pictures/alu_instruction.eps}
+%  \end{figure} 
+%  
+%  \FloatBarrier
+%  \begin{table}[H]
+%    \begin{center}
+%      \begin{tabular}[pos]{| c | l | l |} \hline 	
+%      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OP}} & 
+%      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Opperation}} & 
+%      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mnemonic}} \\ \hline
+%	 1000 & $R_D = Mem[R_B]$ 	& load d, b 	 \\ \hline
+%	 1100 & $Mem[R_B] = R_D$ 	& store b, d 	\\ \hline
+%      \end{tabular}
+%    \end{center}
+%  \end{table}   
   
   \section{Architecture Description}
   \label{sec:architecture_description}
@@ -438,7 +465,16 @@ instruction time.
 
       \end{longtable}
     \end{center}
+    
+  \subsubsection{Internal Datapath} 
+  The internal data path is composed by the following components.
 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/datapath/id_datapath.eps}
+  \end{figure} 
+  
+  
   \newpage
   \subsection{Execute/Address Calculate}
   \subsubsection{Block Diagram}
@@ -495,7 +531,10 @@ instruction time.
         branch\_result      & 1   & output  & Branch result after flag check \\
 
       \end{longtable}
-    \end{center}  
+    \end{center} 
+     
+\subsubsection{Internal Datapath} 
+  The internal data path is composed by the following components.
 
   \subsubsection{Internal Datapath} 
   The internal data path is composed by the following components.
@@ -756,11 +795,118 @@ instruction time.
       \end{longtable}
     \end{center}   
 
+  \subsection{Memory and Device Interface}
+The memory and device interface is responsible for memory mapping to the processor. Depending on the address accessed a specific memory will be accessed by the memory device interface. If it is a read operation in the next clock cycle the read data will be directed to the DLX input read data port.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{pictures/mem_dev_interface.eps}
+  \end{figure} 
+
+The memory map shown was created with separate address to show that devices have no relation between them and to show that the memory used in this project will be a small fraction for the 4GBytes possible.
+
   \subsection{SRAM Controller}
-  TBD in further releases?
+  The SRAM will store the instructions, as the SRAM has only 16 bits of word and an instruction has 32 bits the read and write operation must be done in a faster clock domain to avoid stopping the microprocessor.  
+  The SRAM has instruction code this way this memory is not written in normal operation. The SRAM will be written by the processor just during the bootloader code is running and during this operation no read will be done. Not having read and write simultaneously make easier the control not needing to deal with write and read operations at the same time.
+    \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/sram_block.eps}
+  \end{figure}  
+
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        clk\_x2               & 1   & input  & SRAM clock that is twice the DLX clock    \\ \hline
+        rst\_n               & 1   & input  & System asynchronous reset    \\ \hline
+        wr\_en           & 1  & input  & Data write enable \\ \hline
+        wr\_data           & 32  & input  & Data to be written in the memory \\ \hline
+        address      & 24   & input  & Memory address from the DLX \\ \hline
+        rd\_en        & 1   & input  & Data read enable  \\ \hline
+        rd\_data  & 32 & output  & Read data from SRAM to the DLX \\ \hline
+        sram\_rd\_en          & 1 & output  & ??? \\ \hline
+        sram\_rd\_data        & 16   & output & ???  \\ \hline
+        sram\_addr           & 10  & output & Memory address that goes to the SRAM  \\ \hline
+        sram\_wr\_en    & 1  & output  & ???  \\ \hline
+        sram\_wr\_data    & 16  & output  & ???  \\ \hline
+      \end{longtable}
+    \end{center} 
+     
+As the SRAM has half word the controller works with a clock twice faster enabling read two address, concatenating and sending to the DLX in time.
 
   \subsection{SDRAM Controller}
-  TBD in further releases?
+  The SDRAM controller will be very simple and optimized to read or write one word that will be requested by the processor. There will be no burst, just one word write or read operation.
+    \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/sdram_block.eps}
+  \end{figure}  
+
+  \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        clk\_x6               & 1   & input  & SDRAM controller input clock. 6 times faster than DLX clock    \\ \hline
+        rst\_n               & 1   & input  & System asynchronous reset    \\ \hline
+        wr\_en           & 1  & input  & Data write enable \\ \hline
+        wr\_data\_in           & 32  & input  & Data to be written in the memory \\ \hline
+        address      & 24   & input  & Address of write or read operation \\ \hline
+        rd\_en        & 1   & input  & Data read enable  \\ \hline
+        rd\_data  & 32 & output  & Data read from the SDRAM to the memory interface \\ \hline
+        sdram\_addr          & 12 & output  & SDRAM data address \\ \hline
+        sdram\_bank        & 2   & output & The SDRAM selected Bank  \\ \hline
+        sdram\_cas\_n           & 1  & output & SDRAM CAS  \\ \hline
+        sdram\_cs\_n    & 1  & output  & SDRAM chip select  \\ \hline
+        sdram\_dq    & 32  & output  & SDRAM read data, 2 bus of 16 bits, one for each memory  \\ \hline
+        sdram\_ldqm    & 1  & output  & ???  \\ \hline
+        sdram\_udqm    & 1  & output  & ???  \\ \hline
+        sdram\_ras\_n    & 1  & output  & SRAM RAS  \\ \hline
+        sdram\_we\_n    & 1  & output  & SDRAM write enable  \\ \hline
+      \end{longtable}
+    \end{center} 
 
   \subsection{Forwarding Unit}
   TBD in further releases.
@@ -769,10 +915,60 @@ instruction time.
   TBD in further releases.
   
   \subsection{Control Micro-instructions Description}
- 
-  \subsection{Bootloader}
-  TBD in further releases.
+     \subsubsection{Block Diagram}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/blocks/control_block.eps}
+  \end{figure}  
+  
+    \subsubsection{Pin/Port Definitions}
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | c | m{7cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{4}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
 
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+        
+        instruction\_decoded               & 1   & input  & ???    \\ \hline
+        alu\_src\_out\_n               & 1   & output  & ???    \\ \hline
+        alu\_opcode\_out           & 1  & output  & ??? \\ \hline
+        mem\_data\_wr\_en\_out           & 1  & output  & ??? \\ \hline
+        write\_back\_mux\_sel\_out      & 1   & output  & ??? \\ \hline
+        w\_reg\_wr\_en\_out        & 1   & output  & ???  \\ \hline
+        w\_reg\_addr\_out  & 1 & output  & ??? \\ \hline
+        branch\_inst\_out          & 12 & output  & ??? \\ \hline
+        jmp\_inst\_out        & 1   & output & ???  \\ \hline
+        
+      \end{longtable}
+    \end{center} 
+  
+  \subsection{Bootloader}
+  The bootloader is the ROM memory has the code responsible to initialize the processor and write the code that will be executed in the correct address and consequently each memory device.
+The ROM must have the DLX reset PC register address. When the system is reseted the processor will read instructions from the ROM address. The code inside the ROM will copy the instruction and data code from a static memory to the instruction memory SRAM and the data memory SDRAM.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{pictures/bootloader.eps}
+  \end{figure}  
+  Usually data in code is read-only data and it is common in compiled C code. Probably there will be only instruction code to be loaded during bootloader operation.
+  
+  
   %\newpage
   %\section{Timing}
     

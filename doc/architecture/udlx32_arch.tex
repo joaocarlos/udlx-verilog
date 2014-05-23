@@ -3,7 +3,7 @@
 \usepackage{ipprocess}
 %\usepackage{lmodern}
 \usepackage{longtable}
-\usepackage[latin1]{inputenc} 
+\usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc}
 \pagestyle{fancy}
 \usepackage{libertine}
@@ -13,12 +13,12 @@
 
 \sloppy
 
-\title{32-bit uDLX Core Processor}
+\title{32-bit $\mu$DLX Core Processor}
 
-\graphicspath{{./pictures/}} % Diret???rio padr???o de figuras.
+\graphicspath{{./pictures/}} % DiretTBDrio padrTBDo de figuras.
 \makeindex
 \begin{document}
-  \capa{1.0}{abril}{2014}{32-bit uDLX Core Processor}{Architecture Specification}{Universidade Federal da Bahia}
+  \capa{1.0}{abril}{2014}{32-bit $\mu$DLX Core Processor}{Architecture Specification}{Universidade Federal da Bahia}
   \newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,7 +60,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \section*{\center Revision History}
   \vspace*{1cm}
-  \begin{table}[ht] % aqui come???a o ambiente tabela
+  \begin{table}[ht] % aqui comeTBDa o ambiente tabela
   \centering
   \begin{tabular}[pos]{|m{2cm} | m{7.2cm} | m{3.8cm}|} 
   \hline % este comando coloca uma linha na tabela
@@ -99,6 +99,7 @@
     \end{itemize}
   \end{small} & \small João Carlos Bittencourt \\ \hline 
   \small 04/18/2014 & \small Add execute datapath diagram & \small Igo Amauri Luz \\ \hline
+  \small 04/23/2014 & \small Formating; Stakeholders listing & \small João Carlos Bittencourt \\ \hline  
   \end{tabular}
   \end{table}
 
@@ -113,6 +114,22 @@
   \section{Introduction}
   \subsection{Purpose}
   The main purpose of this document is to define specifications of a uDLX implementation and to provide a full overview of the design. This specifications defines all implementation parameters that composes the general uDLX requirements and specification. This definitions include processor operation modes, instruction set (ISA) and internal registers characteristics. This document also include detailed information of pipeline stages architecture, buses and other supplemental units.
+
+  \subsection{Stakeholders}
+  \FloatBarrier
+  \begin{table}[H] 
+    \begin{center}
+      \begin{tabular}[pos]{|m{5cm} | m{8cm}|} 
+        \hline % este comando coloca uma linha na tabela
+        \cellcolor[gray]{0.9}\textbf{Name} & \cellcolor[gray]{0.9}\textbf{Roles/Responsibilities} \\ \hline
+        Igo Amauri Luz & TBD \\ \hline
+        João Carlos Bittencourt & TBD \\ \hline  
+        Lauê Rami Costa & TBD \\ \hline
+        Linton Thiago Esteves & TBD \\ \hline  
+        Victor Valente & TBD \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table}    
   
   \subsection{Document Outline Description}
   This document is outlined as follow:
@@ -127,7 +144,7 @@
   Along this and other documents part of this project, it will be recurrent the usage of some acronyms and abbreviations. In order to keep track of this elements the Table \ref{tab:definitions} presents a set of abbreviations used and its corresponding meaning.
   
   \FloatBarrier
-  \begin{table}[H] % aqui come???a o ambiente tabela
+  \begin{table}[H]
     \begin{center}
       \caption{Acronym and descriptions of elements in this document.}
       \label{tab:definitions}
@@ -167,13 +184,13 @@
   \end{itemize}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{pictures/architecture_interface.eps}
+    \includegraphics[width=.8\linewidth]{pictures/architecture_interface.eps}
   \end{figure}
 
   \subsection{Block Diagram}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/udlx_block.eps}
+    \includegraphics[width=.85\linewidth]{pictures/udlx_block.eps}
   \end{figure}
  
  
@@ -242,13 +259,13 @@ Some arithmetic immediate instructions were added because they make easier assem
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
 	 100011/0x23 	& lw & $R_D = mem$ \\ \hline
 	 101011/0x2b 	& sw & $mem = R_D$ \\ \hline
-	 101010/0x2A 	& brfl & $???$ \\ \hline
+	 101010/0x2A 	& brfl & $TBD$ \\ \hline
 	 001000/0x08 & addi & $R_D = R_S1 + Sext(imm)$ \\ \hline
 	 001010/0x10 & subi & $R_D = R_S1 - Sext(imm)$ \\ \hline
-	 001101/0x12 & andi & $R_D = R_S1 ?? Sext(imm)$ \\ \hline
-	 001101/0x13 & ori & $R_D = R_S1 ?? Sext(imm)$ \\ \hline
-	 000100/0x04 & beqz & $PC = PC + 4 +(R_S1 = 0 ? Sext(imm): 0)$ \\ \hline
-	 000101/0x05 & bnez & $??$ \\ \hline
+	 001101/0x12 & andi & $R_D = R_S1 \land Sext(imm)$ \\ \hline
+	 001101/0x13 & ori & $R_D = R_S1 \lor Sext(imm)$ \\ \hline
+	 000100/0x04 & beqz & $PC = PC + 4 +(R_S1 = 0~?~SExt(imm): 0)$ \\ \hline
+	 000101/0x05 & bnez & $Fixme$ \\ \hline
 	 000111/0x16 & jr & $PC = R_S1$ \\ \hline
       \end{tabular}
     \end{center}
@@ -268,12 +285,12 @@ This instructions realize registers operations, most operations are arithmetic. 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
 	 100000/0x20 	& add & $R_D = R_S1 + R_S2$ \\ \hline
 	 100010/0x22 	& sub & $R_D = R_S1 - R_S2$ \\ \hline
-	 100100/0x24 	& and & $R_D = R_S1 and R_S2$ \\ \hline
-	 100101/0x25 & or & $R_D = R_S1 or R_S2$ \\ \hline
-	 011000/0x18 & mult & $R_D = R_S1 x R_S2$ \\ \hline
-	 011010/0x1A & div & $R_D = R_S1 / R_S2$ \\ \hline
-	 011100/0x1C & cmp & $R_D = R_S1 cmp R_S2$ \\ \hline
-	 011101/0x1D & not & $R_D = R_S1 not R_S2$ \\ \hline
+	 100100/0x24 	& and & $R_D = R_S1 \land R_S2$ \\ \hline
+	 100101/0x25 & or & $R_D = R_S1 \lor R_S2$ \\ \hline
+	 011000/0x18 & mult & $R_D = R_S1 ~.~ R_S2$ \\ \hline
+	 011010/0x1A & div & $R_D = R_S1 ~/~ R_S2$ \\ \hline
+	 011100/0x1C & cmp & $R_D = R_S1 ~cmp~ R_S2$ \\ \hline
+	 011101/0x1D & not & $R_D = \lnot R_S2$ \\ \hline
 
       \end{tabular}
     \end{center}
@@ -286,13 +303,16 @@ Instructions related with instruction memory jump. The instructions are JPC (J),
   \FloatBarrier
   \begin{table}[H]
     \begin{center}
-      \begin{tabular}[pos]{| c | l | l |} \hline 	
+      \begin{tabular}[pos]{| c | l | m{9cm} |} \hline 	
       \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OPCODE}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mneumonic}} & 
-      \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
-	 000010/0x02 	& jpc(j) & $PC = PC + 4$ \\ \hline
-	 111110/0x3e 	& call(trap) & $trap = 1;   EPC = PC;   PC = SISR; ESR = SR;   ECA = masked CA;   SR = 0; EDATA = Sext(imm);clear CA but catch new interrupt events$ \\ \hline
-	 111111/0x3f 	& ret(rfe) & $SR = ESR;   PC = EPC$ \\ \hline
+      \multicolumn{1}{m{9cm}|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
+	 000010/0x02 	& jpc(j) & PC = PC + 4 \\ \hline
+	 111110/0x3e 	& call(trap) & 
+   trap = 1; \newline EPC = PC; \newline PC = SISR;
+   \newline ESR = SR; \newline ECA = masked CA; \newline SR = 0; 
+   \newline EDATA = SExt(imm); \newline Clear CA but catch new interrupt events \\ \hline
+	 111111/0x3f 	& ret(rfe) & SR = ESR; \newline PC = EPC \\ \hline
 
       \end{tabular}
     \end{center}
@@ -411,7 +431,7 @@ instruction time.
   \subsubsection{Block Diagram}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{pictures/blocks/id_block.eps}
+    \includegraphics[width=.8\linewidth]{pictures/blocks/id_block.eps}
   \end{figure} 
   
   \subsubsection{Pin/Port Definitions}
@@ -471,7 +491,7 @@ instruction time.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{pictures/datapath/id_datapath.eps}
+    \includegraphics[width=0.45\linewidth]{pictures/datapath/id_datapath.eps}
   \end{figure} 
   
   
@@ -534,9 +554,6 @@ instruction time.
     \end{center} 
      
 \subsubsection{Internal Datapath} 
-  The internal data path is composed by the following components.
-
-  \subsubsection{Internal Datapath} 
   The internal data path is composed by the following components.
 
   \begin{figure}[H]
@@ -795,6 +812,7 @@ instruction time.
       \end{longtable}
     \end{center}   
 
+\newpage
   \subsection{Memory and Device Interface}
 The memory and device interface is responsible for memory mapping to the processor. Depending on the address accessed a specific memory will be accessed by the memory device interface. If it is a read operation in the next clock cycle the read data will be directed to the DLX input read data port.
 
@@ -805,13 +823,14 @@ The memory and device interface is responsible for memory mapping to the process
 
 The memory map shown was created with separate address to show that devices have no relation between them and to show that the memory used in this project will be a small fraction for the 4GBytes possible.
 
+\newpage
   \subsection{SRAM Controller}
   The SRAM will store the instructions, as the SRAM has only 16 bits of word and an instruction has 32 bits the read and write operation must be done in a faster clock domain to avoid stopping the microprocessor.  
   The SRAM has instruction code this way this memory is not written in normal operation. The SRAM will be written by the processor just during the bootloader code is running and during this operation no read will be done. Not having read and write simultaneously make easier the control not needing to deal with write and read operations at the same time.
     \subsubsection{Block Diagram}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{pictures/blocks/sram_block.eps}
+    \includegraphics[width=.8\linewidth]{pictures/blocks/sram_block.eps}
   \end{figure}  
 
   \subsubsection{Pin/Port Definitions}
@@ -846,16 +865,17 @@ The memory map shown was created with separate address to show that devices have
         address      & 24   & input  & Memory address from the DLX \\ \hline
         rd\_en        & 1   & input  & Data read enable  \\ \hline
         rd\_data  & 32 & output  & Read data from SRAM to the DLX \\ \hline
-        sram\_rd\_en          & 1 & output  & ??? \\ \hline
-        sram\_rd\_data        & 16   & output & ???  \\ \hline
+        sram\_rd\_en          & 1 & output  & TBD \\ \hline
+        sram\_rd\_data        & 16   & output & TBD  \\ \hline
         sram\_addr           & 10  & output & Memory address that goes to the SRAM  \\ \hline
-        sram\_wr\_en    & 1  & output  & ???  \\ \hline
-        sram\_wr\_data    & 16  & output  & ???  \\ \hline
+        sram\_wr\_en    & 1  & output  & TBD  \\ \hline
+        sram\_wr\_data    & 16  & output  & TBD  \\ \hline
       \end{longtable}
     \end{center} 
      
 As the SRAM has half word the controller works with a clock twice faster enabling read two address, concatenating and sending to the DLX in time.
 
+\newpage
   \subsection{SDRAM Controller}
   The SDRAM controller will be very simple and optimized to read or write one word that will be requested by the processor. There will be no burst, just one word write or read operation.
     \subsubsection{Block Diagram}
@@ -901,19 +921,18 @@ As the SRAM has half word the controller works with a clock twice faster enablin
         sdram\_cas\_n           & 1  & output & SDRAM CAS  \\ \hline
         sdram\_cs\_n    & 1  & output  & SDRAM chip select  \\ \hline
         sdram\_dq    & 32  & output  & SDRAM read data, 2 bus of 16 bits, one for each memory  \\ \hline
-        sdram\_ldqm    & 1  & output  & ???  \\ \hline
-        sdram\_udqm    & 1  & output  & ???  \\ \hline
+        sdram\_ldqm    & 1  & output  & TBD  \\ \hline
+        sdram\_udqm    & 1  & output  & TBD  \\ \hline
         sdram\_ras\_n    & 1  & output  & SRAM RAS  \\ \hline
         sdram\_we\_n    & 1  & output  & SDRAM write enable  \\ \hline
       \end{longtable}
     \end{center} 
 
-  \subsection{Forwarding Unit}
-  TBD in further releases.
+% \newpage
+%   \subsection{Forwarding Unit}
+%   TBD in further releases.
 
-  \subsection{Branch Prediction Buffer}
-  TBD in further releases.
-  
+\newpage  
   \subsection{Control Micro-instructions Description}
      \subsubsection{Block Diagram}
   \begin{figure}[H]
@@ -946,25 +965,27 @@ As the SRAM has half word the controller works with a clock twice faster enablin
         \hline
         \endlastfoot
         
-        instruction\_decoded               & 1   & input  & ???    \\ \hline
-        alu\_src\_out\_n               & 1   & output  & ???    \\ \hline
-        alu\_opcode\_out           & 1  & output  & ??? \\ \hline
-        mem\_data\_wr\_en\_out           & 1  & output  & ??? \\ \hline
-        write\_back\_mux\_sel\_out      & 1   & output  & ??? \\ \hline
-        w\_reg\_wr\_en\_out        & 1   & output  & ???  \\ \hline
-        w\_reg\_addr\_out  & 1 & output  & ??? \\ \hline
-        branch\_inst\_out          & 12 & output  & ??? \\ \hline
-        jmp\_inst\_out        & 1   & output & ???  \\ \hline
+        instruction\_decoded               & 1   & input  & TBD    \\ \hline
+        alu\_src\_out\_n               & 1   & output  & TBD    \\ \hline
+        alu\_opcode\_out           & 1  & output  & TBD \\ \hline
+        mem\_data\_wr\_en\_out           & 1  & output  & TBD \\ \hline
+        write\_back\_mux\_sel\_out      & 1   & output  & TBD \\ \hline
+        w\_reg\_wr\_en\_out        & 1   & output  & TBD  \\ \hline
+        w\_reg\_addr\_out  & 1 & output  & TBD \\ \hline
+        branch\_inst\_out          & 12 & output  & TBD \\ \hline
+        jmp\_inst\_out        & 1   & output & TBD  \\ \hline
         
       \end{longtable}
     \end{center} 
   
+  \newpage
   \subsection{Bootloader}
   The bootloader is the ROM memory has the code responsible to initialize the processor and write the code that will be executed in the correct address and consequently each memory device.
 The ROM must have the DLX reset PC register address. When the system is reseted the processor will read instructions from the ROM address. The code inside the ROM will copy the instruction and data code from a static memory to the instruction memory SRAM and the data memory SDRAM.
+
   \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{pictures/bootloader.eps}
+    \includegraphics[width=.7\linewidth]{pictures/bootloader.eps}
   \end{figure}  
   Usually data in code is read-only data and it is common in compiled C code. Probably there will be only instruction code to be loaded during bootloader operation.
   

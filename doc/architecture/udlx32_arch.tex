@@ -459,30 +459,23 @@ instruction time.
         \hline
         \endlastfoot
 
-      	clock 		          & 1 	& input 	& CPU core clock  	\\ \hline
-      	reset 		          & 1	  & input		& CPU core reset  	\\ \hline
-      	instruction\_reg    & 32	& input 	& CPU core instruction \\ \hline
-      	new\_pc 	          & 20	& input 	& Updated value of PC \\ \hline
-      	w\_en 	            & 1	  & input 	& GPR bank write enable signal \\ \hline
-      	w\_reg\_addr 	      & 4	  & input 	& GPR bank destiny address  \\ \hline
-      	reg\_data 	        & 32	& input 	& GPR bank write data  \\ \hline
-      	fwd\_mem\_data 	    & 32	& input	  & Forwarding data from DRAM output \\ \hline
-      	fwd\_ex\_data 	    & 32	& input 	& Forwarding data from ALU output  \\ \hline
-      	bpb\_branch\_taken  & 1   & input   & Branch prediction buffer result \\ \hline
-        select\_rd 	        & TBD & output 	& TBD  \\ \hline
-        reg\_file\_w\_en    & 1   & output  & GPR bank write enable \\ \hline
-        write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline
-        data\_mem\_w\_en    & 1  & output  & SDRAM write enable  \\ \hline
-        alu\_opcode         & 3  & output  & ALU opperation code  \\ \hline
-        select\_mux\_alu\_a & TBD& output  & ALU input A data select  \\ \hline
-        select\_mux\_alu\_b & TBD& output  & ALU input B data select \\ \hline
-        instruction\_reg    & 32 & output  & CPU core instruction  \\ \hline
-        constant            & 32 & output  & 32-bit Sign-extended constant  \\ \hline
-        data\_alu\_a        & 32 & output  & ALU input A data  \\ \hline
-        data\_alu\_b        & 32 & output  & ALU input B data  \\ \hline
-        new\_pc             & 20 & output  & Updated value of PC  \\ \hline
-        bpb\_branch\_taken  & 1   & output   & Branch prediction buffer result \\
+      	clock\_in 		          & 1 	& input 	& CPU core clock  	\\ \hline
+      	reset\_in 		          & 1	  & input		& CPU core reset  	\\ \hline
+      	instruction\_reg\_in    & 32	& input 	& CPU core instruction \\ \hline
+      	new\_pc\_in 	          & 20	& input 	& Updated value of PC \\ \hline
+      	alu\_src\_out 	            & 1	  & output 	& Alu mux source selector \\ \hline
+      	alu\_opcode\_out 	      & 3	  & output 	& Alu opcode  \\ \hline
+      	mem\_data\_wr\_en\_out 	        & 1	& output 	& Data memory write enable  \\ \hline
+      	write\_back\_mux\_sel\_out 	    & 1	& output	  & Write back mux selector \\ \hline
+      	w\_reg\_wr\_en\_out 	    & 1	& output 	& GPR bank write enable signal  \\ \hline
+      	w\_reg\_addr\_out  & TBD   & output   & GPR bank destiny address \\ \hline
+        constant\_out 	        & 32 & output 	& 32-bit Sign-extended constant  \\ \hline
+        data\_alu\_a\_out    & 32   & output  & ALU input A data \\ \hline
+        data\_alu\_b\_out & 32 & output & ALU input B data \\ \hline
+        new\_pc\_out    & 20  & output  & Updated value of PC delayed  \\ \hline
+        branch\_inst\_out         & 1  & output  & Conditional branch instruction  \\ \hline
 
+        jmp\_inst\_out & 1 & output  & Incoditional branch instruction  \\ \hline
       \end{longtable}
     \end{center}
     
@@ -553,12 +546,12 @@ instruction time.
       \end{longtable}
     \end{center} 
      
-\subsubsection{Internal Datapath} 
+  \subsubsection{Internal Datapath} 
   The internal data path is composed by the following components.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.7\linewidth]{pictures/datapath/ex_datapath.eps}
+    \includegraphics[width=.8\linewidth]{pictures/datapath/ex_datapath.eps}
   \end{figure}  
 
   \newpage
@@ -594,27 +587,28 @@ instruction time.
         \hline
         \endlastfoot
 
-        clock               & 1   & input  & CPU core clock    \\ \hline
-        reset               & 1   & input  & CPU core reset    \\ \hline
-        sdram\_dara\_ready  & 1   & input  & SDRAM data ready control \\ \hline        
-        sdram\_w\_en        & 1   & input  & SDRAM write enable \\ \hline        
-        sdram\_addr         & 13  & input  & SDRAM read/write address \\ \hline
-        sdram\_data\_io     & 32  & input  & SDRAM I/O data \\ \hline
-        alu\_data           & 32  & input  & ALU data output \\ \hline  
-        select\_rd          & TBD & input  & Select data to be writen in GPR bank \\ \hline                     
-        reg\_file\_w\_en      & 4   & input  & GPR bank write enable signal \\ \hline
-        write\_back\_mux\_sel  & TBD & input  & Write back mux select  \\ \hline
+        clock\_in               & 1   & input  & CPU core clock    \\ \hline
+        reset\_in               & 1   & input  & CPU core reset    \\ \hline
+        write\_back\_mux\_sel\_in  & 1   & input  & Write back mux select \\ \hline        
+        w\_reg\_wr\_en\_in        & 1   & input  & GPR bank write enable signal  \\ \hline        
+        exe\_mem\_w\_reg\_addr         & TBD  & input  & GPR bank destiny address \\ \hline
+        alu\_data\_in     & 32  & input  & ALU data output \\ \hline
+        mem\_data\_addr   & 13 & input & Memory address \\ \hline
+        alu\_data\_out           & 32  & output  & ALU data output \\ \hline  
+        write\_back\_mux\_sel\_out          & TBD & output  & Write back mux select \\ \hline                     
+        mem\_data\_reg\_out      & 32   & output  & Memory output data \\ \hline
+        mem\_wb\_w\_reg\_addr       & TBD & output & GPR bank destiny address \\ \hline
 
-        mem\_data           & 32  & output & Memory output data  \\ \hline
-        sdram\_addr         & 13  & output & SDRAM read/write address  \\ \hline
-        sdram\_w\_en        & 1   & output & SDRAM write enable  \\ \hline
-        select\_rd          & TBD & output & Select data to be writen in GPR bank \\ \hline                     
-        reg\_file\_w\_en      & 4   & output  & GPR bank write enable signal \\ \hline
-        write\_back\_mux\_sel  & TBD & output  & Write back mux select  \\ \hline
-
-        alu\_data           & 32  & output & ALU data output \\ \hline 
       \end{longtable}
     \end{center}  
+
+  \subsubsection{Internal Datapath} 
+  The internal data path is composed by the following components.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{pictures/datapath/mem_datapath.eps}
+  \end{figure}    
   
   \newpage
   \subsection{Write Back}

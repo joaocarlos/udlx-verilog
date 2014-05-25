@@ -393,19 +393,17 @@ Instructions related with instruction memory jump. The instructions are JPC (J),
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
-	 clock 		          & 1 	& input 	& CPU core clock  	\\ \hline
-	 reset 		          & 1	  & input		& CPU core reset  	\\ \hline
-	 sram\_data\_io     & 16	& in/out 	& SRAM data \\ \hline
-	 branch\_pc 	      & 20	& input 	& Branch address PC relative \\ \hline
-	 branch\_reg 	      & 20	& input 	& Branch address loaded from registers \\ \hline
-   select\_new\_pc    & 1   & input   & Signal used for branch not taken \\ \hline
-   bpb\_branch\_taken & 1   & input   & Branch prediction buffer result \\ \hline
-   alu\_branch\_taken & 1   & input   & Branch result from execution \\ \hline
-	 new\_pc 		        & 20	& output 	& Updated value of PC \\ \hline
-	 instruction 	      & 32	& output 	& CPU core instruction  \\ \hline
-	 sram\_addr 	      & 20	& output	& SRAM address \\ \hline
-	 sram\_we 	        & 1	  & output 	& SRAM write enable  \\ \hline
-   bpb\_branch\_taken & 1   & output  & Branch prediction buffer result \\ \hline
+	 clock\_in 		          & 1 	& input 	& CPU core clock  	\\ \hline
+	 reset\_in 		          & 1	  & input		& CPU core reset  	\\ \hline
+	 inst\_mem\_data\_in     & ???	& input 	& SRAM data \\ \hline
+	 %branch\_pc 	      & 20	& input 	& Branch address PC relative \\ \hline
+	 %branch\_reg 	      & 20	& input 	& Branch address loaded from registers \\ \hline
+     select\_new\_pc\_in    & 1   & input   & Signal used for branch not taken \\ \hline
+     new\_pc\_in    & 20   & input   & New value of PC \\ \hline
+   
+	 new\_pc\_out 		        & 20	& output 	& Updated value of PC \\ \hline
+	 instruction\_reg\_out 	      & 32	& output 	& CPU core instruction  \\ \hline
+	 inst\_mem\_addr\_out 	      & 20	& output	& SRAM address \\ \hline
       \end{tabular}
     \end{center}
   \end{table} 
@@ -521,27 +519,31 @@ instruction time.
         \hline
         \endlastfoot
 
-        clock               & 1   & input   & CPU core clock    \\ \hline
-        reset               & 1   & input   & CPU core reset    \\ \hline
-        alu\_opcode         & 3  & input  & ALU opperation code  \\ \hline
-        data\_alu\_a        & 32 & input  & ALU input A data  \\ \hline
-        data\_alu\_b        & 32 & input  & ALU input B data  \\ \hline
-        alu\_a\_mux\_sel & TBD& input  & ALU input A data select  \\ \hline
-        alu\_b\_mux\_sel & TBD& input  & ALU input B data select \\ \hline
-        instruction\_reg    & 32 & input  & CPU core instruction  \\ \hline        
-        constant            & 32 & input  & 32-bit Sign-extended constant  \\ \hline
-        write\_back\_mux\_sel & TBD & input & Write back mux select \\ \hline  
-        reg\_file\_w\_en    & 1   & input  & GPR bank write enable \\ \hline 
-        select\_rd          & TBD & input  & TBD  \\ \hline
-        bpb\_branch\_taken  & 1   & input   & Branch prediction buffer result \\ \hline
-        new\_pc             & 20 & input  & Updated value of PC  \\ \hline    
-        data\_alu\_a        & 32 & output  & ALU input A data  \\ \hline         
-        alu\_data           & 32  & output  & ALU data output \\ \hline
-        instruction\_reg    & 32 & output  & CPU core instruction  \\ \hline  
-        write\_back\_mux\_sel & TBD & output & Write back mux select \\ \hline  
-        reg\_file\_w\_en    & 1   & output  & GPR bank write enable \\ \hline 
-        select\_rd          & TBD & output  & TBD  \\ \hline 
-        branch\_result      & 1   & output  & Branch result after flag check \\
+        clock\_in               & 1   & input   & CPU core clock    \\ \hline
+        reset\_in               & 1   & input   & CPU core reset    \\ \hline
+        alu\_src\_in            & ?? & input & ??? \\ \hline
+        alu\_opcode\_in         & 3  & input  & ALU opperation code  \\ \hline        
+        data\_alu\_a\_in        & 32 & input  & ALU input A data  \\ \hline
+        data\_alu\_b\_in        & 32 & input  & ALU input B data  \\ \hline
+        constant\_in            & 32 & input  & 32-bit Sign-extended constant  \\ \hline
+        write\_back\_mux\_sel\_in & TBD & input & Write back mux select \\ \hline  
+        w\_reg\_wr\_en\_in    & 1   & input  & GPR bank write enable \\ \hline 
+        new\_pc\_in             & 20 & input  & Updated value of PC  \\ \hline 
+        mem\_data\_wr\_en\_in & ?? & input & ??? \\ \hline
+        w\_reg\_addr\_in & ?? & input & GPR bank destiny address \\ \hline
+        branch\_inst\_in & ?? & input & ??? \\ \hline
+		jmp\_inst\_in & ?? & input & ??? \\ \hline
+		exe\_mem\_data\_in & ?? & input & ??? \\ \hline
+		mem\_wb\_data\_in  & ?? & input & ??? \\ \hline 		
+		mem\_data\_wr\_en\_out & 1 & output & ??? \\ \hline
+        alu\_b\_data\_in\_out        & 32 & output  & ALU input B data  \\ \hline         
+        alu\_data\_out           & 32  & output  & ALU data output \\ \hline
+        write\_back\_mux\_sel\_out & TBD & output & Write back mux select \\ \hline  
+        w\_reg\_wr\_en\_out    & 1   & output  & GPR bank write enable \\ \hline 
+        w\_reg\_addr\_out & 4 & output & GPR bank destiny address \\ \hline
+        branch\_inst\_out      & 1   & output  & Branch result after flag check \\ \hline
+        alu\_zero\_out & 1 & output & ??? \\ \hline
+        jmp\_inst\_out & 1 & output & ???\\ \hline
 
       \end{longtable}
     \end{center} 
@@ -593,10 +595,8 @@ instruction time.
         w\_reg\_wr\_en\_in        & 1   & input  & GPR bank write enable signal  \\ \hline        
         exe\_mem\_w\_reg\_addr         & TBD  & input  & GPR bank destiny address \\ \hline
         alu\_data\_in     & 32  & input  & ALU data output \\ \hline
-        mem\_data\_addr   & 13 & input & Memory address \\ \hline
         alu\_data\_out           & 32  & output  & ALU data output \\ \hline  
         write\_back\_mux\_sel\_out          & TBD & output  & Write back mux select \\ \hline                     
-        mem\_data\_reg\_out      & 32   & output  & Memory output data \\ \hline
         mem\_wb\_w\_reg\_addr       & TBD & output & GPR bank destiny address \\ \hline
 
       \end{longtable}
@@ -643,17 +643,16 @@ instruction time.
         \hline
         \endlastfoot
 
-        clock               & 1   & input  & CPU core clock    \\ \hline
-        reset               & 1   & input  & CPU core reset    \\ \hline
-        mem\_data           & 32  & input  & SDRAM data output \\ \hline
-        alu\_data           & 32  & input  & ALU data output \\ \hline
-        w\_file\_w\_en      & 4   & input  & GPR bank write enable signal \\ \hline
-        w\_reg\_addr        & 1   & input  & GPR bank destiny address  \\ \hline
+        clock\_in               & 1   & input  & CPU core clock    \\ \hline
+        reset\_in               & 1   & input  & CPU core reset    \\ \hline
+        mem\_data\_in           & 32  & input  & SDRAM data output \\ \hline
+        alu\_data\_in           & 32  & input  & ALU data output \\ \hline
+        w\_reg\_en\_in      & 4   & input  & GPR bank write enable signal \\ \hline
+        w\_reg\_addr\_in        & 1   & input  & GPR bank destiny address  \\ \hline
         write\_back\_mux\_sel  & TBD & input  & Write back mux select  \\ \hline
-        select\_rd          & TBD & input  & Select data to be writen in GPR bank \\ \hline
-        w\_reg\_addr        & 4   & output & GPR bank destiny address  \\ \hline
-        reg\_data           & 32  & output & GPR bank write data  \\ \hline
-        reg\_file\_w\_en    & 1  & output  & GPR bank write enable signal  \\ \hline
+        w\_reg\_addr\_out        & 4   & output & GPR bank destiny address  \\ \hline
+        reg\_data\_out           & 32  & output & GPR bank write data  \\ \hline
+        w\_reg\_en\_out    & 1  & output  & GPR bank write enable signal  \\ \hline
       \end{longtable}
     \end{center}  
 

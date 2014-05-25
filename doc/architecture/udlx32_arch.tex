@@ -395,7 +395,7 @@ Instructions related with instruction memory jump. The instructions are JPC (J),
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
 	 clock\_in 		          & 1 	& input 	& CPU core clock  	\\ \hline
 	 reset\_in 		          & 1	  & input		& CPU core reset  	\\ \hline
-	 inst\_mem\_data\_in     & ???	& input 	& SRAM data \\ \hline
+	 inst\_mem\_data\_in     & TBD	& input 	& SRAM data \\ \hline
 	 %branch\_pc 	      & 20	& input 	& Branch address PC relative \\ \hline
 	 %branch\_reg 	      & 20	& input 	& Branch address loaded from registers \\ \hline
      select\_new\_pc\_in    & 1   & input   & Signal used for branch not taken \\ \hline
@@ -521,7 +521,7 @@ instruction time.
 
         clock\_in               & 1   & input   & CPU core clock    \\ \hline
         reset\_in               & 1   & input   & CPU core reset    \\ \hline
-        alu\_src\_in            & ?? & input & ??? \\ \hline
+        alu\_src\_in            & TBD & input & TBD \\ \hline
         alu\_opcode\_in         & 3  & input  & ALU opperation code  \\ \hline        
         data\_alu\_a\_in        & 32 & input  & ALU input A data  \\ \hline
         data\_alu\_b\_in        & 32 & input  & ALU input B data  \\ \hline
@@ -529,21 +529,21 @@ instruction time.
         write\_back\_mux\_sel\_in & TBD & input & Write back mux select \\ \hline  
         w\_reg\_wr\_en\_in    & 1   & input  & GPR bank write enable \\ \hline 
         new\_pc\_in             & 20 & input  & Updated value of PC  \\ \hline 
-        mem\_data\_wr\_en\_in & ?? & input & ??? \\ \hline
-        w\_reg\_addr\_in & ?? & input & GPR bank destiny address \\ \hline
-        branch\_inst\_in & ?? & input & ??? \\ \hline
-		jmp\_inst\_in & ?? & input & ??? \\ \hline
-		exe\_mem\_data\_in & ?? & input & ??? \\ \hline
-		mem\_wb\_data\_in  & ?? & input & ??? \\ \hline 		
-		mem\_data\_wr\_en\_out & 1 & output & ??? \\ \hline
+        mem\_data\_wr\_en\_in & TBD & input & TBD \\ \hline
+        w\_reg\_addr\_in & TBD & input & GPR bank destiny address \\ \hline
+        branch\_inst\_in & TBD & input & TBD \\ \hline
+		jmp\_inst\_in & TBD & input & TBD \\ \hline
+		exe\_mem\_data\_in & TBD & input & TBD \\ \hline
+		mem\_wb\_data\_in  & TBD & input & TBD \\ \hline 		
+		mem\_data\_wr\_en\_out & 1 & output & TBD \\ \hline
         alu\_b\_data\_in\_out        & 32 & output  & ALU input B data  \\ \hline         
         alu\_data\_out           & 32  & output  & ALU data output \\ \hline
         write\_back\_mux\_sel\_out & TBD & output & Write back mux select \\ \hline  
         w\_reg\_wr\_en\_out    & 1   & output  & GPR bank write enable \\ \hline 
         w\_reg\_addr\_out & 4 & output & GPR bank destiny address \\ \hline
         branch\_inst\_out      & 1   & output  & Branch result after flag check \\ \hline
-        alu\_zero\_out & 1 & output & ??? \\ \hline
-        jmp\_inst\_out & 1 & output & ???\\ \hline
+        alu\_zero\_out & 1 & output & TBD \\ \hline
+        jmp\_inst\_out & 1 & output & TBD\\ \hline
 
       \end{longtable}
     \end{center} 
@@ -607,7 +607,7 @@ instruction time.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{pictures/datapath/mem_datapath.eps}
+    \includegraphics[width=\linewidth]{pictures/datapath/mem_datapath.eps}
   \end{figure}    
   
   \newpage

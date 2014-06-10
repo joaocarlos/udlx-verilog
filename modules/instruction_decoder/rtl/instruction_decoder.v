@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : instruction_decoder.v
 //  Created On    : 2014-06-06 21:35:39
-//  Last Modified : 2014-06-06 22:35:43
+//  Last Modified : 2014-06-08 08:38:50
 //  Revision      : 
 //  Author        : Linton Thiago Costa Esteves
 //  Company       : Universidade Federal da Bahia - UFBA
@@ -39,6 +39,22 @@ module instruction_decoder
 //*******************************************************
 //General Purpose Signals
 //*******************************************************
+always @(*) begin
+   case (instruction_in[31:26])
+      R_INST:begin
+         
+      end
+      I_INST:begin
+         
+      end
+      J_INST: begin
+         
+      end
+      default : begin
+         
+      end
+   endcase
+end
 
 //*******************************************************
 //Outputs

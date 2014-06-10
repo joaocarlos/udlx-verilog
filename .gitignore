@@ -92,3 +92,4 @@ sympy-plots-for-*.tex/
 *.backup
 .directory
 *converted*
+modules/instruction_decoder/rtl/instruction_decoder.v

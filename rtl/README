@@ -1,0 +1,16 @@
+----------------------------------------------------------------------------
+Directory Hierarchy :
+----------------------------------------------------------------------------
+  - decode    : Instruction decode stage modules
+  - execute   : Execute stage modules
+  - fetch     : Instruction fetch stage modules
+  - memory    : Memory stage modules
+  - pipeline  : Pipeline related components and control unit
+  -- registers : Pipeline registers.
+  -- hazard    : Hazzard related modules
+  - writeback : Write back stage modules
+----------------------------------------------------------------------------
+
+
+
+

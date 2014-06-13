@@ -69,7 +69,7 @@ module top_fetch
     begin
         if(clk_en_in) // May be linked to a general clock enable signal
         begin
-            pc_adder_data <= inst_mem_addr_out + 20'd2;
+            pc_adder_data <= inst_mem_addr_out + 20'd4;
         end
     end
 

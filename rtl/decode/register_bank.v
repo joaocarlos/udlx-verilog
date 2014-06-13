@@ -76,7 +76,9 @@ module register_bank
    // Output registers
    // ------------------------------------------------------
 
-   assign rd_reg2_data_out = reg_file[rd_reg2_addr];
-   assign rd_reg1_data_out = reg_file[rd_reg1_addr];
+   assign rd_reg2_data_out = (mem_wb_reg_en&(mem_wb_reg_addr==rd_reg2_addr))
+                             reg_file[rd_reg2_addr];
+   assign rd_reg1_data_out = (mem_wb_reg_en&(mem_wb_reg_addr==rd_reg1_addr))
+                             reg_file[rd_reg1_addr];
 
 endmodule

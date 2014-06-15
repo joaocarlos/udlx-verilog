@@ -25,10 +25,9 @@ module forward_unit
    input [DATA_WIDTH-1:0] ex_mem_data,
    input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr,
    input ex_mem_reg_wr_ena,
-   input [DATA_WIDTH-1:0] mem_wb_data,
-   input [REG_ADDR_WIDTH-1:0] mem_wb_reg_addr,
-   input mem_wb_reg_wr_ena,
-   input write_back_mux_sel,
+   input [DATA_WIDTH-1:0] wb_reg_data,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_addr,
+   input wb_reg_wr_ena,
    output reg [DATA_WIDTH-1:0] alu_a_mux_sel,
    output reg [DATA_WIDTH-1:0] alu_b_mux_sel
 );
@@ -38,8 +37,8 @@ always@(*)begin
    if((addr_alu_a==ex_mem_data)&ex_mem_reg_wr_ena)begin
       alu_a_mux_sel <= ex_mem_data;
    end
-   else if((addr_alu_a==mem_wb_reg_addr)&mem_wb_reg_wr_ena)begin
-      alu_a_mux_sel <= mem_wb_data;
+   else if((addr_alu_a==wb_reg_addr)&wb_reg_wr_ena)begin
+      alu_a_mux_sel <= wb_reg_data;
    end
    else begin
       alu_a_mux_sel <= data_alu_a;
@@ -52,8 +51,8 @@ always@(*)begin
    if((addr_alu_b==ex_mem_data)&ex_mem_reg_wr_ena)begin
       alu_b_mux_sel <= ex_mem_data;
    end
-   else if((addr_alu_b==mem_wb_reg_addr)&mem_wb_reg_wr_ena)begin
-      alu_b_mux_sel <= mem_wb_data;
+   else if((addr_alu_b==wb_reg_addr)&wb_reg_wr_ena)begin
+      alu_b_mux_sel <= wb_reg_data;
    end
    else begin
       alu_b_mux_sel <= data_alu_b;

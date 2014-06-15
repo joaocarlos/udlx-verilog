@@ -27,3 +27,9 @@
 ../../rtl/top/dlx_processor.v
 
 
+../../rtl/common/sp_ram.v
+../../rtl/common/rom.v
+
+../ver/tosco_tb/tosco_tb.sv
+
+

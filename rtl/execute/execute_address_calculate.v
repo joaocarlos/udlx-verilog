@@ -34,7 +34,7 @@ module execute_address_calculate
    input write_back_mux_sel_in,
    input reg_wr_en_in,
    input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
-   input [PC_WIDTH:0] new_pc_in,
+   input [PC_WIDTH-1:0] new_pc_in,
    input mem_data_rd_en_in,
    input mem_data_wr_en_in,
    input branch_inst_in,
@@ -42,16 +42,22 @@ module execute_address_calculate
    input jmp_use_r_in,
 //   input [DATA_WIDTH-1:0] exe_mem_data_in,
 //   input [DATA_WIDTH-1:0] mem_wb_data_in,
+   input [DATA_WIDTH-1:0] ex_mem_reg_data,
+   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr,
+   input ex_mem_reg_wr_ena,
+   input [DATA_WIDTH-1:0] wb_reg_data,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_addr,
+   input wb_reg_wr_ena,
 
    output mem_data_rd_en_out,
    output mem_data_wr_en_out,
-   output mem_data_out,
+   output [DATA_WIDTH-1:0] mem_data_out,
    output [DATA_WIDTH-1:0] alu_data_out,
    output reg_wr_en_out,
    output [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
    output write_back_mux_sel_out,
    output select_new_pc_out,
-   output new_pc_out
+   output [PC_WIDTH-1:0] new_pc_out
 );
 //*******************************************************
 //Internal
@@ -68,6 +74,7 @@ wire [DATA_WIDTH-1:0] alu_b_mux_sel;
 wire [DATA_WIDTH-1:0] alu_data_in_a;
 wire [DATA_WIDTH-1:0] alu_data_in_b;
 
+wire [DATA_WIDTH-1:0] alu_data;
 
 //BRANCH CONTROL
 //
@@ -105,13 +112,12 @@ forward_unit
    .data_alu_b(data_alu_b_in),
    .addr_alu_a(reg_a_addr_in),
    .addr_alu_b(reg_b_addr_in),
-   .ex_mem_data(ex_mem_data),
+   .ex_mem_data(ex_mem_reg_data),
    .ex_mem_reg_addr(ex_mem_reg_addr),
    .ex_mem_reg_wr_ena(ex_mem_reg_wr_ena),
-   .mem_wb_data(mem_wb_data),
-   .mem_wb_reg_addr(mem_wb_reg_addr),
-   .mem_wb_reg_wr_ena(mem_wb_reg_wr_ena),
-   .write_back_mux_sel(write_back_mux_sel),
+   .wb_reg_data(wb_reg_data),
+   .wb_reg_addr(wb_reg_addr),
+   .wb_reg_wr_ena(wb_reg_wr_ena),
    .alu_a_mux_sel(alu_data_in_a),
    .alu_b_mux_sel(alu_b_mux_sel)
 );

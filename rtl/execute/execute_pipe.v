@@ -14,7 +14,7 @@ module execute_pipe
    input [DATA_WIDTH-1:0] alu_data_in, //w_mem_wr_data_in and w_reg_data
    //register signals
    input reg_wr_en_in,
-   input [DATA_WIDTH-1:0] reg_wr_addr_in,
+   input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
    input write_back_mux_sel_in,
    input select_new_pc_in,
    input [PC_WIDTH-1:0] new_pc_in,
@@ -27,7 +27,7 @@ module execute_pipe
    output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
    output reg write_back_mux_sel_out,
    output reg select_new_pc_out,
-   output reg new_pc_out
+   output reg [PC_WIDTH-1:0] new_pc_out
 );
 
 always@(posedge clk, negedge rst_n)begin

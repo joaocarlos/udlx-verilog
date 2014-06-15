@@ -51,7 +51,7 @@ module inst_decode_pipe
    output reg [PC_WIDTH-1:0] new_pc_out,
    output reg [OPCODE_WIDTH-1:0] opcode_out,
    output reg [FUNCTION_WIDTH-1:0] inst_function_out,
-   output reg [FUNCTION_WIDTH-1:0] inst_function,
+//   output reg [FUNCTION_WIDTH-1:0] inst_function,
    output reg [REG_ADDR_WIDTH-1:0] read_address1_out,
    output reg [REG_ADDR_WIDTH-1:0] read_address2_out,
    output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,

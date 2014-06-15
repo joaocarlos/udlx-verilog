@@ -25,10 +25,11 @@ module instruction_decode
 (
   input clk,
   input rst_n,
-  input [INSTRUCTION_WIDTH-1:0] instruction_reg_in,
+  input [INSTRUCTION_WIDTH-1:0] instruction_in,
   input [PC_WIDTH-1:0] new_pc_in,
   input wb_write_enable,
   input [DATA_WIDTH-1:0] wb_write_data,
+  input [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr,
 //  output alu_src_out,
   output [REG_ADDR_WIDTH-1:0] read_address1_out,
   output [REG_ADDR_WIDTH-1:0] read_address2_out,
@@ -98,7 +99,7 @@ instruction_decoder
    .PC_OFFSET_WIDTH(PC_OFFSET_WIDTH)
 )
 instruction_decoder_u0
-(/*autoport*/
+(
    .instruction_in(instruction_in),
    .opcode(opcode),
    .inst_function(inst_function),
@@ -127,9 +128,9 @@ register_bank_u0
 (
    .clk(clk),
    .rst_n(rst_n),
-   .rd_reg1_addr(read_address_1),
-   .rd_reg2_addr(read_address_2),
-   .write_address(write_address),
+   .rd_reg1_addr(read_address1),
+   .rd_reg2_addr(read_address2),
+   .write_address(wb_reg_wr_addr),
    .write_enable(wb_write_enable),
    .write_data(wb_write_data),
    .rd_reg1_data_out(data_alu_a),

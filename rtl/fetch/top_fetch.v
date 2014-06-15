@@ -30,17 +30,17 @@
 module top_fetch
 #(
     parameter PC_DATA_WIDTH = 20,
-    parameter INST_DATA_WIDTH = 32,
+    parameter INSTRUCTION_WIDTH = 32,
     parameter PC_INITIAL_ADDRESS = 20'h0
 )(
     input clk,                                       // CPU core clock
     input rst_n,                                     // CPU core reset active low
-    input [INST_DATA_WIDTH-1:0] inst_mem_data_in,       // SRAM input data
+    input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,       // SRAM input data
     input select_new_pc_in,                             // Signal used for branch not taken
     input [PC_DATA_WIDTH-1:0] new_pc_in,                // New value of Program Counter
 
     output reg [PC_DATA_WIDTH-1:0] new_pc_out,          // Updated value of the Program Counter
-    output reg [INST_DATA_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
+    output reg [INSTRUCTION_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
     output [PC_DATA_WIDTH-1:0] inst_mem_addr_out  // Instruction SRAM address bus
 );
 
@@ -82,7 +82,7 @@ module top_fetch
     end
 
     // -------------------------------------------------------------
-    // Program Counter register
+    // Program Counter regireg [FUNCTION_WIDTH-1:0] inst_function,ster
     // -------------------------------------------------------------
 ////    always@(posedge clk or negedge rst_n)
 ////    begin

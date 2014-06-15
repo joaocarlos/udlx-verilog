@@ -29,17 +29,17 @@
 // -----------------------------------------------------------------------------
 module register_bank
 #(
-   DATA_WIDTH = 32,
-   ADDRESS_WIDTH = 4
+   parameter DATA_WIDTH = 32,
+   parameter ADDRESS_WIDTH = 5
 )
 (/*autoport*/
    input clk,
    input rst_n,
    input [ADDRESS_WIDTH-1:0] rd_reg1_addr,
    input [ADDRESS_WIDTH-1:0] rd_reg2_addr,
-   input [ADDRESS_WIDTH-1:0] mem_wb_reg_addr,
-   input mem_wb_reg_en,
-   input [DATA_WIDTH-1:0] mem_wb_reg_data,
+   input [ADDRESS_WIDTH-1:0] write_address,
+   input write_enable,
+   input [DATA_WIDTH-1:0] write_data,
    output [DATA_WIDTH-1:0] rd_reg1_data_out,
    output [DATA_WIDTH-1:0] rd_reg2_data_out
 );
@@ -63,12 +63,12 @@ module register_bank
    always @(posedge clk or negedge rst_n) begin
       if (!rst_n) begin
          for (i = 0; i < 2**ADDRESS_WIDTH; i = i + 1) begin:reset_memory
-            mem <= {DATA_WIDTH{1'b0}};
+            reg_file[i] <= {DATA_WIDTH{1'b0}};
          end
       end
       else begin
          if (write_enable)
-            mem[mem_wb_reg_addr] <= mem_wb_reg_data;
+            reg_file[write_address] <= write_data;
       end
    end
 
@@ -76,9 +76,9 @@ module register_bank
    // Output registers
    // ------------------------------------------------------
 
-   assign rd_reg2_data_out = (mem_wb_reg_en&(mem_wb_reg_addr==rd_reg2_addr))
-                             reg_file[rd_reg2_addr];
-   assign rd_reg1_data_out = (mem_wb_reg_en&(mem_wb_reg_addr==rd_reg1_addr))
-                             reg_file[rd_reg1_addr];
+   assign rd_reg2_data_out = (write_enable&(write_address==rd_reg2_addr))?
+                             write_data:reg_file[rd_reg2_addr];
+   assign rd_reg1_data_out = (write_enable&(write_address==rd_reg1_addr))?
+                             write_data:reg_file[rd_reg1_addr];
 
 endmodule

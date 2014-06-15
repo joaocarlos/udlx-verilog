@@ -31,21 +31,21 @@ module top_fetch
 #(
     parameter PC_DATA_WIDTH = 20,
     parameter INST_DATA_WIDTH = 32,
-    parameter INST_ADDR_WIDTH = 20,
     parameter PC_INITIAL_ADDRESS = 20'h0
 )(
-    input clk_in,                                       // CPU core clock
-    input clk_en_in,                                    // [+++] CPU clock enable to suspend program counter
-    input rst_n_in,                                     // CPU core reset active low
+    input clk,                                       // CPU core clock
+    input rst_n,                                     // CPU core reset active low
     input [INST_DATA_WIDTH-1:0] inst_mem_data_in,       // SRAM input data
     input select_new_pc_in,                             // Signal used for branch not taken
     input [PC_DATA_WIDTH-1:0] new_pc_in,                // New value of Program Counter
 
     output reg [PC_DATA_WIDTH-1:0] new_pc_out,          // Updated value of the Program Counter
-    output [INST_DATA_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
-    output reg [INST_ADDR_WIDTH-1:0] inst_mem_addr_out  // Instruction SRAM address bus
+    output reg [INST_DATA_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
+    output [PC_DATA_WIDTH-1:0] inst_mem_addr_out  // Instruction SRAM address bus
 );
 
+
+    reg [PC_DATA_WIDTH-1:0] pc;
     reg [PC_DATA_WIDTH-1:0] pc_mux_data;
     reg [PC_DATA_WIDTH-1:0] pc_adder_data;
 
@@ -55,8 +55,8 @@ module top_fetch
     always@(*)
     begin
         case(select_new_pc_in)
-            '1' : mux_pc_data = new_pc_in;
-            '0' : mux_pc_data = pc_adder_data;
+            1 : pc_mux_data = new_pc_in;
+            0 : pc_mux_data = pc_adder_data;
         endcase
     end
 
@@ -65,26 +65,63 @@ module top_fetch
     // [+++] Introduzed a clock enable signal in order to pause PC
     // To-do: Could it be full combinational?
     // -------------------------------------------------------------
-    always@(posedge clk)
+//    always@(posedge clk)
+//    begin
+//        if(clk_en_in) // May be linked to a general clock enable signal
+//        begin
+//            pc_adder_data <= inst_mem_addr_out + 20'd4;
+//        end
+//    end
+    always@(posedge clk, negedge rst_n)
     begin
-        if(clk_en_in) // May be linked to a general clock enable signal
-        begin
-            pc_adder_data <= inst_mem_addr_out + 20'd4;
-        end
+       if(!rst_n)begin
+          pc_adder_data <= PC_INITIAL_ADDRESS + 20'd4;
+       end else begin
+          pc_adder_data <= pc + 20'd4;
+       end
     end
 
     // -------------------------------------------------------------
     // Program Counter register
     // -------------------------------------------------------------
+////    always@(posedge clk or negedge rst_n)
+////    begin
+////        if(rst_n)
+////        begin
+////            inst_mem_addr_out <= PC_INITIAL_ADDRESS;
+////        end else
+////        begin
+////            inst_mem_addr_out <= pc_mux_data;
+////        end
+////    end
+
+assign inst_mem_addr_out = pc;
+
     always@(posedge clk or negedge rst_n)
     begin
         if(rst_n)
         begin
-            inst_mem_addr_out <= PC_INITIAL_ADDRESS;
+            pc <= PC_INITIAL_ADDRESS;
         end else
         begin
-            inst_mem_addr_out <= pc_mux_data;
+            pc <= pc_mux_data;
         end
     end
+
+
+    //the if_id pipe needs only this
+    always@(posedge clk or negedge rst_n)
+    begin
+        if(rst_n)
+        begin
+           new_pc_out <= 0;
+           instruction_reg_out <= 0;
+        end else
+        begin
+	   new_pc_out <= pc;
+           instruction_reg_out <= inst_mem_data_in;
+        end
+    end
+
 
 endmodule

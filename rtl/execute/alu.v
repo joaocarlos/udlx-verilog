@@ -30,17 +30,19 @@
 module alu
 #(
    parameter DATA_WIDTH = 32,
-   parameter OPCODE_WIDTH = 3
+   parameter OPCODE_WIDTH = 6,
+   parameter FUNCTION_WIDTH = 6
 )
 (
    input [DATA_WIDTH-1:0] alu_data_in_a,   // Input data from register file port A
    input [DATA_WIDTH-1:0] alu_data_in_b,   // Input data from register file port A
    input [OPCODE_WIDTH-1:0] alu_opcode,   // Instruction opcode
-   input [OPCODE_WIDTH-1:0] alu_function,   // Instruction function
+   input [FUNCTION_WIDTH-1:0] alu_function,   // Instruction function
 
+   output reg alu_branch_result,
    output [DATA_WIDTH-1:0] alu_data_out    // ALU output result data
 
-   );
+);
 
    reg [DATA_WIDTH:0] alu_result_reg;
 
@@ -56,11 +58,15 @@ assign sub_result = alu_data_in_a - alu_data_in_b;
 assign and_result = alu_data_in_a && alu_data_in_b;
 assign or_result = alu_data_in_a || alu_data_in_b;
 
+assign zero_cmp = alu_data_in_a == 0;
+
+assign alu_data_out = alu_result_reg;
+
 
 always@(*)
 begin
-   alu_result_reg = {DATA_WITH{1'b0}};
-   if(alu_opcode==TYPE_R_OPCODE)begin
+   alu_result_reg = {DATA_WIDTH{1'b0}};
+   if(alu_opcode==R_TYPE_OPCODE)begin
       case (alu_function)
          ADD_FUNCTION :
             alu_result_reg = sum_result;
@@ -79,8 +85,7 @@ begin
          NOT_FUNCTION :
             alu_result_reg = ~alu_data_in_b;
          default :
-            alu_result_reg = {DATA_WITH{1'b0}};
-   
+            alu_result_reg = {DATA_WIDTH{1'b0}};
       endcase
    end
    else begin
@@ -94,8 +99,22 @@ begin
          ORI_OPCODE :
             alu_result_reg = or_result;
          default :
-            alu_result_reg = {DATA_WITH{1'b0}};
+            alu_result_reg = {DATA_WIDTH{1'b0}};
       endcase
    end
  end
+
+
+always@(*) begin
+  case (alu_opcode)
+     BEQZ_OPCODE :
+        alu_branch_result = zero_cmp;
+     BNEZ_OPCODE :
+        alu_branch_result = ~zero_cmp;
+     default :
+        alu_branch_result = {DATA_WIDTH{1'b0}};
+  endcase
+end
+
+
 endmodule

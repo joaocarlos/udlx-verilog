@@ -14,8 +14,8 @@
 
 module signal_extend
                     #(
-                        OUT_DATA_WIDTH = 32,
-                        IN_DATA_WIDTH = 16
+                        parameter OUT_DATA_WIDTH = 32,
+                        parameter IN_DATA_WIDTH = 16
                     )
                     (
                         input [IN_DATA_WIDTH-1:0] signal_in,

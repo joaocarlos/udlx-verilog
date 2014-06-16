@@ -62,6 +62,9 @@ wire [INSTRUCTION_WIDTH-1:0] if_id_instruction;
 //wire [PC_WIDTH-1:0] instr_addr;
 
 
+wire stall;
+wire flush;
+
 //id_exe wires
 wire [REG_ADDR_WIDTH-1:0] id_ex_reg_a_addr;
 wire [REG_ADDR_WIDTH-1:0] id_ex_reg_b_addr;
@@ -97,7 +100,10 @@ wire [REG_ADDR_WIDTH-1:0] ex_mem_reg_wr_addr;
 wire ex_mem_write_back_mux_sel;
 wire ex_mem_select_new_pc;
 wire [PC_WIDTH-1:0] ex_mem_new_pc;
+wire [INSTRUCTION_WIDTH-1:0] ex_mem_instruction;
 
+wire fetch_select_new_pc;
+wire [PC_WIDTH-1:0] fetch_new_pc;
 
 //mem_wb wires
 wire mem_wb_write_back_mux_sel;
@@ -105,6 +111,7 @@ wire [DATA_WIDTH-1:0] mem_wb_mem_data;
 wire [DATA_WIDTH-1:0] mem_wb_alu_data;
 wire mem_wb_reg_wr_en;
 wire [REG_ADDR_WIDTH-1:0] mem_wb_reg_wr_addr;
+wire [INSTRUCTION_WIDTH-1:0] mem_wb_instruction;
 
 
 //wb wires
@@ -125,17 +132,18 @@ instruction_fetch_u0
 (
    .clk(clk),
    .rst_n(rst_n),
+  
+   .stall(stall), 
+   .flush(flush),
+
    .inst_mem_data_in(instruction),
-   .select_new_pc_in(ex_mem_select_new_pc),
-   .new_pc_in(ex_mem_new_pc),
+   .select_new_pc_in(fetch_select_new_pc),
+   .new_pc_in(fetch_new_pc),
    
    .new_pc_out(if_id_new_pc),
    .instruction_reg_out(if_id_instruction),
    .inst_mem_addr_out(instr_addr)
 );
-
-//TODO
-assign instr_rd_en = 1;
 
 
 // INSTRUCTION DECODE
@@ -160,9 +168,12 @@ instruction_decode_u0
    .wb_write_enable(wb_write_enable),
    .wb_write_data(wb_write_data),
    .wb_reg_wr_addr(wb_reg_wr_addr),
+
+   .select_new_pc_in(ex_mem_select_new_pc),
+
 //   .alu_src_out(alu_src),
-   .read_address1_out(id_ex_reg_a_addr),
-   .read_address2_out(id_ex_reg_b_addr),
+   .reg_rd_addr1_out(id_ex_reg_a_addr),
+   .reg_rd_addr2_out(id_ex_reg_b_addr),
    .instruction_out(id_ex_instruction),
    .opcode_out(id_ex_opcode),
    .inst_function_out(id_ex_function),
@@ -180,7 +191,11 @@ instruction_decode_u0
    .pc_offset_out(id_ex_pc_offset),
    .branch_inst_out(id_ex_branch_inst),
    .jump_inst_out(id_ex_jump_inst),
-   .jump_use_r_out(id_ex_jump_use_r)
+   .jump_use_r_out(id_ex_jump_use_r),
+
+   .rd_inst_ena(instr_rd_en),
+   .stall_out(stall),
+   .general_flush(flush)
 );
 
 // EXECUTE
@@ -189,15 +204,19 @@ execute_address_calculate
 #(
    .DATA_WIDTH(DATA_WIDTH),
    .PC_WIDTH(PC_WIDTH),
+   .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
    .OPCODE_WIDTH(OPCODE_WIDTH),
    .FUNCTION_WIDTH(FUNCTION_WIDTH),
    .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
-    .PC_OFFSET_WIDTH(PC_OFFSET_WIDTH)
+   .PC_OFFSET_WIDTH(PC_OFFSET_WIDTH)
 )
 execute_address_calculate_u0
 (
    .clk(clk),
    .rst_n(rst_n),
+
+   .flush(flush),
+
    .alu_opcode_in(id_ex_opcode),
    .alu_function_in(id_ex_function),
    .data_alu_a_in(id_ex_data_alu_a),
@@ -217,6 +236,7 @@ execute_address_calculate_u0
    .branch_inst_in(id_ex_branch_inst),
    .jmp_inst_in(id_ex_jump_inst),
    .jmp_use_r_in(id_ex_jump_use_r),
+   .instruction_in(id_ex_instruction),
 
    .ex_mem_reg_data(ex_mem_reg_data),//input
    .ex_mem_reg_addr(ex_mem_reg_wr_addr),//input
@@ -233,7 +253,11 @@ execute_address_calculate_u0
    .reg_wr_addr_out(ex_mem_reg_wr_addr),
    .write_back_mux_sel_out(ex_mem_write_back_mux_sel),
    .select_new_pc_out(ex_mem_select_new_pc),
-   .new_pc_out(ex_mem_new_pc)
+   .new_pc_out(ex_mem_new_pc),
+   .instruction_out(ex_mem_instruction),
+
+   .fetch_new_pc_out(fetch_new_pc),
+   .fetch_select_new_pc_out(fetch_select_new_pc)
 );
 
 assign data_addr = ex_mem_alu_data;
@@ -248,6 +272,7 @@ assign ex_mem_reg_data = ex_mem_alu_data;
 memory_access
 #(
    .DATA_WIDTH(DATA_WIDTH),
+   .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
    .REG_ADDR_WIDTH(REG_ADDR_WIDTH)
  )
 memory_access_u0
@@ -258,11 +283,13 @@ memory_access_u0
    .alu_data_in(ex_mem_alu_data),
    .reg_wr_en_in(ex_mem_reg_wr_en),
    .reg_wr_addr_in(ex_mem_reg_wr_addr),
+   .instruction_in(ex_mem_instruction),
 
    .write_back_mux_sel_out(mem_wb_write_back_mux_sel),
    .alu_data_out(mem_wb_alu_data),
    .reg_wr_en_out(mem_wb_reg_wr_en),
-   .reg_wr_addr_out(mem_wb_reg_wr_addr)
+   .reg_wr_addr_out(mem_wb_reg_wr_addr),
+   .instruction_out(mem_wb_instruction)
 );
 
 

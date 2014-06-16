@@ -42,8 +42,10 @@ module instruction_decoder
             input [INSTRUCTION_WIDTH-1:0] instruction_in,
             output [OPCODE_WIDTH-1:0] opcode,
             output reg [FUNCTION_WIDTH-1:0] inst_function,
-            output reg [REG_ADDR_WIDTH-1:0] read_address1_out,
-            output reg [REG_ADDR_WIDTH-1:0] read_address2_out,
+            output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr1_out,
+            output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
+            output reg reg_rd_en1_out,
+            output reg reg_rd_en2_out,
             output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
             output reg reg_wr_en_out,
             output reg [IMEDIATE_WIDTH-1:0] immediate_out,
@@ -56,12 +58,10 @@ module instruction_decoder
             output reg jump_inst_out,
             output reg jump_use_r_out
         );
-
-// -----------------------------------------------------------------------------
-// Internal
-// -----------------------------------------------------------------------------
-
-// Local Parameters
+//*******************************************************
+//Internal
+//*******************************************************
+//Local Parameters
 `include "opcodes.v"
 
 
@@ -70,8 +70,10 @@ assign opcode = instruction_in[31:26];
 always @(*) begin
    if(instruction_in=={INSTRUCTION_WIDTH{1'b0}})begin //NOP INSTRUCTION
       inst_function = 0;
-      read_address1_out = 0;
-      read_address2_out = 0;
+      reg_rd_addr1_out = 0;
+      reg_rd_addr2_out = 0;
+      reg_rd_en1_out = 0;
+      reg_rd_en2_out = 0;
       reg_wr_addr_out = 0;
       reg_wr_en_out = 1'b0;
       immediate_out = 0;
@@ -88,8 +90,10 @@ always @(*) begin
       case (opcode)
          R_TYPE_OPCODE: begin
             inst_function = instruction_in[5:0];
-            read_address1_out = instruction_in[25:21];
-            read_address2_out = instruction_in[20:16];
+            reg_rd_addr1_out = instruction_in[25:21];
+            reg_rd_addr2_out = instruction_in[20:16];
+            reg_rd_en1_out = 1;
+            reg_rd_en2_out = 1;
             reg_wr_addr_out = instruction_in[15:11];
             reg_wr_en_out = 1'b1;
             immediate_out = 0;
@@ -103,8 +107,10 @@ always @(*) begin
             jump_use_r_out = 1'b0;
             end
          ADDI_OPCODE,SUBI_OPCODE,ANDI_OPCODE,ORI_OPCODE: begin
-            read_address1_out = instruction_in[25:21];
-            read_address2_out = 0;
+            reg_rd_addr1_out = instruction_in[25:21];
+            reg_rd_addr2_out = 0;
+            reg_rd_en1_out = 1;
+            reg_rd_en2_out = 0;
             reg_wr_addr_out = instruction_in[20:16];
             reg_wr_en_out = 1'b1;
             immediate_out = instruction_in[15:0];
@@ -118,8 +124,10 @@ always @(*) begin
             jump_use_r_out = 1'b0;
          end
          LW_OPCODE: begin
-            read_address1_out = instruction_in[25:21];
-            read_address2_out = 0;
+            reg_rd_addr1_out = instruction_in[25:21];
+            reg_rd_addr2_out = 0;
+            reg_rd_en1_out = 1;
+            reg_rd_en2_out = 0;
             reg_wr_addr_out = instruction_in[20:16];
             reg_wr_en_out = 1'b1;
             immediate_out = instruction_in[15:0];
@@ -133,8 +141,10 @@ always @(*) begin
             jump_use_r_out = 1'b0;
          end
          SW_OPCODE: begin
-            read_address1_out = instruction_in[25:21];
-            read_address2_out = instruction_in[20:16];
+            reg_rd_addr1_out = instruction_in[25:21];
+            reg_rd_addr2_out = instruction_in[20:16];
+            reg_rd_en1_out = 1;
+            reg_rd_en2_out = 1;
             reg_wr_addr_out = 0;
             reg_wr_en_out = 1'b0;
             immediate_out = instruction_in[15:0];
@@ -148,8 +158,10 @@ always @(*) begin
             jump_use_r_out = 1'b0;
          end
          BEQZ_OPCODE,BNEZ_OPCODE,BRFL_OPCODE: begin
-            read_address1_out = instruction_in[25:21];
-            read_address2_out = 0;
+            reg_rd_addr1_out = instruction_in[25:21];
+            reg_rd_addr2_out = 0;
+            reg_rd_en1_out = 1;
+            reg_rd_en2_out = 0;
             reg_wr_addr_out = instruction_in[20:16];
             reg_wr_en_out = 1'b0;
             immediate_out = instruction_in[15:0];
@@ -163,8 +175,10 @@ always @(*) begin
             jump_use_r_out = 1'b0;
          end
          JR_OPCODE: begin
-            read_address1_out = instruction_in[25:21];
-            read_address2_out = 0;
+            reg_rd_addr1_out = instruction_in[25:21];
+            reg_rd_addr2_out = 0;
+            reg_rd_en1_out = 1;
+            reg_rd_en2_out = 0;
             reg_wr_addr_out = instruction_in[20:16];//not used
             reg_wr_en_out = 1'b0;
             immediate_out = instruction_in[15:0];//not used
@@ -178,8 +192,10 @@ always @(*) begin
             jump_use_r_out = 1'b1;
          end
          JPC_OPCODE: begin //TODO ver instrucoes call e eret
-            read_address1_out = 0;
-            read_address2_out = 0;
+            reg_rd_addr1_out = 0;
+            reg_rd_addr2_out = 0;
+            reg_rd_en1_out = 0;
+            reg_rd_en2_out = 0;
             reg_wr_addr_out = 0;
             reg_wr_en_out = 1'b0;
             immediate_out = 0;
@@ -194,8 +210,10 @@ always @(*) begin
          end
          default : begin
             inst_function = 0;
-            read_address1_out = 0;
-            read_address2_out = 0;
+            reg_rd_addr1_out = 0;
+            reg_rd_addr2_out = 0;
+            reg_rd_en1_out = 0;
+            reg_rd_en2_out = 0;
             reg_wr_addr_out = 0;
             reg_wr_en_out = 1'b0;
             immediate_out = 0;

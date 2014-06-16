@@ -13,44 +13,54 @@
 //==================================================================================================
 
 module control
-				#(
-				)
-				(/*autoport*/
-					input decoded_inst_in,
-					output alu_src_out,
-					output alu_opcode_out,
-					output mem_data_wr_en_out,
-					output write_back_mux_sel_out,
-					output w_reg_wr_en_out,
-					output data_alu_a_out,
-					output data_alu_b_out,
-					output new_pc_out,
-					output branch_inst_out,
-					output jmp_inst_out
-				);
+(/*autoport*/
+   input id_ex_mem_data_rd_en,
+   input id_ex_reg_wr_addr,
+   input if_id_rd_reg_a_en,
+   input if_id_rd_reg_b_en,
+   input if_id_rd_reg_a_addr,
+   input if_id_rd_reg_b_addr,
+   input select_new_pc,
+
+   output reg inst_rd_en,
+   output reg stall,
+   output reg general_flush,
+   output reg decode_flush
+);
 
 //*******************************************************
 //Internal
 //*******************************************************
 //Local Parameters
-`include "general_parameters.v"
 //Wires
+
+wire load_hazard;
 
 //Registers
 
-//*******************************************************
-//General Purpose Signals
-//*******************************************************
-case (decoded_inst_in)
+assign load_hazard = id_ex_mem_data_rd_en&
+                     (((id_ex_reg_wr_addr==if_id_rd_reg_a_addr)&if_id_rd_reg_a_en)|
+		     ((id_ex_reg_wr_addr==if_id_rd_reg_b_addr)&if_id_rd_reg_b_en));
 
-   default : /* default */;
-endcase
-//*******************************************************
-//Outputs
-//*******************************************************
-
-//*******************************************************
-//Instantiations
-//*******************************************************
+always@(*)begin
+   if(select_new_pc)begin
+      inst_rd_en = 1;
+      stall = 0;
+      general_flush = 1;
+      decode_flush = 1;
+   end
+   else if(load_hazard)begin
+      inst_rd_en = 0;
+      stall = 1;
+      general_flush = 0;
+      decode_flush = 1;
+   end
+   else begin
+      inst_rd_en = 1;
+      stall = 0;
+      general_flush = 0;
+      decode_flush = 0;
+   end
+end
 
 endmodule

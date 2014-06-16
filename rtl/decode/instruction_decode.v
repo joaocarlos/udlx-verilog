@@ -48,9 +48,11 @@ module instruction_decode
   input wb_write_enable,
   input [DATA_WIDTH-1:0] wb_write_data,
   input [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr,
+  input select_new_pc_in,
+
 //  output alu_src_out,
-  output [REG_ADDR_WIDTH-1:0] read_address1_out,
-  output [REG_ADDR_WIDTH-1:0] read_address2_out,
+  output [REG_ADDR_WIDTH-1:0] reg_rd_addr1_out,
+  output [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
   output [INSTRUCTION_WIDTH-1:0] instruction_out,
   output [OPCODE_WIDTH-1:0] opcode_out,
   output [FUNCTION_WIDTH-1:0] inst_function_out, //added, will exist when the function is zero
@@ -65,25 +67,30 @@ module instruction_decode
   output [DATA_WIDTH-1:0] data_alu_b_out,
   output [PC_WIDTH-1:0] new_pc_out,
   output [PC_OFFSET_WIDTH-1:0] pc_offset_out,
-  output branch_inst_out,
+  output branch_inst_out, 
   output jump_inst_out,
-  output jump_use_r_out
+  output jump_use_r_out,
+
+  output rd_inst_ena,
+  output stall_out,
+  output general_flush
 
 );
-// -----------------------------------------------------------------------------
-// Internal
-// -----------------------------------------------------------------------------
+//*******************************************************
+//Internal
+//*******************************************************
+//Local Parameters
 
-// Local Parameters
+//Wires
 
-// Wires
-
-wire [DATA_WIDTH-1:0] data_alu_a;
-wire [DATA_WIDTH-1:0] data_alu_b;
+wire [DATA_WIDTH-1:0] data_alu_a; 
+wire [DATA_WIDTH-1:0] data_alu_b; 
 wire [OPCODE_WIDTH-1:0] opcode;
 wire [FUNCTION_WIDTH-1:0] inst_function;
-wire [REG_ADDR_WIDTH-1:0] read_address1;
-wire [REG_ADDR_WIDTH-1:0] read_address2;
+wire [REG_ADDR_WIDTH-1:0] reg_rd_addr1;
+wire [REG_ADDR_WIDTH-1:0] reg_rd_addr2;
+wire reg_rd_en1;
+wire reg_rd_en2;
 wire [REG_ADDR_WIDTH-1:0] reg_wr_addr;
 wire reg_wr_en;
 wire [IMEDIATE_WIDTH-1:0] immediate;
@@ -96,16 +103,18 @@ wire branch_inst;
 wire jump_inst;
 wire jump_use_r;
 
-// Registers
+wire decode_flush;
 
-// -----------------------------------------------------------------------------
-// General Purpose Signals
-// -----------------------------------------------------------------------------
+//Registers
 
-// -----------------------------------------------------------------------------
-// Outputs
-// -----------------------------------------------------------------------------
-// Ranges dependem das instruções a serem definidas
+//*******************************************************
+//General Purpose Signals
+//*******************************************************
+
+//*******************************************************
+//Outputs
+//*******************************************************
+//ranges dependem das instruções a serem definidas
 
 
 instruction_decoder
@@ -122,8 +131,10 @@ instruction_decoder_u0
    .instruction_in(instruction_in),
    .opcode(opcode),
    .inst_function(inst_function),
-   .read_address1_out(read_address1),
-   .read_address2_out(read_address2),
+   .reg_rd_addr1_out(reg_rd_addr1),
+   .reg_rd_addr2_out(reg_rd_addr2),
+   .reg_rd_en1_out(reg_rd_en1),
+   .reg_rd_en2_out(reg_rd_en2),
    .reg_wr_addr_out(reg_wr_addr),
    .reg_wr_en_out(reg_wr_en),
    .immediate_out(immediate),
@@ -147,8 +158,8 @@ register_bank_u0
 (
    .clk(clk),
    .rst_n(rst_n),
-   .rd_reg1_addr(read_address1),
-   .rd_reg2_addr(read_address2),
+   .rd_reg1_addr(reg_rd_addr1),
+   .rd_reg2_addr(reg_rd_addr2),
    .write_address(wb_reg_wr_addr),
    .write_enable(wb_write_enable),
    .write_data(wb_write_data),
@@ -158,21 +169,22 @@ register_bank_u0
 
 
 
-//control
-//control_u0
-//(
-//   .decoded_inst_in(decoded_inst_in),
-//   .alu_src_out(alu_src_out),
-//   .alu_opcode_out(alu_opcode_out),
-//   .mem_data_wr_en_out(mem_data_wr_en_out),
-//   .write_back_mux_sel_out(write_back_mux_sel_out),
-//   .w_reg_wr_en_out(w_reg_wr_en_out),
-//   .data_alu_a_out(data_alu_a_out),
-//   .data_alu_b_out(data_alu_b_out),
-//   .new_pc_out(new_pc_out),
-//   .branch_inst_out(branch_inst_out),
-//   .jmp_inst_out(jmp_inst_out),
-//);
+control
+control_u0
+(
+   .id_ex_mem_data_rd_en(mem_data_rd_en_out),
+   .id_ex_reg_wr_addr(reg_wr_addr_out),
+   .if_id_rd_reg_a_en(reg_rd_en1),
+   .if_id_rd_reg_b_en(reg_rd_en2),
+   .if_id_rd_reg_a_addr(reg_rd_addr1),
+   .if_id_rd_reg_b_addr(reg_rd_addr2),
+   .select_new_pc(select_new_pc_in),
+
+   .inst_rd_en(rd_inst_ena),
+   .stall(stall_out),
+   .general_flush(general_flush),
+   .decode_flush(decode_flush)
+);
 
 
 signal_extend
@@ -202,14 +214,16 @@ inst_decode_pipe_u0
    .clk(clk),
    .rst_n(rst_n),
 
+   .flush(decode_flush),
+
    .data_alu_a_in(data_alu_a),
    .data_alu_b_in(data_alu_b),
    .new_pc_in(new_pc_in),
    .instruction_in(instruction_in),
    .opcode_in(opcode),
    .inst_function_in(inst_function),
-   .read_address1_in(read_address1),
-   .read_address2_in(read_address2),
+   .reg_rd_addr1_in(reg_rd_addr1),
+   .reg_rd_addr2_in(reg_rd_addr2),
    .reg_wr_addr_in(reg_wr_addr),
    .reg_wr_en_in(reg_wr_en),
    .constant_in(constant),
@@ -229,8 +243,8 @@ inst_decode_pipe_u0
    .instruction_out(instruction_out),
    .opcode_out(opcode_out),
    .inst_function_out(inst_function_out),
-   .read_address1_out(read_address1_out),
-   .read_address2_out(read_address2_out),
+   .reg_rd_addr1_out(reg_rd_addr1_out),
+   .reg_rd_addr2_out(reg_rd_addr2_out),
    .reg_wr_addr_out(reg_wr_addr_out),
    .reg_wr_en_out(reg_wr_en_out),
    .constant_out(constant_out),

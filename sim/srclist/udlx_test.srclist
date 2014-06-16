@@ -11,6 +11,7 @@
 ../../rtl/decode/instruction_decoder.v
 ../../rtl/decode/register_bank.v
 ../../rtl/decode/signal_extend.v
+../../rtl/decode/control.v
 ../../rtl/decode/inst_decode_pipe.v
 
 

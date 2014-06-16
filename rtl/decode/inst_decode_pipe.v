@@ -25,6 +25,7 @@ module inst_decode_pipe
 (
    input clk,
    input rst_n,
+   input flush,
 
    input [DATA_WIDTH-1:0] data_alu_a_in, 
    input [DATA_WIDTH-1:0] data_alu_b_in, 
@@ -32,8 +33,8 @@ module inst_decode_pipe
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
    input [OPCODE_WIDTH-1:0] opcode_in,
    input [FUNCTION_WIDTH-1:0] inst_function_in,
-   input [REG_ADDR_WIDTH-1:0] read_address1_in,
-   input [REG_ADDR_WIDTH-1:0] read_address2_in,
+   input [REG_ADDR_WIDTH-1:0] reg_rd_addr1_in,
+   input [REG_ADDR_WIDTH-1:0] reg_rd_addr2_in,
    input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
    input reg_wr_en_in,
    input [DATA_WIDTH-1:0] constant_in,
@@ -54,8 +55,8 @@ module inst_decode_pipe
    output reg [OPCODE_WIDTH-1:0] opcode_out,
    output reg [FUNCTION_WIDTH-1:0] inst_function_out,
 //   output reg [FUNCTION_WIDTH-1:0] inst_function,
-   output reg [REG_ADDR_WIDTH-1:0] read_address1_out,
-   output reg [REG_ADDR_WIDTH-1:0] read_address2_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr1_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
    output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
    output reg reg_wr_en_out,
    output reg [DATA_WIDTH-1:0] constant_out,
@@ -78,8 +79,8 @@ always@(posedge clk, negedge rst_n)begin
       instruction_out <= 0;
       opcode_out <= 0;
       inst_function_out <= 0;
-      read_address1_out <= 0;
-      read_address2_out <= 0;
+      reg_rd_addr1_out <= 0;
+      reg_rd_addr2_out <= 0;
       reg_wr_addr_out <= 0;
       reg_wr_en_out <= 0;
       constant_out <= 0;
@@ -94,26 +95,49 @@ always@(posedge clk, negedge rst_n)begin
       jump_use_r_out <= 0;
    end
    else begin
-      data_alu_a_out <= data_alu_a_in;
-      data_alu_b_out <= data_alu_b_in;
-      new_pc_out <= new_pc_in;
-      instruction_out <= instruction_in;
-      opcode_out <= opcode_in;
-      inst_function_out <= inst_function_in;
-      read_address1_out <= read_address1_in;
-      read_address2_out <= read_address2_in;
-      reg_wr_addr_out <= reg_wr_addr_in;
-      reg_wr_en_out <= reg_wr_en_in;
-      constant_out <= constant_in;
-      imm_inst_out <= imm_inst_in;
-//      immediate_out <= immediate_in;
-      pc_offset_out <= pc_offset_in;
-      mem_data_rd_en_out <= mem_data_rd_en_in;
-      mem_data_wr_en_out <= mem_data_wr_en_in;
-      write_back_mux_sel_out <= write_back_mux_sel_in;
-      branch_inst_out <= branch_inst_in;
-      jump_inst_out <= jump_inst_in;
-      jump_use_r_out <= jump_use_r_in;
+      if(flush)begin
+         data_alu_a_out <= 0;
+         data_alu_b_out <= 0;
+         new_pc_out <= 0;
+         instruction_out <= 0;
+         opcode_out <= 0;
+         inst_function_out <= 0;
+         reg_rd_addr1_out <= 0;
+         reg_rd_addr2_out <= 0;
+         reg_wr_addr_out <= 0;
+         reg_wr_en_out <= 0;
+         constant_out <= 0;
+         imm_inst_out <= 0;
+         pc_offset_out <= 0;
+         mem_data_rd_en_out <= 0;
+         mem_data_wr_en_out <= 0;
+         write_back_mux_sel_out <= 0;
+         branch_inst_out <= 0;
+         jump_inst_out <= 0;
+         jump_use_r_out <= 0;
+      end
+      else begin
+         data_alu_a_out <= data_alu_a_in;
+         data_alu_b_out <= data_alu_b_in;
+         new_pc_out <= new_pc_in;
+         instruction_out <= instruction_in;
+         opcode_out <= opcode_in;
+         inst_function_out <= inst_function_in;
+         reg_rd_addr1_out <= reg_rd_addr1_in;
+         reg_rd_addr2_out <= reg_rd_addr2_in;
+         reg_wr_addr_out <= reg_wr_addr_in;
+         reg_wr_en_out <= reg_wr_en_in;
+         constant_out <= constant_in;
+         imm_inst_out <= imm_inst_in;
+//         immediate_out <= immediate_in;
+         pc_offset_out <= pc_offset_in;
+         mem_data_rd_en_out <= mem_data_rd_en_in;
+         mem_data_wr_en_out <= mem_data_wr_en_in;
+         write_back_mux_sel_out <= write_back_mux_sel_in;
+         branch_inst_out <= branch_inst_in;
+         jump_inst_out <= jump_inst_in;
+         jump_use_r_out <= jump_use_r_in;
+      end
    end
 end
 

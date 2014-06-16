@@ -35,14 +35,14 @@
 // -----------------------------------------------------------------------------
 localparam LW_OPCODE = 6'h23;
 localparam SW_OPCODE = 6'h2B;
-localparam BRFL_OPCODE = 6'h2B;
+localparam BRFL_OPCODE = 6'h09;
 localparam ADDI_OPCODE = 6'h08;
 localparam SUBI_OPCODE = 6'h10;
 localparam ANDI_OPCODE = 6'h12;
 localparam ORI_OPCODE = 6'h13;
 localparam BEQZ_OPCODE = 6'h04;
 localparam BNEZ_OPCODE = 6'h05;
-localparam JR_OPCODE = 6'h16;
+localparam JR_OPCODE = 6'h06;
 
 // -----------------------------------------------------------------------------
 // R-Type Instructions OpCode

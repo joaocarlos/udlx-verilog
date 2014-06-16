@@ -1,10 +1,10 @@
-# SimVision Command Script (Sun Jun 15 09:47:34 PM BRT 2014)
+# SimVision Command Script (Mon Jun 16 07:50:09 PM BRT 2014)
 #
 # Version 12.10.p001
 #
 # You can restore this configuration with:
 #
-#      irun -f ../srclist/udlx_test.srclist -access +rwc -s -input test_processor.tcl
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -input /home/victor/materias_mestrado/sintese_ci/trabalho_dlx/udlx-verilog/sim/run/test_processor.tcl
 #
 
 
@@ -24,7 +24,7 @@ preferences set plugin-enable-interleaveandcompare 0
 # Simulator
 #
 database require simulator -hints {
-	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -s -input test_processor.tcl"
+	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -input test_processor.tcl"
 }
 
 #
@@ -42,6 +42,8 @@ catch {group new -name branch_control_u0 -overlay 0}
 catch {group new -name reg_bank -overlay 0}
 catch {group new -name alu -overlay 0}
 catch {group new -name foward_unit -overlay 0}
+catch {group new -name instruction_pipeline -overlay 0}
+catch {group new -name simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.flush -overlay 0}
 
 group using dlx_processor
 group set -overlay 0
@@ -87,40 +89,6 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.branch_inst_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.constant_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.data_alu_a_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.data_alu_b_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.imm_inst_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.inst_function_out[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_in[31:0]}]} ] \
-    [subst  {[format {bus(simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[25], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[24], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[23], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[22], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[21], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[20], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[19], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[18], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[17], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[16], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[15], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[14], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[13], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[12], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[11], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[10], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[9], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[8], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[7], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[6], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[5], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[4], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[3], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[2], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[1], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[0])}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.jump_inst_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.jump_use_r_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.mem_data_rd_en_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.mem_data_wr_en_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.new_pc_in[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.new_pc_out[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.opcode_out[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.pc_offset_out[25:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.read_address1_out[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.read_address2_out[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.reg_wr_addr_out[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.reg_wr_en_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.wb_reg_wr_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.wb_write_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.wb_write_enable}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.write_back_mux_sel_out}]} ]
-
-group using execute_io
-group set -overlay 0
-group set -comment {}
-group clear 0 end
-
-group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_data_out[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_function_in[5:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_opcode_in[5:0]}]} ] \
@@ -155,6 +123,12 @@ group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_wr_ena}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.write_back_mux_sel_in}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.write_back_mux_sel_out}]} ]
+
+group using execute_io
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
 
 group using memory_access_io
 group set -overlay 0
@@ -300,10 +274,39 @@ group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_data[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_wr_ena}]} ]
 
+group using instruction_pipeline
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.if_id_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.id_ex_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.ex_mem_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.mem_wb_instruction[31:0]}]} ]
+
+group using simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.flush
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.id_ex_mem_data_rd_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.id_ex_reg_wr_addr}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_a_addr}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_a_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_b_addr}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_b_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.inst_rd_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.load_hazard}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.select_new_pc}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.stall}]} ]
+
 #
 # Cursors
 #
-set time 430ns
+set time 310ns
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -317,19 +320,42 @@ mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor ora
 {%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
 {%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
 {%x=* -label %x -linecolor gray -shape bus}}
+mmap new -reuse -name instruction_map -radix %x -contents {{%x=00000000 -bgcolor #ffffff -font -*-courier-medium-r-normal--12-* -label NOP -shape bus -textcolor #000000}
+{%b=100011?????????????????????????? -bgcolor #b1ff2b -font -*-courier-medium-r-normal--12-* -label LW -shape bus -textcolor #000000}
+{%b=101011?????????????????????????? -bgcolor #66bc09 -font -*-courier-medium-r-normal--12-* -label SW -shape bus -textcolor #000000}
+{%b=001000?????????????????????????? -bgcolor #ff0000 -font -*-courier-medium-r-normal--12-* -label ADDI -shape bus -textcolor #000000}
+{%b=001010?????????????????????????? -bgcolor #d34121 -font -*-courier-medium-r-normal--12-* -label SUBI -shape bus -textcolor #000000}
+{%b=001100?????????????????????????? -bgcolor #ff8c0b -font -*-courier-medium-r-normal--12-* -label ANDI -shape bus -textcolor #000000}
+{%b=001101?????????????????????????? -bgcolor #f3c41c -font -*-courier-medium-r-normal--12-* -label ORI -shape bus -textcolor #000000}
+{%b=001001?????????????????????????? -bgcolor #5e6e14 -font -*-courier-medium-r-normal--12-* -label BRFL -shape bus -textcolor #000000}
+{%b=000100?????????????????????????? -bgcolor #085b24 -font -*-courier-medium-r-normal--12-* -label BNEZ -shape bus -textcolor #000000}
+{%b=000101?????????????????????????? -bgcolor #002600 -font -*-courier-medium-r-normal--12-* -label BEQZ -shape bus -textcolor #000000}
+{%b=000110?????????????????????????? -bgcolor #9900ff -font -*-courier-medium-r-normal--12-* -label JR -shape bus -textcolor #000000}
+{%b=000010?????????????????????????? -bgcolor #710099 -font -*-courier-medium-r-normal--12-* -label JPC -shape bus -textcolor #000000}
+{%b=111110?????????????????????????? -bgcolor #ff00ff -font -*-courier-medium-r-normal--12-* -label CALL -shape bus -textcolor #000000}
+{%b=111111?????????????????????????? -bgcolor #ff0099 -font -*-courier-medium-r-normal--12-* -label RET -shape bus -textcolor #000000}
+{%b=000000????????????????????100000 -bgcolor #0000ff -font -*-courier-medium-r-normal--12-* -label ADD -shape bus -textcolor #000000}
+{%b=000000????????????????????100010 -bgcolor #0099ff -font -*-courier-medium-r-normal--12-* -label SUB -shape bus -textcolor #000000}
+{%b=000000????????????????????100100 -bgcolor #00c183 -font -*-courier-medium-r-normal--12-* -label AND -shape bus -textcolor #000000}
+{%b=000000????????????????????100111 -bgcolor #58ecb8 -font -*-courier-medium-r-normal--12-* -label NOR -shape bus -textcolor #000000}
+{%b=000000????????????????????100101 -bgcolor #608e99 -font -*-courier-medium-r-normal--12-* -label OR -shape bus -textcolor #000000}
+{%b=000000????????????????????101010 -bgcolor #5bf879 -font -*-courier-medium-r-normal--12-* -label DIV -shape bus -textcolor #000000}
+{%b=000000????????????????????101000 -bgcolor #007054 -font -*-courier-medium-r-normal--12-* -label MULT -shape bus -textcolor #000000}
+{%b=000000????????????????????101100 -bgcolor #513e21 -font -*-courier-medium-r-normal--12-* -label CMP -shape bus -textcolor #000000}
+{%b=000000????????????????????101101 -bgcolor #241e49 -font -*-courier-medium-r-normal--12-* -label NOT -shape bus -textcolor #000000}}
 
 #
 # Design Browser windows
 #
-if {[catch {window new WatchList -name "Design Browser 1" -geometry 1366x721+0+0}] != ""} {
-    window geometry "Design Browser 1" 1366x721+0+0
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 1362x714+0+0}] != ""} {
+    window geometry "Design Browser 1" 1362x714+0+0
 }
 window target "Design Browser 1" on
 browser using {Design Browser 1}
-browser set -scope [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0}]} ]
+browser set -scope [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0}]} ]
 browser set \
     -signalsort name
-browser yview see [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0}]} ]
+browser yview see [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0}]} ]
 browser timecontrol set -lock 0
 
 #
@@ -347,8 +373,8 @@ waveform set \
     -signalwidth 207 \
     -units ns \
     -valuewidth 75
-cursor set -using TimeA -time 430ns
-waveform baseline set -time 410ns
+cursor set -using TimeA -time 310ns
+waveform baseline set -time 270ns
 
 
 set groupId0 [waveform add -groups dlx_processor]
@@ -367,9 +393,11 @@ set groupId0 [waveform add -groups reg_bank]
 waveform hierarchy collapse $groupId0
 
 
-set groupId0 [waveform add -groups execute_io]
+set groupId0 [waveform add -groups simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.flush]
 waveform hierarchy collapse $groupId0
 
+
+set groupId0 [waveform add -groups execute_io]
 
 set groupId0 [waveform add -groups alu]
 waveform hierarchy collapse $groupId0
@@ -399,7 +427,37 @@ set groupId0 [waveform add -groups data_ram]
 waveform hierarchy collapse $groupId0
 
 
-waveform xview limits 0 2000ns
+set groupId0 [waveform add -groups instruction_pipeline]
+set gpGlist0 [waveform hierarchy contents $groupId0]
+set gpID0 [lindex $gpGlist0 0]
+foreach {name attrs} [subst  {
+    {simulator::[format {tosco_tb.dlx_processor_u0.instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.dlx_processor_u0.if_id_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.dlx_processor_u0.id_ex_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.dlx_processor_u0.ex_mem_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.dlx_processor_u0.mem_wb_instruction[31:0]}]} {-radix instruction_map}
+}] childcmds {
+    {}
+    {}
+    {}
+    {}
+    {}
+} {
+    set expected [ join [waveform signals -format fullpath $gpID0] ]
+    if {[string equal $name $expected] || $name == "cdivider"} {
+        if {$attrs != ""} {
+            eval waveform format $gpID0 $attrs
+        }
+        if { $childcmds != ""} {
+            eval $childcmds
+        }
+    }
+    set gpGlist0 [lrange $gpGlist0 1 end]
+    set gpID0 [lindex $gpGlist0 0]
+}
+
+
+waveform xview limits 58ns 698ns
 
 #
 # Waveform Window Links

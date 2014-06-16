@@ -35,6 +35,9 @@ module top_fetch
 )(
     input clk,                                       // CPU core clock
     input rst_n,                                     // CPU core reset active low
+    input stall,
+    input flush,
+
     input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,       // SRAM input data
     input select_new_pc_in,                             // Signal used for branch not taken
     input [PC_DATA_WIDTH-1:0] new_pc_in,                // New value of Program Counter
@@ -101,7 +104,7 @@ assign inst_mem_addr_out = pc;
 always@(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         pc <= PC_INITIAL_ADDRESS;
-    end else begin
+    end else if(!stall) begin
         pc <= pc_mux_data;
     end
 end
@@ -109,13 +112,18 @@ end
 
 //the if_id pipe needs only this
 always@(posedge clk or negedge rst_n)begin
-    if(!rst_n) begin
-       new_pc_out <= 0;
-       instruction_reg_out <= 0;
-    end else begin
-       new_pc_out <= pc;
-       instruction_reg_out <= inst_mem_data_in;
-    end
+   if(!rst_n) begin
+      new_pc_out <= 0;
+      instruction_reg_out <= 0;
+   end else if(!stall)begin
+      new_pc_out <= pc;
+      if(flush)begin
+         instruction_reg_out <= 0;
+      end
+      else begin
+         instruction_reg_out <= inst_mem_data_in;
+      end
+   end
 end
 
 

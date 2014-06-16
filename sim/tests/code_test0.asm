@@ -13,16 +13,11 @@ nop
 nop
 nop
 nop
+nop
 sub $8,$4,$7
 test2:
-nop
 lw $3, 0x0000000a($1)
 #ld $3, 0x10010000
-
-#needs stall for load_hazard
-nop
-nop
-nop
 sub $4, $2, $3
 beqz $4, inicio
 add $5,$3,$2

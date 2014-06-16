@@ -1,16 +1,34 @@
-//==================================================================================================
-//  Filename      : instruction_decode.v
-//  Created On    : 2014-06-07 10:00:00
-//  Last Modified : 2014-06-07 14:00:00
-//  Revision      : 
-//  Author        : Victor Valente de Araujo
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : victor.valente.araujo@gmail.com
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME        : instruction_decode.v
+// CREATED          : 2014-06-07 10:00:00
+// MODIFIED         : 2014-06-16 15:33:24
+// AUTHOR(s)        : victor.valente
+// MANTAINER        : victor.valente
+// AUTHOR'S E-MAIL  : victor.valente.araujo@gmail.com
+// -----------------------------------------------------------------------------
+// KEYWORDS: dlx, decoder, instruction
+// -----------------------------------------------------------------------------
+// PURPOSE: Top level module of Instruction Decode stage
+// -----------------------------------------------------------------------------
 module instruction_decode
 #(
     parameter PC_WIDTH = 20,
@@ -47,20 +65,21 @@ module instruction_decode
   output [DATA_WIDTH-1:0] data_alu_b_out,
   output [PC_WIDTH-1:0] new_pc_out,
   output [PC_OFFSET_WIDTH-1:0] pc_offset_out,
-  output branch_inst_out, 
+  output branch_inst_out,
   output jump_inst_out,
   output jump_use_r_out
 
 );
-//*******************************************************
-//Internal
-//*******************************************************
-//Local Parameters
+// -----------------------------------------------------------------------------
+// Internal
+// -----------------------------------------------------------------------------
 
-//Wires
+// Local Parameters
 
-wire [DATA_WIDTH-1:0] data_alu_a; 
-wire [DATA_WIDTH-1:0] data_alu_b; 
+// Wires
+
+wire [DATA_WIDTH-1:0] data_alu_a;
+wire [DATA_WIDTH-1:0] data_alu_b;
 wire [OPCODE_WIDTH-1:0] opcode;
 wire [FUNCTION_WIDTH-1:0] inst_function;
 wire [REG_ADDR_WIDTH-1:0] read_address1;
@@ -77,16 +96,16 @@ wire branch_inst;
 wire jump_inst;
 wire jump_use_r;
 
-//Registers
+// Registers
 
-//*******************************************************
-//General Purpose Signals
-//*******************************************************
+// -----------------------------------------------------------------------------
+// General Purpose Signals
+// -----------------------------------------------------------------------------
 
-//*******************************************************
-//Outputs
-//*******************************************************
-//ranges dependem das instruções a serem definidas
+// -----------------------------------------------------------------------------
+// Outputs
+// -----------------------------------------------------------------------------
+// Ranges dependem das instruções a serem definidas
 
 
 instruction_decoder

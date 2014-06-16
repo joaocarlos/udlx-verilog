@@ -1,11 +1,38 @@
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
+//
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME        : opcodes.v
+// AUTHOR(s)        : victor.valente
+// MANTAINER        : victor.valente
+// AUTHOR'S E-MAIL  :
+// -----------------------------------------------------------------------------
+// KEYWORDS: dlx, functions, opcodes, parameters
+// -----------------------------------------------------------------------------
+// PURPOSE: Provide all instructions operation codes and functions
+// -----------------------------------------------------------------------------
 
-/////////////////////////////////////////////
-//  ALL INSTRUCTIONS OPCODES AND FUNCTIONS
-/////////////////////////////////////////////
 
 
-/////////////////////////////////////////////
-// I-TYPE INSTRUCTIONS
+// -----------------------------------------------------------------------------
+// I-Type Instructions
+// -----------------------------------------------------------------------------
 localparam LW_OPCODE = 6'h23;
 localparam SW_OPCODE = 6'h2B;
 localparam BRFL_OPCODE = 6'h2B;
@@ -17,12 +44,14 @@ localparam BEQZ_OPCODE = 6'h04;
 localparam BNEZ_OPCODE = 6'h05;
 localparam JR_OPCODE = 6'h16;
 
-////////////////////////////////////////////
-// R-TYPE INSTRUCTIONS OPCODE
+// -----------------------------------------------------------------------------
+// R-Type Instructions OpCode
+// -----------------------------------------------------------------------------
 localparam R_TYPE_OPCODE = 6'h00;
 
-////////////////////////////////////////////
-// R-TYPE INSTRUCTIONS FUNCTIONS
+// -----------------------------------------------------------------------------
+// R-Type Instructions Functions
+// -----------------------------------------------------------------------------
 localparam ADD_FUNCTION = 6'h20;
 localparam SUB_FUNCTION = 6'h22;
 localparam AND_FUNCTION = 6'h24;
@@ -34,8 +63,9 @@ localparam CMP_FUNCTION = 6'h1C;
 localparam NOT_FUNCTION = 6'h1D;
 
 
-////////////////////////////////////////////
-// J-TYPE INSTRUCTIONS OPCODE
+// -----------------------------------------------------------------------------
+// J-Type Instructions OpCode
+// -----------------------------------------------------------------------------
 localparam JPC_OPCODE = 6'h02;
 localparam CALL_OPCODE = 6'h3E;
 localparam RET_OPCODE = 6'h3F;

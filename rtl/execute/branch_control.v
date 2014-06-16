@@ -19,9 +19,9 @@
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
 // FILE NAME        : branch_control.v
-// AUTHOR(s)        : Victor Valente
-// MANTAINER        : Victor Valente
-// AUTHOR'S E-MAIL  : 
+// AUTHOR(s)        : victor.valente
+// MANTAINER        : victor.valente
+// AUTHOR'S E-MAIL  : victor.valente@gmail.com
 // -----------------------------------------------------------------------------
 // KEYWORDS: branch control, dlx
 // -----------------------------------------------------------------------------

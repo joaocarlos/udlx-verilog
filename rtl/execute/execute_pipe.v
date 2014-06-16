@@ -1,3 +1,32 @@
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
+//
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME        : execute_pipe.v
+// AUTHOR(s)        : victor.valente
+// MANTAINER        : victor.valente
+// AUTHOR'S E-MAIL  :
+// -----------------------------------------------------------------------------
+// KEYWORDS: dlx, execute, pipeline, registers
+// -----------------------------------------------------------------------------
+// PURPOSE: Execute-Memory pipeline registers
+// -----------------------------------------------------------------------------
 module execute_pipe
 #(
    parameter PC_WIDTH = 20,

@@ -1,22 +1,40 @@
-//==================================================================================================
-//  Filename      : instruction_decoder.v
-//  Created On    : 2014-06-06 21:35:39
-//  Last Modified : 2014-06-06 22:35:43
-//  Revision      : 
-//  Author        : Victor Valente de Araujo
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : lintonthiago@gmail.com
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME        : execute_address_calculate.v
+// CREATED          : 2014-06-06 21:35:39
+// MODIFIED         : 2014-06-16 15:37:47
+// AUTHOR(s)        : victor.valente
+// MANTAINER        : victor.valente
+// AUTHOR'S E-MAIL  : victor.valente@gmail.com
+// -----------------------------------------------------------------------------
+// KEYWORDS: dlx, decoder, instruction
+// -----------------------------------------------------------------------------
+// PURPOSE: Top level module of Execute/Address Calculate stage
+// -----------------------------------------------------------------------------
 module execute_address_calculate
 #(
    parameter DATA_WIDTH = 32,
    parameter PC_WIDTH = 32,
    parameter OPCODE_WIDTH = 6,
-   parameter FUNCTION_WIDTH = 6, 
+   parameter FUNCTION_WIDTH = 6,
    parameter REG_ADDR_WIDTH = 5,
    parameter PC_OFFSET_WIDTH = 26
 )
@@ -61,13 +79,13 @@ module execute_address_calculate
    output select_new_pc_out,
    output [PC_WIDTH-1:0] new_pc_out
 );
-//*******************************************************
-//Internal
-//*******************************************************
-//Local Parameters
 
-//Wires
+// -----------------------------------------------------------------------------
+// Internal
+// -----------------------------------------------------------------------------
+// Local Parameters
 
+// Wires
 wire select_new_pc;
 wire [PC_WIDTH-1:0] pc_out;
 
@@ -78,8 +96,9 @@ wire [DATA_WIDTH-1:0] alu_data_in_b;
 
 wire [DATA_WIDTH-1:0] alu_data;
 
-//BRANCH CONTROL
-//
+// -----------------------------------------------------------------------------
+// Branch Control
+// -----------------------------------------------------------------------------
 branch_control
 #(
    .DATA_WIDTH(DATA_WIDTH),
@@ -101,9 +120,9 @@ branch_control_u0
    .pc_out(pc_out)
 );
 
-
-//FOWARDING UNITS
-//
+// -----------------------------------------------------------------------------
+// Forwarding Units
+// -----------------------------------------------------------------------------
 forward_unit
 #(
    .DATA_WIDTH(DATA_WIDTH),
@@ -125,9 +144,9 @@ forward_unit
    .alu_b_mux_sel(alu_b_mux_sel)
 );
 
-
-//MUX select constant
-//
+// -----------------------------------------------------------------------------
+// MUX select constant
+// -----------------------------------------------------------------------------
 mux_data
 #(
    .DATA_WIDTH(DATA_WIDTH)
@@ -140,9 +159,9 @@ mux_data_u0
    .data_out(alu_data_in_b)
 );
 
-
-//ALU
-//
+// -----------------------------------------------------------------------------
+// ALU
+// -----------------------------------------------------------------------------
 alu
 #(
    .DATA_WIDTH(DATA_WIDTH),
@@ -155,14 +174,15 @@ alu_u0
   .alu_opcode(alu_opcode_in),
   .alu_function(alu_function_in),
 
-  
+
   .alu_branch_result(branch_result),
   .alu_data_out(alu_data)
 );
 
 
-//ex_mem_pipe
-
+// -----------------------------------------------------------------------------
+// EXE_MEM Pipeline registers
+// -----------------------------------------------------------------------------
 execute_pipe
 #(
     .PC_WIDTH(PC_WIDTH),

@@ -1,16 +1,34 @@
-//==================================================================================================
-//  Filename      : instruction_decoder.v
-//  Created On    : 2014-06-06 21:35:39
-//  Last Modified : 2014-06-06 22:35:43
-//  Revision      : 
-//  Author        : Linton Thiago Costa Esteves
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : lintonthiago@gmail.com
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME        : instruction_decoder.v
+// CREATED          : 2014-06-06 21:35:39
+// MODIFIED         : 2014-06-16 15:35:12
+// AUTHOR(s)        : lintaum
+// MANTAINER        : lintaum
+// AUTHOR'S E-MAIL  : lintonthiago@gmail.com
+// -----------------------------------------------------------------------------
+// KEYWORDS: dlx, decoder, instruction
+// -----------------------------------------------------------------------------
+// PURPOSE: Top level module of Instruction Decode stage
+// -----------------------------------------------------------------------------
 module instruction_decoder
         #(
             parameter INSTRUCTION_WIDTH = 32,
@@ -38,10 +56,12 @@ module instruction_decoder
             output reg jump_inst_out,
             output reg jump_use_r_out
         );
-//*******************************************************
-//Internal
-//*******************************************************
-//Local Parameters
+
+// -----------------------------------------------------------------------------
+// Internal
+// -----------------------------------------------------------------------------
+
+// Local Parameters
 `include "opcodes.v"
 
 

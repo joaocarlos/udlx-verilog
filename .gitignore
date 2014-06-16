@@ -1,3 +1,8 @@
+## irun log files
+INCA_libs
+irun.*
+waves.*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

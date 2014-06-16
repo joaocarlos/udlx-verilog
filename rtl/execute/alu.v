@@ -90,7 +90,7 @@ begin
    end
    else begin
       case (alu_opcode)
-         ADDI_OPCODE:
+         ADDI_OPCODE,LW_OPCODE,SW_OPCODE:
             alu_result_reg = sum_result;
          SUBI_OPCODE :
             alu_result_reg = sub_result;

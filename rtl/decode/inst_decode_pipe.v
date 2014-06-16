@@ -29,6 +29,7 @@ module inst_decode_pipe
    input [DATA_WIDTH-1:0] data_alu_a_in, 
    input [DATA_WIDTH-1:0] data_alu_b_in, 
    input [PC_WIDTH-1:0] new_pc_in,
+   input [INSTRUCTION_WIDTH-1:0] instruction_in,
    input [OPCODE_WIDTH-1:0] opcode_in,
    input [FUNCTION_WIDTH-1:0] inst_function_in,
    input [REG_ADDR_WIDTH-1:0] read_address1_in,
@@ -49,6 +50,7 @@ module inst_decode_pipe
    output reg [DATA_WIDTH-1:0] data_alu_a_out, 
    output reg [DATA_WIDTH-1:0] data_alu_b_out, 
    output reg [PC_WIDTH-1:0] new_pc_out,
+   output reg [INSTRUCTION_WIDTH-1:0] instruction_out,
    output reg [OPCODE_WIDTH-1:0] opcode_out,
    output reg [FUNCTION_WIDTH-1:0] inst_function_out,
 //   output reg [FUNCTION_WIDTH-1:0] inst_function,
@@ -73,6 +75,7 @@ always@(posedge clk, negedge rst_n)begin
       data_alu_a_out <= 0;
       data_alu_b_out <= 0;
       new_pc_out <= 0;
+      instruction_out <= 0;
       opcode_out <= 0;
       inst_function_out <= 0;
       read_address1_out <= 0;
@@ -94,6 +97,7 @@ always@(posedge clk, negedge rst_n)begin
       data_alu_a_out <= data_alu_a_in;
       data_alu_b_out <= data_alu_b_in;
       new_pc_out <= new_pc_in;
+      instruction_out <= instruction_in;
       opcode_out <= opcode_in;
       inst_function_out <= inst_function_in;
       read_address1_out <= read_address1_in;

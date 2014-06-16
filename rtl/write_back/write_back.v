@@ -30,7 +30,7 @@ module write_back
 
 //verificar se vai extender o sinal apenas de uma forma
 
-assign reg_data_out = write_back_mux_sel?mem_data_in:alu_data_in;
+assign reg_wr_data_out = write_back_mux_sel?mem_data_in:alu_data_in;
 assign reg_wr_en_out = reg_wr_en_in;
 assign reg_wr_addr_out = reg_wr_addr_in;
 

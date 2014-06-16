@@ -191,7 +191,8 @@ execute_address_calculate
    .PC_WIDTH(PC_WIDTH),
    .OPCODE_WIDTH(OPCODE_WIDTH),
    .FUNCTION_WIDTH(FUNCTION_WIDTH),
-   .REG_ADDR_WIDTH(REG_ADDR_WIDTH)
+   .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
+    .PC_OFFSET_WIDTH(PC_OFFSET_WIDTH)
 )
 execute_address_calculate_u0
 (
@@ -212,6 +213,7 @@ execute_address_calculate_u0
    .new_pc_in(id_ex_new_pc),
    .mem_data_rd_en_in(id_ex_mem_data_rd_en),
    .mem_data_wr_en_in(id_ex_mem_data_wr_en),
+   .pc_offset_in(id_ex_pc_offset),
    .branch_inst_in(id_ex_branch_inst),
    .jmp_inst_in(id_ex_jump_inst),
    .jmp_use_r_in(id_ex_jump_use_r),
@@ -274,7 +276,7 @@ write_back
  )
 write_back_u0
 (
-   .mem_data_in(mem_wb_mem_data),
+   .mem_data_in(data_read),
    .alu_data_in(mem_wb_alu_data),
    .reg_wr_en_in(mem_wb_reg_wr_en),
    .reg_wr_addr_in(mem_wb_reg_wr_addr),

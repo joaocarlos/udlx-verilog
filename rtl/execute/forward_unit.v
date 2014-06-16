@@ -34,7 +34,7 @@ module forward_unit
 
 //a ALU input
 always@(*)begin
-   if((addr_alu_a==ex_mem_data)&ex_mem_reg_wr_ena)begin
+   if((addr_alu_a==ex_mem_reg_addr)&ex_mem_reg_wr_ena)begin
       alu_a_mux_sel <= ex_mem_data;
    end
    else if((addr_alu_a==wb_reg_addr)&wb_reg_wr_ena)begin
@@ -48,7 +48,7 @@ end
 
 // b ALU input
 always@(*)begin
-   if((addr_alu_b==ex_mem_data)&ex_mem_reg_wr_ena)begin
+   if((addr_alu_b==ex_mem_reg_addr)&ex_mem_reg_wr_ena)begin
       alu_b_mux_sel <= ex_mem_data;
    end
    else if((addr_alu_b==wb_reg_addr)&wb_reg_wr_ena)begin

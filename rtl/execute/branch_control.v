@@ -30,7 +30,8 @@
 module branch_control
 #(
    parameter DATA_WIDTH = 32,
-   parameter PC_WIDTH = 6
+   parameter PC_WIDTH = 6,
+   parameter PC_OFFSET_WIDTH = 25
 )
 (
    input jmp_inst,
@@ -40,7 +41,7 @@ module branch_control
    input [PC_WIDTH-1:0] pc_in,
    input [DATA_WIDTH-1:0] reg_a_data_in,
    input [DATA_WIDTH-1:0] reg_b_data_in,
-   input [DATA_WIDTH-1:0] constant,
+   input [PC_OFFSET_WIDTH-1:0] pc_offset,
 
    output select_new_pc,
    output [PC_WIDTH-1:0] pc_out
@@ -49,12 +50,15 @@ module branch_control
 
 wire [DATA_WIDTH-1:0] jmp_val;
 wire [DATA_WIDTH-1:0] branch_val;
+wire [PC_WIDTH-1:0] pc_jump;
+
+assign pc_jump = {pc_in[31:28],pc_offset,{2{1'b0}}};
 
 assign select_new_pc = jmp_inst|(branch_inst&branch_result);
 
 assign branch_val = pc_in + reg_b_data_in;
 
-assign jmp_val = jmp_use_r?reg_a_data_in:constant;
+assign jmp_val = jmp_use_r?reg_a_data_in:pc_jump;
 
 assign pc_out = jmp_inst?jmp_val:branch_val;
 

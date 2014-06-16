@@ -45,83 +45,78 @@ module top_fetch
 );
 
 
-    reg [PC_DATA_WIDTH-1:0] pc;
-    reg [PC_DATA_WIDTH-1:0] pc_mux_data;
-    reg [PC_DATA_WIDTH-1:0] pc_adder_data;
+reg [PC_DATA_WIDTH-1:0] pc;
+reg [PC_DATA_WIDTH-1:0] pc_mux_data;
+reg [PC_DATA_WIDTH-1:0] pc_adder_data;
 
-    // -------------------------------------------------------------
-    // Multiplex to select new PC value
-    // -------------------------------------------------------------
-    always@(*)
-    begin
-        case(select_new_pc_in)
-            1 : pc_mux_data = new_pc_in;
-            0 : pc_mux_data = pc_adder_data;
-        endcase
-    end
+// -------------------------------------------------------------
+// Multiplex to select new PC value
+// -------------------------------------------------------------
+always@(*)
+begin
+    case(select_new_pc_in)
+        0 : pc_mux_data = pc_adder_data;
+        1 : pc_mux_data = new_pc_in;
+    endcase
+end
 
-    // -------------------------------------------------------------
-    // Program Counter adder
-    // [+++] Introduzed a clock enable signal in order to pause PC
-    // To-do: Could it be full combinational?
-    // -------------------------------------------------------------
-//    always@(posedge clk)
+// -------------------------------------------------------------
+// Program Counter adder
+// [+++] Introduzed a clock enable signal in order to pause PC
+// To-do: Could it be full combinational?
+// -------------------------------------------------------------
+//always@(posedge clk)
+//begin
+//    if(clk_en_in) // May be linked to a general clock enable signal
 //    begin
-//        if(clk_en_in) // May be linked to a general clock enable signal
-//        begin
-//            pc_adder_data <= inst_mem_addr_out + 20'd4;
-//        end
+//        pc_adder_data <= inst_mem_addr_out + 20'd4;
 //    end
-    always@(posedge clk, negedge rst_n)
-    begin
-       if(!rst_n)begin
-          pc_adder_data <= PC_INITIAL_ADDRESS + 20'd4;
-       end else begin
-          pc_adder_data <= pc + 20'd4;
-       end
-    end
+//end
+//always@(posedge clk, negedge rst_n)
+always@(*)
+begin
+//   if(!rst_n)begin
+//      pc_adder_data <= PC_INITIAL_ADDRESS + 20'd4;
+//   end else begin
+      pc_adder_data = pc + 20'd4;
+//   end
+end
 
-    // -------------------------------------------------------------
-    // Program Counter regireg [FUNCTION_WIDTH-1:0] inst_function,ster
-    // -------------------------------------------------------------
-////    always@(posedge clk or negedge rst_n)
+// -------------------------------------------------------------
+// Program Counter regireg [FUNCTION_WIDTH-1:0] inst_function,ster
+// -------------------------------------------------------------
+////always@(posedge clk or negedge rst_n)
+////begin
+////    if(rst_n)
 ////    begin
-////        if(rst_n)
-////        begin
-////            inst_mem_addr_out <= PC_INITIAL_ADDRESS;
-////        end else
-////        begin
-////            inst_mem_addr_out <= pc_mux_data;
-////        end
+////        inst_mem_addr_out <= PC_INITIAL_ADDRESS;
+////    end else
+////    begin
+////        inst_mem_addr_out <= pc_mux_data;
 ////    end
+////end
 
 assign inst_mem_addr_out = pc;
 
-    always@(posedge clk or negedge rst_n)
-    begin
-        if(rst_n)
-        begin
-            pc <= PC_INITIAL_ADDRESS;
-        end else
-        begin
-            pc <= pc_mux_data;
-        end
+always@(posedge clk or negedge rst_n) begin
+    if(!rst_n) begin
+        pc <= PC_INITIAL_ADDRESS;
+    end else begin
+        pc <= pc_mux_data;
     end
+end
 
 
-    //the if_id pipe needs only this
-    always@(posedge clk or negedge rst_n)
-    begin
-        if(rst_n)
-        begin
-           new_pc_out <= 0;
-           instruction_reg_out <= 0;
-        end else
-        begin
-	   new_pc_out <= pc;
-           instruction_reg_out <= inst_mem_data_in;
-        end
+//the if_id pipe needs only this
+always@(posedge clk or negedge rst_n)begin
+    if(!rst_n) begin
+       new_pc_out <= 0;
+       instruction_reg_out <= 0;
+    end else begin
+       new_pc_out <= pc;
+       instruction_reg_out <= inst_mem_data_in;
     end
+end
 
 
 endmodule

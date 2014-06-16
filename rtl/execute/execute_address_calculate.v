@@ -17,7 +17,8 @@ module execute_address_calculate
    parameter PC_WIDTH = 32,
    parameter OPCODE_WIDTH = 6,
    parameter FUNCTION_WIDTH = 6, 
-   parameter REG_ADDR_WIDTH = 5
+   parameter REG_ADDR_WIDTH = 5,
+   parameter PC_OFFSET_WIDTH = 26
 )
 (
    input clk,
@@ -37,6 +38,7 @@ module execute_address_calculate
    input [PC_WIDTH-1:0] new_pc_in,
    input mem_data_rd_en_in,
    input mem_data_wr_en_in,
+   input [PC_OFFSET_WIDTH-1:0] pc_offset_in,
    input branch_inst_in,
    input jmp_inst_in,
    input jmp_use_r_in,
@@ -81,7 +83,8 @@ wire [DATA_WIDTH-1:0] alu_data;
 branch_control
 #(
    .DATA_WIDTH(DATA_WIDTH),
-   .PC_WIDTH(PC_WIDTH)
+   .PC_WIDTH(PC_WIDTH),
+   .PC_OFFSET_WIDTH(PC_OFFSET_WIDTH)
 )
 branch_control_u0
 (
@@ -91,8 +94,8 @@ branch_control_u0
    .branch_result(branch_result),
    .pc_in(new_pc_in),
    .reg_a_data_in(alu_data_in_a),
-   .reg_b_data_in(alu_b_mux_sel),
-   .constant(constant_in),
+   .reg_b_data_in(alu_data_in_b),
+   .pc_offset(pc_offset_in),
 
    .select_new_pc(select_new_pc),
    .pc_out(pc_out)

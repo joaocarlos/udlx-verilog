@@ -44,13 +44,14 @@ dlx_processor_u0
 rom
 #(
    .DATA_WIDTH(DATA_WIDTH),
-   .ADDR_WIDTH(INST_ADDR_WIDTH)
+   .ADDR_WIDTH(10)
 )
 rom_u0
 (
    .clk(clk),
+   .rst_n(rst_n),
    .rd_ena(instr_rd_en),
-   .address(instr_addr),
+   .address(instr_addr[15:2]),
    .data(instruction)
 );
 
@@ -58,14 +59,14 @@ rom_u0
 sp_ram
 #(
    .DATA_WIDTH(DATA_WIDTH),
-   .ADDR_WIDTH(DATA_ADDR_WIDTH)
+   .ADDR_WIDTH(10)
 )
 sp_ram_u0
 (
    .clk(clk),
    .rd_ena(data_rd_en),
    .wr_ena(data_wr_en),
-   .address(data_addr),
+   .address(data_addr[DATA_ADDR_WIDTH-1:2]),
    .wr_data(data_write),
    .rd_data(data_read)
 );
@@ -84,7 +85,9 @@ initial begin
 rst_n = 1;
 #10;
 rst_n = 0;
+#30;
 @(posedge clk);
+#1
 rst_n = 1;
 end
 

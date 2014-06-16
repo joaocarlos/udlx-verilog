@@ -114,8 +114,8 @@ always @(*) begin
          end
          SW_OPCODE: begin
             read_address1_out = instruction_in[25:21];
-            read_address2_out = 0;
-            reg_wr_addr_out = instruction_in[20:16];
+            read_address2_out = instruction_in[20:16];
+            reg_wr_addr_out = 0;
             reg_wr_en_out = 1'b0;
             immediate_out = instruction_in[15:0];
             imm_inst_out = 1'b1;

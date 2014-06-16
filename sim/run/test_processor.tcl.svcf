@@ -1,0 +1,413 @@
+# SimVision Command Script (Sun Jun 15 09:47:34 PM BRT 2014)
+#
+# Version 12.10.p001
+#
+# You can restore this configuration with:
+#
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -s -input test_processor.tcl
+#
+
+
+#
+# Preferences
+#
+preferences set toolbar-OperatingMode-WaveWindow {
+  usual
+  position -pos 4
+  name OperatingMode
+}
+preferences set plugin-enable-svdatabrowser 0
+preferences set plugin-enable-groupscope 0
+preferences set plugin-enable-interleaveandcompare 0
+
+#
+# Simulator
+#
+database require simulator -hints {
+	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -s -input test_processor.tcl"
+}
+
+#
+# Groups
+#
+catch {group new -name dlx_processor -overlay 0}
+catch {group new -name fetch_io -overlay 0}
+catch {group new -name decode_io -overlay 0}
+catch {group new -name execute_io -overlay 0}
+catch {group new -name memory_access_io -overlay 0}
+catch {group new -name write_back_io -overlay 0}
+catch {group new -name instruction_rom -overlay 0}
+catch {group new -name data_ram -overlay 0}
+catch {group new -name branch_control_u0 -overlay 0}
+catch {group new -name reg_bank -overlay 0}
+catch {group new -name alu -overlay 0}
+catch {group new -name foward_unit -overlay 0}
+
+group using dlx_processor
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.data_addr[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.data_rd_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.data_read[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.data_wr_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.data_write[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instr_addr[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instr_rd_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.rst_n}]} ]
+
+group using fetch_io
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.rst_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.select_new_pc_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.pc_mux_data[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.pc_adder_data[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.pc[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.new_pc_out[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.new_pc_in[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.instruction_reg_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.inst_mem_data_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.inst_mem_addr_out[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.PC_INITIAL_ADDRESS}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.PC_DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.INSTRUCTION_WIDTH}]} ]
+
+group using decode_io
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.branch_inst_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.constant_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.data_alu_a_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.data_alu_b_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.imm_inst_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.inst_function_out[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_in[31:0]}]} ] \
+    [subst  {[format {bus(simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[25], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[24], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[23], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[22], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[21], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[20], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[19], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[18], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[17], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[16], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[15], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[14], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[13], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[12], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[11], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[10], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[9], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[8], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[7], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[6], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[5], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[4], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[3], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[2], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[1], simulator::tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[0])}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.jump_inst_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.jump_use_r_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.mem_data_rd_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.mem_data_wr_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.new_pc_in[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.new_pc_out[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.opcode_out[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.pc_offset_out[25:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.read_address1_out[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.read_address2_out[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.reg_wr_addr_out[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.reg_wr_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.rst_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.wb_reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.wb_write_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.wb_write_enable}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.write_back_mux_sel_out}]} ]
+
+group using execute_io
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_function_in[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_opcode_in[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_inst_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.constant_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.data_alu_a_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.data_alu_b_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.ex_mem_reg_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.ex_mem_reg_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.ex_mem_reg_wr_ena}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.imm_inst_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.jmp_inst_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.jmp_use_r_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_rd_en_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_rd_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_wr_en_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_wr_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.new_pc_in[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.new_pc_out[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_a_addr_in[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_b_addr_in[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_addr_in[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_addr_out[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_en_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.rst_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.select_new_pc_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_wr_ena}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.write_back_mux_sel_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.write_back_mux_sel_out}]} ]
+
+group using memory_access_io
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.alu_data_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.alu_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_addr_in[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_addr_out[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_en_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.rst_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.write_back_mux_sel_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.write_back_mux_sel_out}]} ]
+
+group using write_back_io
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.alu_data_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.mem_data_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.reg_wr_addr_in[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.reg_wr_addr_out[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.reg_wr_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.reg_wr_en_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.reg_wr_en_out}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.write_back_u0.write_back_mux_sel}]} ]
+
+group using instruction_rom
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.rom_u0.ADDR_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.MEM_SIZE}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.address[9:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.mem[0:1023]}]} ] \
+    [subst  {simulator::[format {tosco_tb.rom_u0.rd_ena}]} ]
+
+group using data_ram
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.ADDR_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.MEM_SIZE}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.address[9:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.mem[0:1023]}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.rd_ena}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.sp_ram_u0.wr_ena}]} ]
+
+group using branch_control_u0
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.PC_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_inst}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_result}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_val[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_inst}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_use_r}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_val[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.pc_in[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.pc_out[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.reg_a_data_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.reg_b_data_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.select_new_pc}]} ]
+
+group using reg_bank
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.ADDRESS_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.i}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.rd_reg1_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.rd_reg1_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.rd_reg2_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.rd_reg2_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.reg_file[0:31]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.rst_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.write_address[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.write_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.register_bank_u0.write_enable}]} ]
+
+group using alu
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_branch_result}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_in_a[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_in_b[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_function[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_opcode[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_result_reg[32:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.and_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.or_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sub_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sum_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.zero_cmp}]} ]
+
+group using foward_unit
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.REG_ADDR_WIDTH}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.addr_alu_a[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.addr_alu_b[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.alu_a_mux_sel[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.alu_b_mux_sel[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.data_alu_a[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.data_alu_b[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.ex_mem_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.ex_mem_reg_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.ex_mem_reg_wr_ena}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_wr_ena}]} ]
+
+#
+# Cursors
+#
+set time 430ns
+if {[catch {cursor new -name  TimeA -time $time}] != ""} {
+    cursor set -using TimeA -time $time
+}
+
+#
+# Mnemonic Maps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+
+#
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 1366x721+0+0}] != ""} {
+    window geometry "Design Browser 1" 1366x721+0+0
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set -scope [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0}]} ]
+browser set \
+    -signalsort name
+browser yview see [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0}]} ]
+browser timecontrol set -lock 0
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1366x721+0+0}] != ""} {
+    window geometry "Waveform 1" 1366x721+0+0
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 207 \
+    -units ns \
+    -valuewidth 75
+cursor set -using TimeA -time 430ns
+waveform baseline set -time 410ns
+
+
+set groupId0 [waveform add -groups dlx_processor]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups fetch_io]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups decode_io]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups reg_bank]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups execute_io]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups alu]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups foward_unit]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups branch_control_u0]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups memory_access_io]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups write_back_io]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups instruction_rom]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups data_ram]
+waveform hierarchy collapse $groupId0
+
+
+waveform xview limits 0 2000ns
+
+#
+# Waveform Window Links
+#
+
+#
+# Console windows
+#
+console set -windowname Console
+window geometry Console 600x250+0+0
+

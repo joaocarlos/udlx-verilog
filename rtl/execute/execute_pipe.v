@@ -34,6 +34,7 @@ always@(posedge clk, negedge rst_n)begin
    if(!rst_n)begin
       mem_data_rd_en_out <= 0;
       mem_data_wr_en_out <= 0;
+      mem_data_out <= 0;
 //      mem_addr_out <= 0;
       alu_data_out <= 0;
       reg_wr_en_out <= 0;
@@ -45,6 +46,7 @@ always@(posedge clk, negedge rst_n)begin
    else begin
       mem_data_rd_en_out <= mem_data_rd_en_in;
       mem_data_wr_en_out <= mem_data_wr_en_in;
+      mem_data_out <= mem_data_in;
 //      mem_addr_out <= mem_addr_in;
       alu_data_out <= alu_data_in;
       reg_wr_en_out <= reg_wr_en_in;

@@ -1,10 +1,10 @@
-# SimVision Command Script (Mon Jun 16 07:50:09 PM BRT 2014)
+# SimVision Command Script (Thu Jun 19 07:39:35 AM BRT 2014)
 #
 # Version 12.10.p001
 #
 # You can restore this configuration with:
 #
-#      irun -f ../srclist/udlx_test.srclist -access +rwc -input /home/victor/materias_mestrado/sintese_ci/trabalho_dlx/udlx-verilog/sim/run/test_processor.tcl
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -s -input /home/victor/materias_mestrado/sintese_ci/trabalho_dlx/udlx-verilog/sim/run/test_processor.tcl
 #
 
 
@@ -24,7 +24,7 @@ preferences set plugin-enable-interleaveandcompare 0
 # Simulator
 #
 database require simulator -hints {
-	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -input test_processor.tcl"
+	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -s -input test_processor.tcl"
 }
 
 #
@@ -306,7 +306,7 @@ group insert \
 #
 # Cursors
 #
-set time 310ns
+set time 250ns
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -373,8 +373,8 @@ waveform set \
     -signalwidth 207 \
     -units ns \
     -valuewidth 75
-cursor set -using TimeA -time 310ns
-waveform baseline set -time 270ns
+cursor set -using TimeA -time 250ns
+waveform baseline set -time 150ns
 
 
 set groupId0 [waveform add -groups dlx_processor]
@@ -457,7 +457,7 @@ foreach {name attrs} [subst  {
 }
 
 
-waveform xview limits 58ns 698ns
+waveform xview limits 0 500ns
 
 #
 # Waveform Window Links

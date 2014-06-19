@@ -52,11 +52,13 @@ wire [DATA_WIDTH-1:0] jmp_val;
 wire [DATA_WIDTH-1:0] branch_val;
 wire [PC_WIDTH-1:0] pc_jump;
 
-assign pc_jump = {pc_in[31:28],pc_offset,{2{1'b0}}};
+//assign pc_jump = {pc_in[31:28],pc_offset,{2{1'b0}}};
+// como nesta versao PC tem apenas 20 bits
+assign pc_jump = {pc_offset,{2{1'b0}}};
 
 assign select_new_pc = jmp_inst|(branch_inst&branch_result);
 
-assign branch_val = pc_in + reg_b_data_in;
+assign branch_val = pc_in + ({reg_b_data_in,{2{1'b0}}});
 
 assign jmp_val = jmp_use_r?reg_a_data_in:pc_jump;
 

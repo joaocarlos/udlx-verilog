@@ -5,7 +5,7 @@
 #
 # You can restore this configuration with:
 #
-#      irun -f ../srclist/udlx_test.srclist -access +rwc -input /home/victor/materias_mestrado/sintese_ci/trabalho_dlx/udlx-verilog/sim/run/test_processor.tcl
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -s -input /home/victor/materias_mestrado/sintese_ci/trabalho_dlx/udlx-verilog/sim/run/test_processor.tcl
 #
 
 set tcl_prompt1 {puts -nonewline "ncsim> "}

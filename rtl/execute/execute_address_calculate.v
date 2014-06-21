@@ -18,14 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : execute_address_calculate.v
-// CREATED          : 2014-06-06 21:35:39
-// MODIFIED         : 2014-06-16 15:37:47
-// AUTHOR(s)        : victor.valente
-// MANTAINER        : victor.valente
-// AUTHOR'S E-MAIL  : victor.valente@gmail.com
-// -----------------------------------------------------------------------------
-// KEYWORDS: dlx, decoder, instruction
+// FILE NAME   : execute_address_calculate.v
+// KEYWORDS    : dlx, decoder, instruction
 // -----------------------------------------------------------------------------
 // PURPOSE: Top level module of Execute/Address Calculate stage
 // -----------------------------------------------------------------------------
@@ -35,7 +29,7 @@ module execute_address_calculate
    parameter PC_WIDTH = 32,
    parameter INSTRUCTION_WIDTH = 32,
    parameter OPCODE_WIDTH = 6,
-   parameter FUNCTION_WIDTH = 6, 
+   parameter FUNCTION_WIDTH = 6,
    parameter REG_ADDR_WIDTH = 5,
    parameter PC_OFFSET_WIDTH = 26
 )

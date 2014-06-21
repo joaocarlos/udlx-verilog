@@ -18,12 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : pc.v
-// AUTHOR(s)        : jaocarlos
-// MANTAINER        : joaocarlos
-// AUTHOR'S E-MAIL  : joaocarlos@ieee.org
-// -----------------------------------------------------------------------------
-// KEYWORDS: program counter, pc, dlx
+// FILE NAME  : top_fetch.v
+// KEYWORDS   : instruction fetch, program counter, pc, dlx
 // -----------------------------------------------------------------------------
 // PURPOSE:
 // -----------------------------------------------------------------------------
@@ -33,18 +29,18 @@ module top_fetch
     parameter INSTRUCTION_WIDTH = 32,
     parameter PC_INITIAL_ADDRESS = 20'h0
 )(
-    input clk,                                       // CPU core clock
-    input rst_n,                                     // CPU core reset active low
-    input stall,
-    input flush,
+    input clk,                                                // CPU core clock
+    input rst_n,                                              // CPU core reset active low
+    input stall,                                              // Indicates a stall insertion on the datapath
+    input flush,                                              // Force flush in pipeline registers
 
-    input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,       // SRAM input data
-    input select_new_pc_in,                             // Signal used for branch not taken
-    input [PC_DATA_WIDTH-1:0] new_pc_in,                // New value of Program Counter
+    input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,           // SRAM input data
+    input select_new_pc_in,                                   // Signal used for branch not taken
+    input [PC_DATA_WIDTH-1:0] new_pc_in,                      // New value of Program Counter
 
-    output reg [PC_DATA_WIDTH-1:0] new_pc_out,          // Updated value of the Program Counter
+    output reg [PC_DATA_WIDTH-1:0] new_pc_out,                // Updated value of the Program Counter
     output reg [INSTRUCTION_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
-    output [PC_DATA_WIDTH-1:0] inst_mem_addr_out  // Instruction SRAM address bus
+    output [PC_DATA_WIDTH-1:0] inst_mem_addr_out              // Instruction SRAM address bus
 );
 
 
@@ -57,48 +53,23 @@ reg [PC_DATA_WIDTH-1:0] pc_adder_data;
 // -------------------------------------------------------------
 always@(*)
 begin
-    case(select_new_pc_in)
-        0 : pc_mux_data = pc_adder_data;
-        1 : pc_mux_data = new_pc_in;
-    endcase
+  case(select_new_pc_in)
+    0 : pc_mux_data = pc_adder_data;
+    1 : pc_mux_data = new_pc_in;
+  endcase
 end
 
 // -------------------------------------------------------------
 // Program Counter adder
-// [+++] Introduzed a clock enable signal in order to pause PC
-// To-do: Could it be full combinational?
 // -------------------------------------------------------------
-//always@(posedge clk)
-//begin
-//    if(clk_en_in) // May be linked to a general clock enable signal
-//    begin
-//        pc_adder_data <= inst_mem_addr_out + 20'd4;
-//    end
-//end
-//always@(posedge clk, negedge rst_n)
 always@(*)
 begin
-//   if(!rst_n)begin
-//      pc_adder_data <= PC_INITIAL_ADDRESS + 20'd4;
-//   end else begin
-      pc_adder_data = pc + 20'd4;
-//   end
+  pc_adder_data = pc + 20'd4;
 end
 
 // -------------------------------------------------------------
 // Program Counter regireg [FUNCTION_WIDTH-1:0] inst_function,ster
 // -------------------------------------------------------------
-////always@(posedge clk or negedge rst_n)
-////begin
-////    if(rst_n)
-////    begin
-////        inst_mem_addr_out <= PC_INITIAL_ADDRESS;
-////    end else
-////    begin
-////        inst_mem_addr_out <= pc_mux_data;
-////    end
-////end
-
 assign inst_mem_addr_out = pc;
 
 always@(posedge clk or negedge rst_n) begin
@@ -110,7 +81,11 @@ always@(posedge clk or negedge rst_n) begin
 end
 
 
-//the if_id pipe needs only this
+// -------------------------------------------------------------
+// Pipeline Registers
+// The if_id pipe needs only this
+// ++TODO: Plance this procedure into a module.
+// -------------------------------------------------------------
 always@(posedge clk or negedge rst_n)begin
    if(!rst_n) begin
       new_pc_out <= 0;

@@ -18,14 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : forward_unit.v
-// CREATED          : 2014-06-06 21:35:43
-// MODIFIED         : 2014-06-06 22:04:31
-// AUTHOR(s)        : victor.valente
-// MANTAINER        : victor.valente
-// AUTHOR'S E-MAIL  : victor.valente@gmail.com
-// -----------------------------------------------------------------------------
-// KEYWORDS: dlx, decoder, instruction
+// FILE NAME   : forward_unit.v
+// KEYWORDS    : dlx, forwarding, hazzard
 // -----------------------------------------------------------------------------
 // PURPOSE: Provide forwarding functionality to uDLX core
 // -----------------------------------------------------------------------------

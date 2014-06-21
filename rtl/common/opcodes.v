@@ -18,12 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : opcodes.v
-// AUTHOR(s)        : victor.valente
-// MANTAINER        : victor.valente
-// AUTHOR'S E-MAIL  :
-// -----------------------------------------------------------------------------
-// KEYWORDS: dlx, functions, opcodes, parameters
+// FILE NAME   : opcodes.v
+// KEYWORDS    : dlx, functions, opcodes, parameters
 // -----------------------------------------------------------------------------
 // PURPOSE: Provide all instructions operation codes and functions
 // -----------------------------------------------------------------------------

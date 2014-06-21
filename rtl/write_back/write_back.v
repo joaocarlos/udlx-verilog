@@ -1,16 +1,28 @@
-//==================================================================================================
-//  Filename      : write_back.v
-//  Created On    : 2014-06-06 21:35:43
-//  Last Modified : 2014-06-06 22:04:31
-//  Revision      : 
-//  Author        : Victor Valente de Araujo
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : @gmail.com
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME   : write_back.v
+// KEYWORDS    : write-back, multiplexer, combinational, dlx
+// -----------------------------------------------------------------------------
+// PURPOSE: Selects the data which will be stores in register file.
+// -----------------------------------------------------------------------------
 
 module write_back
 #(

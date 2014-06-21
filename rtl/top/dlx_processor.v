@@ -1,16 +1,28 @@
-//==================================================================================================
-//  Filename      : dlx_processor.v
-//  Created On    : 2014-06-07 10:00:00
-//  Last Modified : 2014-06-07 14:00:00
-//  Revision      : 
-//  Author        : Victor Valente de Araujo
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : victor.valente.araujo@gmail.com
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME   : dlx_processor.v
+// KEYWORDS    : dlx, pipeline, core, toplevel
+// -----------------------------------------------------------------------------
+// PURPOSE: Top level entity of uDLX core processor
+// -----------------------------------------------------------------------------
 
 module dlx_processor
 #(
@@ -43,7 +55,7 @@ localparam PC_OFFSET_WIDTH = 26;
 
 localparam PC_INITIAL_ADDRESS = 20'h40000;
 
-//  Description   : 
+//  Description   :
 //
 //
 //==================================================================================================
@@ -132,14 +144,14 @@ instruction_fetch_u0
 (
    .clk(clk),
    .rst_n(rst_n),
-  
-   .stall(stall), 
+
+   .stall(stall),
    .flush(flush),
 
    .inst_mem_data_in(instruction),
    .select_new_pc_in(fetch_select_new_pc),
    .new_pc_in(fetch_new_pc),
-   
+
    .new_pc_out(if_id_new_pc),
    .instruction_reg_out(if_id_instruction),
    .inst_mem_addr_out(instr_addr)
@@ -261,7 +273,7 @@ execute_address_calculate_u0
 );
 
 assign data_addr = ex_mem_alu_data;
-assign data_rd_en = ex_mem_data_rd_en; 
+assign data_rd_en = ex_mem_data_rd_en;
 assign data_wr_en = ex_mem_data_wr_en;
 assign data_write = ex_mem_data_write;
 

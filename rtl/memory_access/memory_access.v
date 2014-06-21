@@ -18,14 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : memory_access.v
-// CREATED          : 2014-06-06 21:35:43
-// MODIFIED         : 2014-06-06 22:04:31
-// AUTHOR(s)        : victor.valente
-// MANTAINER        : victor.valente
-// AUTHOR'S E-MAIL  : victor.valente@gmail.com
-// -----------------------------------------------------------------------------
-// KEYWORDS: dlx, memory access, sdram
+// FILE NAME  : memory_access.v
+// KEYWORDS   : dlx, memory access, sdram, data memory
 // -----------------------------------------------------------------------------
 // PURPOSE: Top level module of Memory Access stage
 // -----------------------------------------------------------------------------
@@ -43,7 +37,7 @@ module memory_access
    input reg_wr_en_in,
    input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
- 
+
    output reg write_back_mux_sel_out,
    output reg [DATA_WIDTH-1:0] alu_data_out,
    output reg reg_wr_en_out,

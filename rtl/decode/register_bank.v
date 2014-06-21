@@ -18,12 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : register_bank.v
-// AUTHOR(s)        : lintaum
-// MANTAINER        : lintaum, joaocarlos
-// AUTHOR'S E-MAIL  : lintonthiago@gmail.com
-// -----------------------------------------------------------------------------
-// KEYWORDS: decoder, registers, dlx
+// FILE NAME   : register_bank.v
+// KEYWORDS    : decoder, registers, dlx
 // -----------------------------------------------------------------------------
 // PURPOSE: General Purpose Registers of uDLX core
 // -----------------------------------------------------------------------------

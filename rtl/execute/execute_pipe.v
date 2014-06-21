@@ -18,12 +18,8 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : execute_pipe.v
-// AUTHOR(s)        : victor.valente
-// MANTAINER        : victor.valente
-// AUTHOR'S E-MAIL  :
-// -----------------------------------------------------------------------------
-// KEYWORDS: dlx, execute, pipeline, registers
+// FILE NAME  : execute_pipe.v
+// KEYWORDS   : dlx, execute, pipeline, registers
 // -----------------------------------------------------------------------------
 // PURPOSE: Execute-Memory pipeline registers
 // -----------------------------------------------------------------------------

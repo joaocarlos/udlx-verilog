@@ -1,16 +1,29 @@
-//==================================================================================================
-//  Filename      : inst_decode_pipe.v
-//  Created On    : 2014-06-06 21:35:39
-//  Last Modified : 2014-06-06 22:35:43
-//  Revision      : 
-//  Author        : Victor Valente de Araujo
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : 
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME   : id_ex_reg.v
+// -----------------------------------------------------------------------------
+// KEYWORDS    : dlx, decoder, instruction, execute, pipeline
+// -----------------------------------------------------------------------------
+// PURPOSE     : Decode/Execute pipeline registers
+// -----------------------------------------------------------------------------
 module inst_decode_pipe
 #(
    parameter INSTRUCTION_WIDTH = 32,
@@ -27,8 +40,8 @@ module inst_decode_pipe
    input rst_n,
    input flush,
 
-   input [DATA_WIDTH-1:0] data_alu_a_in, 
-   input [DATA_WIDTH-1:0] data_alu_b_in, 
+   input [DATA_WIDTH-1:0] data_alu_a_in,
+   input [DATA_WIDTH-1:0] data_alu_b_in,
    input [PC_WIDTH-1:0] new_pc_in,
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
    input [OPCODE_WIDTH-1:0] opcode_in,
@@ -48,8 +61,8 @@ module inst_decode_pipe
    input jump_inst_in,
    input jump_use_r_in,
 
-   output reg [DATA_WIDTH-1:0] data_alu_a_out, 
-   output reg [DATA_WIDTH-1:0] data_alu_b_out, 
+   output reg [DATA_WIDTH-1:0] data_alu_a_out,
+   output reg [DATA_WIDTH-1:0] data_alu_b_out,
    output reg [PC_WIDTH-1:0] new_pc_out,
    output reg [INSTRUCTION_WIDTH-1:0] instruction_out,
    output reg [OPCODE_WIDTH-1:0] opcode_out,

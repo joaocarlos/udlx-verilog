@@ -12,8 +12,6 @@
 ../../rtl/decode/register_bank.v
 ../../rtl/decode/signal_extend.v
 ../../rtl/decode/control.v
-../../rtl/decode/inst_decode_pipe.v
-
 
 ../../rtl/execute/execute_address_calculate.v
 ../../rtl/execute/branch_control.v
@@ -28,6 +26,7 @@
 ../../rtl/top/dlx_processor.v
 
 ../../rtl/pipeline/registers/if_id_reg.v
+../../rtl/pipeline/registers/id_ex_reg.v
 
 ../../rtl/common/sp_ram.v
 ../../rtl/common/rom.v

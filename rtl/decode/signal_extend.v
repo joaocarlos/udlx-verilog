@@ -34,7 +34,6 @@ module signal_extend
 );
 
 // Verificar se vai extender o sinal apenas de uma forma
-// Instruções do tipo JPC usam palavras de 26 bits na entrada (TODO: extender de 26 bits para 32, verificando o OpCode)
 assign signal_out = {{(OUT_DATA_WIDTH-IN_DATA_WIDTH){signal_in[IN_DATA_WIDTH-1]}},signal_in};
 
 endmodule

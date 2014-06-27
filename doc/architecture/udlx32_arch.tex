@@ -467,23 +467,36 @@ instruction time.
       	clock\_in 		          & 1 	& input 	& CPU core clock  	\\ \hline
       	reset\_in 		          & 1	  & input		& CPU core reset  	\\ \hline
       	instruction\_reg\_in    & 32	& input 	& CPU core instruction \\ \hline
-      	new\_pc\_in 	          & 20	& input 	& Updated value of PC \\ \hline
-      	alu\_src\_out 	            & 1	  & output 	& Alu mux source selector \\ \hline
-      	alu\_opcode\_out 	      & 3	  & output 	& Alu opcode  \\ \hline
-      	mem\_data\_wr\_en\_out 	        & 1	& output 	& Data memory write enable  \\ \hline
-      	write\_back\_mux\_sel\_out 	    & 1	& output	  & Write back mux selector \\ \hline
-      	w\_reg\_wr\_en\_out 	    & 1	& output 	& GPR bank write enable signal  \\ \hline
-      	w\_reg\_addr\_out  & TBD   & output   & GPR bank destiny address \\ \hline
-        constant\_out 	        & 32 & output 	& 32-bit Sign-extended constant  \\ \hline
-        data\_alu\_a\_out    & 32   & output  & ALU input A data \\ \hline
-        data\_alu\_b\_out & 32 & output & ALU input B data \\ \hline
-        new\_pc\_out    & 20  & output  & Updated value of PC delayed  \\ \hline
-        branch\_inst\_out         & 1  & output  & Conditional branch instruction  \\ \hline
-
-        jmp\_inst\_out & 1 & output  & Incoditional branch instruction  \\ \hline
+        wb\_write\_enable\_in   & 1   & input   & GPR write enable signal from WB    \\ \hline
+      	wb\_write\_data\_in     & 32   & input  & GPR data to be writen   \\ \hline
+        select\_new\_pc\_in     & 1   & input   & Stall and flush generation in jumps    \\ \hline
+        id\_ex\_mem\_data\_rd\_en\_in & 1   & input   & Forwarding singal for hazzard control    \\ \hline
+        id\_ex\_reg\_wr\_addr\_in & 6   & input   & Forwarding address for hazzard control    \\ \hline
+        reg\_rd\_addr1\_out     & 5	  & output 	& Register file source address A \\ \hline
+        reg\_rd\_addr2\_out     & 5   & output  & Register file source address B \\ \hline
+      	opcode\_out 	          & 6	  & output 	& Instruction OpCode  \\ \hline
+        inst\_function\_out     & 6   & output  & ALU function  \\ \hline
+      	mem\_data\_rd\_en\_out  & 1   & output  & Data memory read enable  \\ \hline
+        mem\_data\_wr\_en\_out 	& 1	  & output 	& Data memory write enable  \\ \hline
+      	write\_back\_mux\_sel\_out 	& 1	& output	  & Write back mux selector \\ \hline
+      	reg\_wr\_en\_out 	      & 1	  & output 	& GPR bank write enable signal  \\ \hline
+      	reg\_addr\_out          & 5   & output  & GPR bank destiny address \\ \hline
+        constant\_out 	        & 32  & output 	& 32-bit Sign-extended constant  \\ \hline
+        imm\_inst\_out          & 1   & output  & TBD  \\ \hline
+        data\_alu\_a\_out       & 32  & output  & ALU input A data \\ \hline
+        data\_alu\_b\_out       & 32  & output  & ALU input B data \\ \hline
+        new\_pc\_out            & 20  & output  & Updated value of PC delayed  \\ \hline
+        pc\_offset\_out         & 26  & output  & TBD  \\ \hline
+        branch\_inst\_out       & 1   & output  & Conditional branch instruction  \\ \hline
+        jmp\_inst\_out          & 1   & output  & Incoditional branch instruction  \\ \hline
+        jump\_use\_r\_out       & 1   & output  & TBD  \\ \hline  
+        rd\_inst\_ena           & 1   & output  & TBD  \\ \hline  
+        stall\_out              & 1   & output  & Insert a stall on the datapath  \\ \hline  
+        general\_flush          & 1   & output  & Flush pipeline registers  \\ \hline  
       \end{longtable}
     \end{center}
     
+  \newpage
   \subsubsection{Internal Datapath} 
   The internal data path is composed by the following components.
 

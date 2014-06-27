@@ -495,7 +495,7 @@ instruction time.
         general\_flush          & 1   & output  & Flush pipeline registers  \\ \hline  
       \end{longtable}
     \end{center}
-    
+
   \newpage
   \subsubsection{Internal Datapath} 
   The internal data path is composed by the following components.
@@ -690,44 +690,7 @@ instruction time.
 
   \FloatBarrier
     \begin{center}
-      \begin{longtable}[pos]{| l | c | c| m{7.5cm} |} \hline         
-        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
-        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
-        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &                
-        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
-        \endfirsthead
-        \hline
-        \multicolumn{4}{|l|}%
-        {{\bfseries continued from previous page}} \\
-        \hline
-        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
-        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
-        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &        
-        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
-        \endhead
-
-        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
-        \endfoot
-
-        \hline
-        \endlastfoot
-        clk\_in               & 1   & input  & CPU core clock    \\ \hline
-        rst\_in               & 1   & input  & CPU core reset    \\ \hline
-        stall             & 1 & input & Indicates a stall insertion on the datapath \\ \hline
-        flush             & 1 & input & Force flush in pipeline registers \\ \hline
-        pc\_in           & 20  & input & Stores the next program counter value.\\ \hline
-        inst\_mem\_data\_in  & 32  & input & Stores the intruction word.    \\ \hline
-        new\_pc\_out       & 20   & output & The next program counter value. \\ \hline
-        instruction\_reg\_out       & 32   & output & CPU core fetched instruction. \\ \hline        
-
-      \end{longtable}
-    \end{center} 
-
-  \subsubsection{Instruction Decode/Execute}
-
-  \FloatBarrier
-    \begin{center}
-      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+      \begin{longtable}[pos]{| l | c | m{7.5cm} |} \hline         
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
@@ -746,20 +709,63 @@ instruction time.
 
         \hline
         \endlastfoot
+        clk               & 1   & CPU core clock    \\ \hline
+        rst               & 1   & CPU core reset    \\ \hline
+        stall             & 1   & Indicates a stall insertion on the datapath \\ \hline
+        flush             & 1   & Force flush in pipeline registers \\ \hline
+        pc\_in            & 20  & Stores the next program counter value.\\ \hline
+        inst\_mem\_data\_in  & 32  & Stores the intruction word.    \\ \hline
+        new\_pc\_out      & 20  & The next program counter value. \\ \hline
+        instruction\_reg\_out  & 32   & CPU core fetched instruction. \\ \hline        
 
-        new\_pc                 & 20  & Stores the next program counter value.\\ \hline
-        data\_alu\_reg\_a       & 32  & Stores the value of ALU input port A.  \\ \hline
-        data\_alu\_reg\_b       & 32  & Stores the value of ALU input port B. \\ \hline
-        constant                & 32  & Stores the signed extended integer constant. \\ \hline
-        instruction\_reg        & 32  & Stores the intruction word.    \\ \hline
-        %select\_rd\_reg           & 1   & TBD  \\ \hline
-        reg\_file\_w\_en\_reg       & 1   & Stores the signal to enable GPR write back. \\ \hline
-        write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
-        alu\_opcode              & 3   & Stores the ALU opperation code. \\ \hline
-        select\_mux\_alu\_a        & TBD & Stores the ALU input data select signal \\ \hline
-        select\_mux\_alu\_b        & TBD & Stores the ALU input data select signal \\ \hline
-        bpb\_branch\_taken       & 1   & Stores BPB result. \\ \hline
+      \end{longtable}
+    \end{center} 
 
+  \subsubsection{Instruction Decode/Execute}
+
+  \FloatBarrier
+    \begin{center}
+      \begin{longtable}[pos]{| l | c | m{7.5cm} |} \hline         
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}%
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        \endhead
+
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+        clk                 & 1   & CPU core clock    \\ \hline
+        rst                 & 1   & CPU core reset    \\ \hline
+        flush               & 1   & Force flush in pipeline registers \\ \hline
+        data\_alu\_a\_in    & 32  & Stores the value of ALU input port A.  \\ \hline
+        data\_alu\_b\_in    & 32  & Stores the value of ALU input port B. \\ \hline
+        new\_pc\_in         & 20  & Stores the next program counter value.\\ \hline
+        instruction\_in     & 32  & Stores the intruction word.    \\ \hline        
+        opcode              & 3   & Stores the instruction opperation code. \\ \hline
+        inst\_function\_in  & 6   & Stores ALU function  \\ \hline
+        reg\_rd\_addr1\_in  & 6   & Stores GPR source A address  \\ \hline
+        reg\_rd\_addr2\_in  & 6   & Stores GPR source B address  \\ \hline
+        reg\_wr\_addr\_in   & 6   & Stores GPR destination address  \\ \hline
+        reg\_wr\_en\_in     & 1   & Stores the signal to enable GPR write back. \\ \hline         
+        constant\_in        & 32  & Stores the signed extended integer constant. \\ \hline 
+        imm\_inst\_in       & 1   & TBD  \\ \hline
+        pc\_offset\_in      & 26  & Stores the PC offset in a J-Instruction \\ \hline
+        mem\_data\_rd\_en\_in & 1  & Stores read enable for data memory \\ \hline
+        mem\_data\_rw\_en\_in & 1  & Stores write enable for data memory \\ \hline
+        write\_back\_mux\_sel\_in  & 1 & Stores the select signal for write back Multiplexer. \\ \hline
+        branch\_inst\_in    & 1   & TBD \\ \hline
+        jump\_inst\_in      & 1   & TBD \\ \hline
+        jump\_use\_r\_in    & 1   & TBD \\ \hline
       \end{longtable}
     \end{center} 
 
@@ -928,7 +934,7 @@ As the SRAM has half word the controller works with a clock twice faster enablin
         \hline
         \endlastfoot
 
-        clk\_x6               & 1   & input  & SDRAM controller input clock. 6 times faster than DLX clock    \\ \hline
+        clk               & 1   & input  & SDRAM controller input clock. 6 times faster than DLX clock    \\ \hline
         rst\_n               & 1   & input  & System asynchronous reset    \\ \hline
         wr\_en           & 1  & input  & Data write enable \\ \hline
         wr\_data\_in           & 32  & input  & Data to be written in the memory \\ \hline

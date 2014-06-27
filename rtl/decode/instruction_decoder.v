@@ -147,7 +147,7 @@ module instruction_decoder
                branch_inst_out = 1'b0;
                jump_inst_out = 1'b0;
                jump_use_r_out = 1'b0;
-            end
+            // end
             end
             //  -------- ----- ----- -----------
             // | Opcode | RS1 | RS2 | Immediate |

@@ -27,6 +27,7 @@
 
 ../../rtl/top/dlx_processor.v
 
+../../rtl/pipeline/registers/if_id_reg.v
 
 ../../rtl/common/sp_ram.v
 ../../rtl/common/rom.v

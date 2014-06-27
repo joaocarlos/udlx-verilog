@@ -18,73 +18,68 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME        : instruction_decode.v
-// CREATED          : 2014-06-07 10:00:00
-// MODIFIED         : 2014-06-16 15:33:24
-// AUTHOR(s)        : victor.valente
-// MANTAINER        : victor.valente
-// AUTHOR'S E-MAIL  : victor.valente.araujo@gmail.com
+// FILE NAME   : instruction_decode.v
 // -----------------------------------------------------------------------------
-// KEYWORDS: dlx, decoder, instruction
+// KEYWORDS    : dlx, decoder, instruction
 // -----------------------------------------------------------------------------
-// PURPOSE: Top level module of Instruction Decode stage
+// PURPOSE     : Top level module of Instruction Decode stage
 // -----------------------------------------------------------------------------
 module instruction_decode
 #(
-    parameter PC_WIDTH = 20,
-    parameter DATA_WIDTH = 32,
-    parameter INSTRUCTION_WIDTH = 32,
-    parameter REG_ADDR_WIDTH = 5,
-    parameter OPCODE_WIDTH = 6,
-    parameter FUNCTION_WIDTH = 6,
-    parameter IMEDIATE_WIDTH = 16,
-    parameter PC_OFFSET_WIDTH = 26
+   parameter PC_WIDTH = 20,
+   parameter DATA_WIDTH = 32,
+   parameter INSTRUCTION_WIDTH = 32,
+   parameter REG_ADDR_WIDTH = 5,
+   parameter OPCODE_WIDTH = 6,
+   parameter FUNCTION_WIDTH = 6,
+   parameter IMEDIATE_WIDTH = 16,
+   parameter PC_OFFSET_WIDTH = 26
 )
 (
-  input clk,
-  input rst_n,
-  input [INSTRUCTION_WIDTH-1:0] instruction_in,
-  input [PC_WIDTH-1:0] new_pc_in,
-  input wb_write_enable,
-  input [DATA_WIDTH-1:0] wb_write_data,
-  input [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr,
-  input select_new_pc_in,
+   input clk,
+   input rst_n,
+   input [INSTRUCTION_WIDTH-1:0] instruction_in,
+   input [PC_WIDTH-1:0] new_pc_in,
+   input wb_write_enable,
+   input [DATA_WIDTH-1:0] wb_write_data,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr,
+   input select_new_pc_in,
 
-//  output alu_src_out,
-  output [REG_ADDR_WIDTH-1:0] reg_rd_addr1_out,
-  output [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
-  output [INSTRUCTION_WIDTH-1:0] instruction_out,
-  output [OPCODE_WIDTH-1:0] opcode_out,
-  output [FUNCTION_WIDTH-1:0] inst_function_out, //added, will exist when the function is zero
-  output mem_data_rd_en_out,
-  output mem_data_wr_en_out,
-  output write_back_mux_sel_out,
-  output reg_wr_en_out,
-  output [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
-  output [DATA_WIDTH-1:0] constant_out,
-  output imm_inst_out,
-  output [DATA_WIDTH-1:0] data_alu_a_out,
-  output [DATA_WIDTH-1:0] data_alu_b_out,
-  output [PC_WIDTH-1:0] new_pc_out,
-  output [PC_OFFSET_WIDTH-1:0] pc_offset_out,
-  output branch_inst_out, 
-  output jump_inst_out,
-  output jump_use_r_out,
+   //  output alu_src_out,
+   output [REG_ADDR_WIDTH-1:0] reg_rd_addr1_out,
+   output [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
+   output [INSTRUCTION_WIDTH-1:0] instruction_out,
+   output [OPCODE_WIDTH-1:0] opcode_out,
+   output [FUNCTION_WIDTH-1:0] inst_function_out, //added, will exist when the function is zero
+   output mem_data_rd_en_out,
+   output mem_data_wr_en_out,
+   output write_back_mux_sel_out,
+   output reg_wr_en_out,
+   output [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
+   output [DATA_WIDTH-1:0] constant_out,
+   output imm_inst_out,
+   output [DATA_WIDTH-1:0] data_alu_a_out,
+   output [DATA_WIDTH-1:0] data_alu_b_out,
+   output [PC_WIDTH-1:0] new_pc_out,
+   output [PC_OFFSET_WIDTH-1:0] pc_offset_out,
+   output branch_inst_out,
+   output jump_inst_out,
+   output jump_use_r_out,
 
-  output rd_inst_ena,
-  output stall_out,
-  output general_flush
+   output rd_inst_ena,
+   output stall_out,
+   output general_flush
 
 );
-//*******************************************************
-//Internal
-//*******************************************************
-//Local Parameters
 
-//Wires
+// -----------------------------------------------------------------------------
+// Internal
+// -----------------------------------------------------------------------------
 
-wire [DATA_WIDTH-1:0] data_alu_a; 
-wire [DATA_WIDTH-1:0] data_alu_b; 
+// Wires
+
+wire [DATA_WIDTH-1:0] data_alu_a;
+wire [DATA_WIDTH-1:0] data_alu_b;
 wire [OPCODE_WIDTH-1:0] opcode;
 wire [FUNCTION_WIDTH-1:0] inst_function;
 wire [REG_ADDR_WIDTH-1:0] reg_rd_addr1;
@@ -105,18 +100,11 @@ wire jump_use_r;
 
 wire decode_flush;
 
-//Registers
+// Ranges dependem das instruções a serem definidas
 
-//*******************************************************
-//General Purpose Signals
-//*******************************************************
-
-//*******************************************************
-//Outputs
-//*******************************************************
-//ranges dependem das instruções a serem definidas
-
-
+// -----------------------------------------------------------------------------
+// Instruction decoder unit
+// -----------------------------------------------------------------------------
 instruction_decoder
 #(
    .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
@@ -148,7 +136,9 @@ instruction_decoder_u0
    .jump_use_r_out(jump_use_r)
 );
 
-
+// -----------------------------------------------------------------------------
+// Register File
+// -----------------------------------------------------------------------------
 register_bank
 #(
    .DATA_WIDTH(DATA_WIDTH),
@@ -168,7 +158,9 @@ register_bank_u0
 );
 
 
-
+// -----------------------------------------------------------------------------
+// General core control Signals
+// -----------------------------------------------------------------------------
 control
 control_u0
 (
@@ -187,6 +179,9 @@ control_u0
 );
 
 
+// -----------------------------------------------------------------------------
+// Immediate value signal extend
+// -----------------------------------------------------------------------------
 signal_extend
 #(
     .OUT_DATA_WIDTH(32),
@@ -198,6 +193,9 @@ signal_extend_u0
     .signal_out(constant)
 );
 
+// -----------------------------------------------------------------------------
+// Pipeline registers ID/EX
+// -----------------------------------------------------------------------------
 inst_decode_pipe
 #(
    .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),

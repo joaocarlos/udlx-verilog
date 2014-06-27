@@ -19,9 +19,6 @@
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
 // FILE NAME        : config.vh
-// AUTHOR(s)        : joaocarlos
-// MANTAINER        : joaocarlos
-// AUTHOR'S E-MAIL  : joaocarlos@ieee.org
 // -----------------------------------------------------------------------------
 // KEYWORDS: parameters, config, dlx
 // -----------------------------------------------------------------------------

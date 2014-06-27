@@ -55,29 +55,25 @@ localparam PC_OFFSET_WIDTH = 26;
 
 localparam PC_INITIAL_ADDRESS = 20'h40000;
 
-//  Description   :
-//
-//
-//==================================================================================================
+// -----------------------------------------------------------------------------
+// Internal signals
+// -----------------------------------------------------------------------------
+// Wires
 
-//*******************************************************
-//Internal
-//*******************************************************
-//Local Parameters
-//`include "general_parameters.v"
-
-//Wires
-
-//if_id wires
+// -----------------------------------------------------------------------------
+// if_id Wires
+// -----------------------------------------------------------------------------
 wire [PC_WIDTH-1:0] if_id_new_pc;
+wire [PC_WIDTH-1:0] new_pc;
 wire [INSTRUCTION_WIDTH-1:0] if_id_instruction;
-//wire [PC_WIDTH-1:0] instr_addr;
-
+// wire [PC_WIDTH-1:0] instr_addr;
 
 wire stall;
 wire flush;
 
-//id_exe wires
+// -----------------------------------------------------------------------------
+// id_exe Wires
+// -----------------------------------------------------------------------------
 wire [REG_ADDR_WIDTH-1:0] id_ex_reg_a_addr;
 wire [REG_ADDR_WIDTH-1:0] id_ex_reg_b_addr;
 wire [INSTRUCTION_WIDTH-1:0] id_ex_instruction;
@@ -99,9 +95,9 @@ wire id_ex_branch_inst;
 wire id_ex_jump_inst;
 wire id_ex_jump_use_r;
 
-
-
-//ex_mem wires
+// -----------------------------------------------------------------------------
+// ex_mem Wires
+// -----------------------------------------------------------------------------
 wire ex_mem_data_rd_en;
 wire ex_mem_data_wr_en;
 wire [DATA_WIDTH-1:0] ex_mem_data_write;
@@ -117,7 +113,9 @@ wire [INSTRUCTION_WIDTH-1:0] ex_mem_instruction;
 wire fetch_select_new_pc;
 wire [PC_WIDTH-1:0] fetch_new_pc;
 
-//mem_wb wires
+// -----------------------------------------------------------------------------
+// mem_wb wires
+// -----------------------------------------------------------------------------
 wire mem_wb_write_back_mux_sel;
 wire [DATA_WIDTH-1:0] mem_wb_mem_data;
 wire [DATA_WIDTH-1:0] mem_wb_alu_data;
@@ -125,15 +123,19 @@ wire mem_wb_reg_wr_en;
 wire [REG_ADDR_WIDTH-1:0] mem_wb_reg_wr_addr;
 wire [INSTRUCTION_WIDTH-1:0] mem_wb_instruction;
 
-
-//wb wires
+// -----------------------------------------------------------------------------
+// wb wires
+// -----------------------------------------------------------------------------
 wire wb_write_enable;
 wire [DATA_WIDTH-1:0] wb_write_data;
 wire [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr;
 
 
 
-// INSTRUCTION FETCH
+// -----------------------------------------------------------------------------
+// Instruction Fetch modules
+// -----------------------------------------------------------------------------
+// Program Counter top level (including PC mux)
 top_fetch
 #(
    .PC_DATA_WIDTH(PC_WIDTH),
@@ -146,19 +148,40 @@ instruction_fetch_u0
    .rst_n(rst_n),
 
    .stall(stall),
-   .flush(flush),
+   // .flush(flush),
 
-   .inst_mem_data_in(instruction),
+   // .inst_mem_data_in(instruction),
    .select_new_pc_in(fetch_select_new_pc),
    .new_pc_in(fetch_new_pc),
 
-   .new_pc_out(if_id_new_pc),
-   .instruction_reg_out(if_id_instruction),
+   // .new_pc_out(if_id_new_pc),
+   .pc_out(new_pc),
+   // .instruction_reg_out(if_id_instruction),
    .inst_mem_addr_out(instr_addr)
 );
 
+// IF/ID Pipeline registers
+if_id_reg
+#(
+   .INSTRUCTION_WIDTH(DATA_WIDTH),
+   .PC_DATA_WIDTH(PC_WIDTH)
+)
+if_id_u0
+(
+   .clk(clk),
+   .rst_n(rst_n),
+   .stall(stall),
+   .flush(flush),
+   .inst_mem_data_in(instruction),
+   .pc_in(new_pc),
 
-// INSTRUCTION DECODE
+   .new_pc_out(if_id_new_pc),
+   .instruction_reg_out(if_id_instruction)
+);
+
+// -----------------------------------------------------------------------------
+// Instruction Decode modules
+// -----------------------------------------------------------------------------
 instruction_decode
 #(
     .PC_WIDTH(PC_WIDTH),
@@ -210,8 +233,9 @@ instruction_decode_u0
    .general_flush(flush)
 );
 
-// EXECUTE
-
+// -----------------------------------------------------------------------------
+// Execute modules
+// -----------------------------------------------------------------------------
 execute_address_calculate
 #(
    .DATA_WIDTH(DATA_WIDTH),
@@ -279,8 +303,9 @@ assign data_write = ex_mem_data_write;
 
 assign ex_mem_reg_data = ex_mem_alu_data;
 
-// MEMORY ACCESS
-//
+// -----------------------------------------------------------------------------
+// Memory Access modules
+// -----------------------------------------------------------------------------
 memory_access
 #(
    .DATA_WIDTH(DATA_WIDTH),
@@ -306,8 +331,9 @@ memory_access_u0
 
 
 
-// WRITE BACK
-//
+// -----------------------------------------------------------------------------
+// Write-back multiplexer
+// -----------------------------------------------------------------------------
 write_back
 #(
    .DATA_WIDTH(DATA_WIDTH),

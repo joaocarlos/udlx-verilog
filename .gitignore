@@ -99,3 +99,4 @@ sympy-plots-for-*.tex/
 *converted*
 modules/instruction_decoder/rtl/instruction_decoder.v
 *simvision*
+.~lock*

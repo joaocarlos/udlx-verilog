@@ -32,14 +32,15 @@ module top_fetch
     input clk,                                                // CPU core clock
     input rst_n,                                              // CPU core reset active low
     input stall,                                              // Indicates a stall insertion on the datapath
-    input flush,                                              // Force flush in pipeline registers
+    // input flush,                                              // Force flush in pipeline registers
 
-    input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,           // SRAM input data
+    // input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,           // SRAM input data
     input select_new_pc_in,                                   // Signal used for branch not taken
     input [PC_DATA_WIDTH-1:0] new_pc_in,                      // New value of Program Counter
 
-    output reg [PC_DATA_WIDTH-1:0] new_pc_out,                // Updated value of the Program Counter
-    output reg [INSTRUCTION_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
+    // output reg [PC_DATA_WIDTH-1:0] new_pc_out,                // Updated value of the Program Counter
+    output [PC_DATA_WIDTH-1:0] pc_out,                    // Value of the Program Counter
+    // output reg [INSTRUCTION_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
     output [PC_DATA_WIDTH-1:0] inst_mem_addr_out              // Instruction SRAM address bus
 );
 
@@ -80,26 +81,27 @@ always@(posedge clk or negedge rst_n) begin
     end
 end
 
+assign pc_out = pc;
 
 // -------------------------------------------------------------
 // Pipeline Registers
 // The if_id pipe needs only this
 // ++TODO: Plance this procedure into a module.
 // -------------------------------------------------------------
-always@(posedge clk or negedge rst_n)begin
-   if(!rst_n) begin
-      new_pc_out <= 0;
-      instruction_reg_out <= 0;
-   end else if(!stall)begin
-      new_pc_out <= pc;
-      if(flush)begin
-         instruction_reg_out <= 0;
-      end
-      else begin
-         instruction_reg_out <= inst_mem_data_in;
-      end
-   end
-end
+// always@(posedge clk or negedge rst_n)begin
+//    if(!rst_n) begin
+//       new_pc_out <= 0;
+//       instruction_reg_out <= 0;
+//    end else if(!stall)begin
+//       new_pc_out <= pc;
+//       if(flush)begin
+//          instruction_reg_out <= 0;
+//       end
+//       else begin
+//          instruction_reg_out <= inst_mem_data_in;
+//       end
+//    end
+// end
 
 
 endmodule

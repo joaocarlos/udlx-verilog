@@ -207,9 +207,9 @@
 	 reset 		& 1	& input		& CPU core reset  	\\ \hline
 	 instruction 	& 32	& input 	& SRAM instruction data \\ \hline
 	 data\_read 	& 32	& input 	& SDRAM read data \\ \hline
-	 instr\_addr 	& 20	& input 	& SRAM address \\ \hline
+	 instr\_addr 	& 20	& output 	& SRAM address \\ \hline
 	 instr\_rd\_en 	& 1	& output 	& SRAM read enable  \\ \hline
-	 data\_addr 	& 13	& output	& SDRAM address \\ \hline
+	 data\_addr 	& 32	& output	& SDRAM address \\ \hline
 	 data\_wr\_en 	& 1	& output 	& SDRAM write enable  \\ \hline
 	 data\_rd\_en 	& 1	& output 	& SDRAM read enable  \\ \hline
    data\_write   & 32 & output  & SDRAM write data  \\ \hline
@@ -677,29 +677,35 @@ instruction time.
 
   \FloatBarrier
     \begin{center}
-      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+      \begin{longtable}[pos]{| l | c | c| m{7.5cm} |} \hline         
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &                
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
         \endfirsthead
         \hline
-        \multicolumn{3}{|l|}%
+        \multicolumn{4}{|l|}%
         {{\bfseries continued from previous page}} \\
         \hline
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
+        \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Direction}} &        
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
         \endhead
 
-        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \hline \multicolumn{4}{|r|}{{continued on next page}} \\ \hline
         \endfoot
 
         \hline
         \endlastfoot
-
-        new\_pc           & 20  & Stores the next program counter value.\\ \hline
-        instruction\_reg  & 32  & Stores the intruction word.    \\ \hline
-        bpb\_branch\_taken       & 1   & Stores BPB result. \\ \hline
+        clk\_in               & 1   & input  & CPU core clock    \\ \hline
+        rst\_in               & 1   & input  & CPU core reset    \\ \hline
+        stall             & 1 & input & Indicates a stall insertion on the datapath \\ \hline
+        flush             & 1 & input & Force flush in pipeline registers \\ \hline
+        pc\_in           & 20  & input & Stores the next program counter value.\\ \hline
+        inst\_mem\_data\_in  & 32  & input & Stores the intruction word.    \\ \hline
+        new\_pc\_out       & 20   & output & The next program counter value. \\ \hline
+        instruction\_reg\_out       & 32   & output & CPU core fetched instruction. \\ \hline        
 
       \end{longtable}
     \end{center} 

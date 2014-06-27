@@ -74,6 +74,25 @@ wire flush;
 // -----------------------------------------------------------------------------
 // id_exe Wires
 // -----------------------------------------------------------------------------
+wire [DATA_WIDTH-1:0] data_alu_a;
+wire [DATA_WIDTH-1:0] data_alu_b;
+wire [OPCODE_WIDTH-1:0] opcode;
+wire [FUNCTION_WIDTH-1:0] inst_function;
+wire [REG_ADDR_WIDTH-1:0] reg_rd_addr1;
+wire [REG_ADDR_WIDTH-1:0] reg_rd_addr2;
+wire [REG_ADDR_WIDTH-1:0] reg_wr_addr;
+wire reg_wr_en;
+wire imm_inst;
+wire [DATA_WIDTH-1:0] constant;
+wire [PC_OFFSET_WIDTH-1:0] pc_offset;
+wire mem_data_wr_en;
+wire mem_data_rd_en;
+wire write_back_mux_sel;
+wire branch_inst;
+wire jump_inst;
+wire jump_use_r;
+wire decode_flush;
+
 wire [REG_ADDR_WIDTH-1:0] id_ex_reg_a_addr;
 wire [REG_ADDR_WIDTH-1:0] id_ex_reg_b_addr;
 wire [INSTRUCTION_WIDTH-1:0] id_ex_instruction;
@@ -166,7 +185,7 @@ if_id_reg
    .INSTRUCTION_WIDTH(DATA_WIDTH),
    .PC_DATA_WIDTH(PC_WIDTH)
 )
-if_id_u0
+if_id_reg_u0
 (
    .clk(clk),
    .rst_n(rst_n),
@@ -182,6 +201,7 @@ if_id_u0
 // -----------------------------------------------------------------------------
 // Instruction Decode modules
 // -----------------------------------------------------------------------------
+
 instruction_decode
 #(
     .PC_WIDTH(PC_WIDTH),
@@ -197,41 +217,106 @@ instruction_decode_u0
 (
    .clk(clk),
    .rst_n(rst_n),
+   // .new_pc_in(if_id_new_pc),
+   .instruction_in(if_id_instruction),
+   .wb_write_enable_in(wb_write_enable),
+   .wb_write_data_in(wb_write_data),
+   .wb_reg_wr_addr_in(wb_reg_wr_addr),
+   .select_new_pc_in(ex_mem_select_new_pc),
+   // ----- Hazzard control -----
+   .id_ex_mem_data_rd_en_in(id_ex_mem_data_rd_en),
+   .id_ex_reg_wr_addr_in(id_ex_reg_wr_addr),
+   // -----
+//   .alu_src_out(alu_src),
+   .reg_rd_addr1_out(reg_rd_addr1), //(id_ex_reg_a_addr),
+   .reg_rd_addr2_out(reg_rd_addr2), //(id_ex_reg_b_addr),
+   // .instruction_out(id_ex_instruction),
+   .opcode_out(opcode),
+   .inst_function_out(inst_function),
+   .mem_data_rd_en_out(mem_data_rd_en),//(id_ex_mem_data_rd_en),
+   .mem_data_wr_en_out(mem_data_wr_en),//(id_ex_mem_data_wr_en),
+   .write_back_mux_sel_out(write_back_mux_sel),//(id_ex_write_back_mux_sel),
+//   .reg_rd_en_out(id_ex_reg_rd_en),
+   .reg_wr_en_out(reg_wr_en),//(id_ex_reg_wr_en),
+   .reg_wr_addr_out(reg_wr_addr),//(id_ex_reg_wr_addr),
+   .constant_out(constant), //(id_ex_constant),
+   .imm_inst_out(imm_inst), //(id_ex_imm_inst),
+   .data_alu_a_out(data_alu_a),//(id_ex_data_alu_a),
+   .data_alu_b_out(data_alu_b),//(id_ex_data_alu_b),
+   // .new_pc_out(id_ex_new_pc),
+
+   .pc_offset_out(pc_offset),//(id_ex_pc_offset),
+   .branch_inst_out(branch_inst),//(id_ex_branch_inst),
+   .jump_inst_out(jump_inst),//(id_ex_jump_inst),
+   .jump_use_r_out(jump_use_r),//(id_ex_jump_use_r),
+
+   .rd_inst_ena_out(instr_rd_en),
+   .stall_out(stall),
+   .general_flush_out(flush),
+   .decode_flush_out(decode_flush)
+);
+
+// -----------------------------------------------------------------------------
+// Pipeline registers ID/EX
+// -----------------------------------------------------------------------------
+id_ex_reg
+#(
+   .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
+   .PC_WIDTH(PC_WIDTH),
+   .DATA_WIDTH(DATA_WIDTH),
+   .OPCODE_WIDTH(OPCODE_WIDTH),
+   .FUNCTION_WIDTH(FUNCTION_WIDTH),
+   .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
+   .IMEDIATE_WIDTH(IMEDIATE_WIDTH),
+   .PC_OFFSET_WIDTH(PC_OFFSET_WIDTH)
+)
+id_ex_reg_u0
+(
+   .clk(clk),
+   .rst_n(rst_n),
+   .flush_in(decode_flush),
+
+   .data_alu_a_in(data_alu_a),
+   .data_alu_b_in(data_alu_b),
    .new_pc_in(if_id_new_pc),
    .instruction_in(if_id_instruction),
+   .opcode_in(opcode),
+   .inst_function_in(inst_function),
+   .reg_rd_addr1_in(reg_rd_addr1),
+   .reg_rd_addr2_in(reg_rd_addr2),
+   .reg_wr_addr_in(reg_wr_addr),
+   .reg_wr_en_in(reg_wr_en),
+   .constant_in(constant),
+   .imm_inst_in(imm_inst),
+   .pc_offset_in(pc_offset),
+   .mem_data_wr_en_in(mem_data_wr_en),
+   .mem_data_rd_en_in(mem_data_rd_en),
+   .write_back_mux_sel_in(write_back_mux_sel),
+   .branch_inst_in(branch_inst),
+   .jump_inst_in(jump_inst),
+   .jump_use_r_in(jump_use_r),
 
-   .wb_write_enable(wb_write_enable),
-   .wb_write_data(wb_write_data),
-   .wb_reg_wr_addr(wb_reg_wr_addr),
-
-   .select_new_pc_in(ex_mem_select_new_pc),
-
-//   .alu_src_out(alu_src),
-   .reg_rd_addr1_out(id_ex_reg_a_addr),
-   .reg_rd_addr2_out(id_ex_reg_b_addr),
-   .instruction_out(id_ex_instruction),
-   .opcode_out(id_ex_opcode),
-   .inst_function_out(id_ex_function),
-   .mem_data_rd_en_out(id_ex_mem_data_rd_en),
-   .mem_data_wr_en_out(id_ex_mem_data_wr_en),
-   .write_back_mux_sel_out(id_ex_write_back_mux_sel),
-//   .reg_rd_en_out(id_ex_reg_rd_en),
-   .reg_wr_en_out(id_ex_reg_wr_en),
-   .reg_wr_addr_out(id_ex_reg_wr_addr),
-   .constant_out(id_ex_constant),
-   .imm_inst_out(id_ex_imm_inst),
+   // Outputs
    .data_alu_a_out(id_ex_data_alu_a),
    .data_alu_b_out(id_ex_data_alu_b),
    .new_pc_out(id_ex_new_pc),
+   .instruction_out(id_ex_instruction),
+   .opcode_out(id_ex_opcode),
+   .inst_function_out(id_ex_function),
+   .reg_rd_addr1_out(id_ex_reg_a_addr),
+   .reg_rd_addr2_out(id_ex_reg_b_addr),
+   .reg_wr_addr_out(id_ex_reg_wr_addr),
+   .reg_wr_en_out(id_ex_reg_wr_en),
+   .constant_out(id_ex_constant),
+   .imm_inst_out(id_ex_imm_inst),
    .pc_offset_out(id_ex_pc_offset),
+   .mem_data_wr_en_out(id_ex_mem_data_wr_en),
+   .mem_data_rd_en_out(id_ex_mem_data_rd_en),
+   .write_back_mux_sel_out(id_ex_write_back_mux_sel),
    .branch_inst_out(id_ex_branch_inst),
    .jump_inst_out(id_ex_jump_inst),
-   .jump_use_r_out(id_ex_jump_use_r),
-
-   .rd_inst_ena(instr_rd_en),
-   .stall_out(stall),
-   .general_flush(flush)
-);
+   .jump_use_r_out(id_ex_jump_use_r)
+ );
 
 // -----------------------------------------------------------------------------
 // Execute modules

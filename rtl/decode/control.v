@@ -25,13 +25,16 @@
 // PURPOSE     : Master core control signals generator.
 // -----------------------------------------------------------------------------
 module control
+#(
+   parameter REG_ADDR_WIDTH = 5
+)
 (/*autoport*/
    input id_ex_mem_data_rd_en,
-   input id_ex_reg_wr_addr,
+   input [REG_ADDR_WIDTH-1:0] id_ex_reg_wr_addr,
    input if_id_rd_reg_a_en,
    input if_id_rd_reg_b_en,
-   input if_id_rd_reg_a_addr,
-   input if_id_rd_reg_b_addr,
+   input [REG_ADDR_WIDTH-1:0] if_id_rd_reg_a_addr,
+   input [REG_ADDR_WIDTH-1:0] if_id_rd_reg_b_addr,
    input select_new_pc,
 
    output reg inst_rd_en,

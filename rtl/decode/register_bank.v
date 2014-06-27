@@ -19,7 +19,7 @@
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
 // FILE NAME   : register_bank.v
-// KEYWORDS    : decoder, registers, dlx
+// KEYWORDS    : decoder, registers, dlx, register file
 // -----------------------------------------------------------------------------
 // PURPOSE: General Purpose Registers of uDLX core
 // -----------------------------------------------------------------------------
@@ -39,13 +39,6 @@ module register_bank
    output [DATA_WIDTH-1:0] rd_reg1_data_out,
    output [DATA_WIDTH-1:0] rd_reg2_data_out
 );
-
-   // ------------------------------------------------------
-   // Internal
-   // ------------------------------------------------------
-   // Local Parameters
-
-   // Wires
 
    // Registers
    reg [DATA_WIDTH-1:0] reg_file [0:(2**ADDRESS_WIDTH)-1];

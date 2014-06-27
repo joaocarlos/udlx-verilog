@@ -1,17 +1,29 @@
-//==================================================================================================
-//  Filename      : control.v
-//  Created On    : 2014-06-06 21:35:29
-//  Last Modified : 2014-06-06 22:39:04
-//  Revision      : 
-//  Author        : Linton Thiago Costa Esteves
-//  Company       : Universidade Federal da Bahia - UFBA
-//  Email         : lintonthiago@gmail.com
+// +----------------------------------------------------------------------------
+// GNU General Public License
+// -----------------------------------------------------------------------------
+// This file is part of uDLX (micro-DeLuX) soft IP-core.
 //
-//  Description   : 
+// uDLX is free soft IP-core: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// uDLX soft core is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//==================================================================================================
-
+// You should have received a copy of the GNU General Public License
+// along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+// +----------------------------------------------------------------------------
+// PROJECT: uDLX core Processor
+// ------------------------------------------------------------------------------
+// FILE NAME   : control.v
+// -----------------------------------------------------------------------------
+// KEYWORDS    : dlx, decoder, instruction, forwarding, hazzard, flush, stall
+// -----------------------------------------------------------------------------
+// PURPOSE     : Master core control signals generator.
+// -----------------------------------------------------------------------------
 module control
 (/*autoport*/
    input id_ex_mem_data_rd_en,
@@ -28,27 +40,26 @@ module control
    output reg decode_flush
 );
 
-//*******************************************************
-//Internal
-//*******************************************************
-//Local Parameters
-//Wires
-
+// -----------------------------------------------------------------------------
+// Internal
+// -----------------------------------------------------------------------------
+// Wires
 wire load_hazard;
 
-//Registers
-
-assign load_hazard = id_ex_mem_data_rd_en&
+// Detext RAW hazzard
+assign load_hazard = id_ex_mem_data_rd_en &
                      (((id_ex_reg_wr_addr==if_id_rd_reg_a_addr)&if_id_rd_reg_a_en)|
-		     ((id_ex_reg_wr_addr==if_id_rd_reg_b_addr)&if_id_rd_reg_b_en));
+                     ((id_ex_reg_wr_addr==if_id_rd_reg_b_addr)&if_id_rd_reg_b_en));
 
 always@(*)begin
+   // Branch Taken
    if(select_new_pc)begin
       inst_rd_en = 1;
       stall = 0;
       general_flush = 1;
       decode_flush = 1;
    end
+   // RAW Hazzard detected
    else if(load_hazard)begin
       inst_rd_en = 0;
       stall = 1;

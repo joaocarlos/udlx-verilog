@@ -27,6 +27,7 @@
 
 ../../rtl/pipeline/registers/if_id_reg.v
 ../../rtl/pipeline/registers/id_ex_reg.v
+../../rtl/pipeline/registers/ex_mem_reg.v
 
 ../../rtl/common/sp_ram.v
 ../../rtl/common/rom.v

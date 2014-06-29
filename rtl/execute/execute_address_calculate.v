@@ -37,7 +37,7 @@ module execute_address_calculate
    input clk,
    input rst_n,
 
-   input flush_in,
+   // input flush_in,
 
 //   input alu_src_in,
    input [OPCODE_WIDTH-1:0] alu_opcode_in,
@@ -48,12 +48,12 @@ module execute_address_calculate
    input [REG_ADDR_WIDTH-1:0] reg_b_addr_in,
    input [DATA_WIDTH-1:0] constant_in,
    input imm_inst_in,
-   input write_back_mux_sel_in,
-   input reg_wr_en_in,
-   input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
+   // input write_back_mux_sel_in,
+   // input reg_wr_en_in,
+   // input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
    input [PC_WIDTH-1:0] new_pc_in,
-   input mem_data_rd_en_in,
-   input mem_data_wr_en_in,
+   // input mem_data_rd_en_in,
+   // input mem_data_wr_en_in,
    input [PC_OFFSET_WIDTH-1:0] pc_offset_in,
    input branch_inst_in,
    input jmp_inst_in,
@@ -68,16 +68,16 @@ module execute_address_calculate
    input wb_reg_wr_ena_in,
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
 
-   output mem_data_rd_en_out,
-   output mem_data_wr_en_out,
+   // output mem_data_rd_en_out,
+   // output mem_data_wr_en_out,
    output [DATA_WIDTH-1:0] mem_data_out,
    output [DATA_WIDTH-1:0] alu_data_out,
-   output reg_wr_en_out,
-   output [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
-   output write_back_mux_sel_out,
-   output select_new_pc_out,
-   output [PC_WIDTH-1:0] new_pc_out,
-   output [INSTRUCTION_WIDTH-1:0] instruction_out,
+   // output reg_wr_en_out,
+   // output [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
+   // output write_back_mux_sel_out,
+   // output select_new_pc_out,
+   // output [PC_WIDTH-1:0] new_pc_out,
+   // output [INSTRUCTION_WIDTH-1:0] instruction_out,
 
    output [PC_WIDTH-1:0] fetch_new_pc_out,
    output fetch_select_new_pc_out
@@ -95,7 +95,7 @@ wire [DATA_WIDTH-1:0] alu_b_mux_sel;
 wire [DATA_WIDTH-1:0] alu_data_in_a;
 wire [DATA_WIDTH-1:0] alu_data_in_b;
 
-wire [DATA_WIDTH-1:0] alu_data;
+// wire [DATA_WIDTH-1:0] alu_data;
 
 // -----------------------------------------------------------------------------
 // Branch Control
@@ -178,48 +178,49 @@ alu_u0
 
 
   .alu_branch_result_out(branch_result),
-  .alu_data_out(alu_data)
+  .alu_data_out(alu_data_out)
 );
 
+assign mem_data_out = alu_b_mux_sel;
 
 // -----------------------------------------------------------------------------
 // EXE_MEM Pipeline registers
 // -----------------------------------------------------------------------------
-execute_pipe
-#(
-    .PC_WIDTH(PC_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH),
-    .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
-    .REG_ADDR_WIDTH(REG_ADDR_WIDTH)
-)
-execute_pipe_u0
-(
-   .clk(clk),
-   .rst_n(rst_n),
-   .flush_in(flush_in),
+// execute_pipe
+// #(
+//     .PC_WIDTH(PC_WIDTH),
+//     .DATA_WIDTH(DATA_WIDTH),
+//     .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
+//     .REG_ADDR_WIDTH(REG_ADDR_WIDTH)
+// )
+// execute_pipe_u0
+// (
+//    .clk(clk),
+//    .rst_n(rst_n),
+//    .flush_in(flush_in),
 
-   .mem_data_rd_en_in(mem_data_rd_en_in),
-   .mem_data_wr_en_in(mem_data_wr_en_in),
-   .mem_data_in(alu_b_mux_sel),
-   .alu_data_in(alu_data),
-   .reg_wr_en_in(reg_wr_en_in),
-   .reg_wr_addr_in(reg_wr_addr_in),
-   .write_back_mux_sel_in(write_back_mux_sel_in),
-   .select_new_pc_in(fetch_select_new_pc_out),
-   .new_pc_in(fetch_new_pc_out),
-   .instruction_in(instruction_in),
+//    .mem_data_rd_en_in(mem_data_rd_en_in),
+//    .mem_data_wr_en_in(mem_data_wr_en_in),
+//    .mem_data_in(alu_b_mux_sel),
+//    .alu_data_in(alu_data),
+//    .reg_wr_en_in(reg_wr_en_in),
+//    .reg_wr_addr_in(reg_wr_addr_in),
+//    .write_back_mux_sel_in(write_back_mux_sel_in),
+//    .select_new_pc_in(fetch_select_new_pc_out),
+//    .new_pc_in(fetch_new_pc_out),
+//    .instruction_in(instruction_in),
 
-   .mem_data_rd_en_out(mem_data_rd_en_out),
-   .mem_data_wr_en_out(mem_data_wr_en_out),
-   .mem_data_out(mem_data_out),
-   .alu_data_out(alu_data_out),
-   .reg_wr_en_out(reg_wr_en_out),
-   .reg_wr_addr_out(reg_wr_addr_out),
-   .write_back_mux_sel_out(write_back_mux_sel_out),
-   .select_new_pc_out(select_new_pc_out),
-   .new_pc_out(new_pc_out),
-   .instruction_out(instruction_out)
-);
+//    .mem_data_rd_en_out(mem_data_rd_en_out),
+//    .mem_data_wr_en_out(mem_data_wr_en_out),
+//    .mem_data_out(mem_data_out),
+//    .alu_data_out(alu_data_out),
+//    .reg_wr_en_out(reg_wr_en_out),
+//    .reg_wr_addr_out(reg_wr_addr_out),
+//    .write_back_mux_sel_out(write_back_mux_sel_out),
+//    .select_new_pc_out(select_new_pc_out),
+//    .new_pc_out(new_pc_out),
+//    .instruction_out(instruction_out)
+// );
 
 
 

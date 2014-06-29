@@ -432,14 +432,16 @@ ex_mem_reg_u0
 
 // -----------------------------------------------------------------------------
 // Memory Access modules
+// Due to data memory to be outside Core processor, this RTL contains only
+// the pipeline registers. The memory access is due by the Memory Interface.
 // -----------------------------------------------------------------------------
-memory_access
+mem_wb_reg
 #(
    .DATA_WIDTH(DATA_WIDTH),
    .INSTRUCTION_WIDTH(INSTRUCTION_WIDTH),
    .REG_ADDR_WIDTH(REG_ADDR_WIDTH)
  )
-memory_access_u0
+mem_wb_reg_u0
 (
    .clk(clk),
    .rst_n(rst_n),

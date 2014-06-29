@@ -18,12 +18,12 @@
 // +----------------------------------------------------------------------------
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
-// FILE NAME  : memory_access.v
+// FILE NAME  : mem_wb_reg.v
 // KEYWORDS   : dlx, memory access, sdram, data memory
 // -----------------------------------------------------------------------------
 // PURPOSE: Top level module of Memory Access stage
 // -----------------------------------------------------------------------------
-module memory_access
+module mem_wb_reg
 #(
    parameter DATA_WIDTH = 32,
    parameter INSTRUCTION_WIDTH = 32,

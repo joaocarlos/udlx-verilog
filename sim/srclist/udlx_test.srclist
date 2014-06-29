@@ -17,9 +17,6 @@
 ../../rtl/execute/branch_control.v
 ../../rtl/execute/forward_unit.v
 ../../rtl/execute/alu.v
-../../rtl/execute/execute_pipe.v
-
-../../rtl/memory_access/memory_access.v
 
 ../../rtl/write_back/write_back.v
 
@@ -28,6 +25,7 @@
 ../../rtl/pipeline/registers/if_id_reg.v
 ../../rtl/pipeline/registers/id_ex_reg.v
 ../../rtl/pipeline/registers/ex_mem_reg.v
+../../rtl/pipeline/registers/mem_wb_reg.v
 
 ../../rtl/common/sp_ram.v
 ../../rtl/common/rom.v

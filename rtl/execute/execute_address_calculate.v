@@ -37,7 +37,7 @@ module execute_address_calculate
    input clk,
    input rst_n,
 
-   input flush,
+   input flush_in,
 
 //   input alu_src_in,
    input [OPCODE_WIDTH-1:0] alu_opcode_in,
@@ -60,13 +60,13 @@ module execute_address_calculate
    input jmp_use_r_in,
 //   input [DATA_WIDTH-1:0] exe_mem_data_in,
 //   input [DATA_WIDTH-1:0] mem_wb_data_in,
-   input [DATA_WIDTH-1:0] ex_mem_reg_data,
-   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr,
-   input ex_mem_reg_wr_ena,
-   input [DATA_WIDTH-1:0] wb_reg_data,
-   input [REG_ADDR_WIDTH-1:0] wb_reg_addr,
-   input wb_reg_wr_ena,
-   input [INSTRUCTION_WIDTH-1:0] instruction_in,
+   input [DATA_WIDTH-1:0] ex_mem_reg_data_in,
+   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr_in,
+   input ex_mem_reg_wr_ena_in,
+   input [DATA_WIDTH-1:0] wb_reg_data_in,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_addr_in,
+   input wb_reg_wr_ena_in,
+   input [INSTRUCTION_WIDTH-1:0] instruction_in_in,
 
    output mem_data_rd_en_out,
    output mem_data_wr_en_out,
@@ -108,17 +108,17 @@ branch_control
 )
 branch_control_u0
 (
-   .jmp_inst(jmp_inst_in),
-   .jmp_use_r(jmp_use_r_in),
-   .branch_inst(branch_inst_in),
-   .branch_result(branch_result),
+   .jmp_inst_in(jmp_inst_in),
+   .jmp_use_r_in(jmp_use_r_in),
+   .branch_inst_in(branch_inst_in),
+   .branch_result_in(branch_result),
    .pc_in(new_pc_in),
    .reg_a_data_in(alu_data_in_a),
    .reg_b_data_in(alu_data_in_b),
-   .pc_offset(pc_offset_in),
+   .pc_offset_in(pc_offset_in),
 
-   .select_new_pc(fetch_select_new_pc_out),
-   .pc_out(fetch_new_pc_out)
+   .select_new_pc_out(fetch_select_new_pc_out),
+   .pc_out_out(fetch_new_pc_out)
 );
 
 // -----------------------------------------------------------------------------
@@ -131,18 +131,19 @@ forward_unit
 )
 forward_unit
 (
-   .data_alu_a(data_alu_a_in),
-   .data_alu_b(data_alu_b_in),
-   .addr_alu_a(reg_a_addr_in),
-   .addr_alu_b(reg_b_addr_in),
-   .ex_mem_data(ex_mem_reg_data),
-   .ex_mem_reg_addr(ex_mem_reg_addr),
-   .ex_mem_reg_wr_ena(ex_mem_reg_wr_ena),
-   .wb_reg_data(wb_reg_data),
-   .wb_reg_addr(wb_reg_addr),
-   .wb_reg_wr_ena(wb_reg_wr_ena),
-   .alu_a_mux_sel(alu_data_in_a),
-   .alu_b_mux_sel(alu_b_mux_sel)
+   .data_alu_a_in(data_alu_a_in),
+   .data_alu_b_in(data_alu_b_in),
+   .addr_alu_a_in(reg_a_addr_in),
+   .addr_alu_b_in(reg_b_addr_in),
+   .ex_mem_data_in(ex_mem_reg_data),
+   .ex_mem_reg_addr_in(ex_mem_reg_addr),
+   .ex_mem_reg_wr_ena_in(ex_mem_reg_wr_ena),
+   .wb_reg_data_in(wb_reg_data),
+   .wb_reg_addr_in(wb_reg_addr),
+   .wb_reg_wr_ena_in(wb_reg_wr_ena),
+
+   .alu_a_mux_sel_out(alu_data_in_a),
+   .alu_b_mux_sel_out(alu_b_mux_sel)
 );
 
 // -----------------------------------------------------------------------------
@@ -156,7 +157,7 @@ mux_data_u0
 (
    .data_a_in(alu_b_mux_sel),
    .data_b_in(constant_in),
-   .mux_sel(imm_inst_in),
+   .mux_sel_in(imm_inst_in),
    .data_out(alu_data_in_b)
 );
 
@@ -170,14 +171,14 @@ alu
 )
 alu_u0
 (
-  .alu_data_in_a(alu_data_in_a),
-  .alu_data_in_b(alu_data_in_b),
-  .alu_opcode(alu_opcode_in),
-  .alu_function(alu_function_in),
+  .alu_data_a_in(alu_data_in_a),
+  .alu_data_b_in(alu_data_in_b),
+  .alu_opcode_in(alu_opcode_in),
+  .alu_function_in(alu_function_in),
 
 
-  .alu_branch_result(branch_result),
-  .alu_data_out(alu_data)
+  .alu_branch_result_out(branch_result),
+  .alu_data_out_out(alu_data)
 );
 
 
@@ -195,7 +196,7 @@ execute_pipe_u0
 (
    .clk(clk),
    .rst_n(rst_n),
-   .flush(flush),
+   .flush_in(flush_in),
 
    .mem_data_rd_en_in(mem_data_rd_en_in),
    .mem_data_wr_en_in(mem_data_wr_en_in),

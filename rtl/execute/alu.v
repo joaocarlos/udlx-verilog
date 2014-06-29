@@ -21,7 +21,7 @@
 // FILE NAME   : alu.v
 // KEYWORDS    : arithmetic, logic, alu, dlx
 // -----------------------------------------------------------------------------
-// PURPOSE:
+// PURPOSE     : Provide logical and arithmetical opperations.
 // -----------------------------------------------------------------------------
 module alu
 #(
@@ -30,87 +30,86 @@ module alu
    parameter FUNCTION_WIDTH = 6
 )
 (
-   input [DATA_WIDTH-1:0] alu_data_in_a,   // Input data from register file port A
-   input [DATA_WIDTH-1:0] alu_data_in_b,   // Input data from register file port A
-   input [OPCODE_WIDTH-1:0] alu_opcode,   // Instruction opcode
-   input [FUNCTION_WIDTH-1:0] alu_function,   // Instruction function
+   input [DATA_WIDTH-1:0] alu_data_a_in,     // Input data from register file port A
+   input [DATA_WIDTH-1:0] alu_data_b_in,     // Input data from register file port A
+   input [OPCODE_WIDTH-1:0] alu_opcode_in,      // Instruction opcode
+   input [FUNCTION_WIDTH-1:0] alu_function_in,  // Instruction function
 
-   output reg alu_branch_result,
+   output reg alu_branch_result_out,
    output [DATA_WIDTH-1:0] alu_data_out    // ALU output result data
 
 );
 
    reg [DATA_WIDTH:0] alu_result_reg;
 
-`include "opcodes.v"
+   `include "opcodes.v"
 
-wire [DATA_WIDTH-1:0] sum_result;
-wire [DATA_WIDTH-1:0] sub_result;
-wire [DATA_WIDTH-1:0] and_result;
-wire [DATA_WIDTH-1:0] or_result;
+   wire [DATA_WIDTH-1:0] sum_result;
+   wire [DATA_WIDTH-1:0] sub_result;
+   wire [DATA_WIDTH-1:0] and_result;
+   wire [DATA_WIDTH-1:0] or_result;
 
-assign sum_result = alu_data_in_a + alu_data_in_b;
-assign sub_result = alu_data_in_a - alu_data_in_b;
-assign and_result = alu_data_in_a && alu_data_in_b;
-assign or_result = alu_data_in_a || alu_data_in_b;
+   assign sum_result = alu_data_a_in + alu_data_b_in;
+   assign sub_result = alu_data_a_in - alu_data_b_in;
+   assign and_result = alu_data_a_in && alu_data_b_in;
+   assign or_result  = alu_data_a_in || alu_data_b_in;
+   assign zero_cmp   = alu_data_a_in == {DATA_WIDTH{1'b0}};
 
-assign zero_cmp = alu_data_in_a == 0;
-
-assign alu_data_out = alu_result_reg;
+   assign alu_data_out = alu_result_reg;
 
 
-always@(*)
-begin
-   alu_result_reg = {DATA_WIDTH{1'b0}};
-   if(alu_opcode==R_TYPE_OPCODE)begin
-      case (alu_function)
-         ADD_FUNCTION :
-            alu_result_reg = sum_result;
-         SUB_FUNCTION :
-            alu_result_reg = sub_result;
-         AND_FUNCTION :
-            alu_result_reg = and_result;
-         OR_FUNCTION :
-            alu_result_reg = or_result;
-         MULT_FUNCTION :
-            alu_result_reg = alu_data_in_a * alu_data_in_b;
-         DIV_FUNCTION :
-            alu_result_reg = alu_data_in_a / alu_data_in_b;
-         CMP_FUNCTION :
-            alu_result_reg = alu_data_in_a - alu_data_in_b;
-         NOT_FUNCTION :
-            alu_result_reg = ~alu_data_in_b;
-         default :
-            alu_result_reg = {DATA_WIDTH{1'b0}};
-      endcase
+   always@(*)
+   begin
+      alu_result_reg = {DATA_WIDTH{1'b0}};
+      if(alu_opcode_in == R_TYPE_OPCODE)begin
+         case (alu_function_in)
+            ADD_FUNCTION :
+               alu_result_reg = sum_result;
+            SUB_FUNCTION :
+               alu_result_reg = sub_result;
+            AND_FUNCTION :
+               alu_result_reg = and_result;
+            OR_FUNCTION :
+               alu_result_reg = or_result;
+            MULT_FUNCTION :
+               alu_result_reg = alu_data_a_in * alu_data_b_in;
+            DIV_FUNCTION :
+               alu_result_reg = alu_data_a_in / alu_data_b_in;
+            CMP_FUNCTION :
+               alu_result_reg = alu_data_a_in - alu_data_b_in;
+            NOT_FUNCTION :
+               alu_result_reg = ~alu_data_b_in;
+            default :
+               alu_result_reg = {DATA_WIDTH{1'b0}};
+         endcase
+      end
+      else begin
+         case (alu_opcode_in)
+            ADDI_OPCODE,LW_OPCODE,SW_OPCODE:
+               alu_result_reg = sum_result;
+            SUBI_OPCODE :
+               alu_result_reg = sub_result;
+            ANDI_OPCODE :
+               alu_result_reg = and_result;
+            ORI_OPCODE :
+               alu_result_reg = or_result;
+            default :
+               alu_result_reg = {DATA_WIDTH{1'b0}};
+         endcase
+      end
+    end
+
+
+   always@(*) begin
+     case (alu_opcode_in)
+        BEQZ_OPCODE :
+           alu_branch_result_out = zero_cmp;
+        BNEZ_OPCODE :
+           alu_branch_result_out = ~zero_cmp;
+        default :
+           alu_branch_result_out = {DATA_WIDTH{1'b0}};
+     endcase
    end
-   else begin
-      case (alu_opcode)
-         ADDI_OPCODE,LW_OPCODE,SW_OPCODE:
-            alu_result_reg = sum_result;
-         SUBI_OPCODE :
-            alu_result_reg = sub_result;
-         ANDI_OPCODE :
-            alu_result_reg = and_result;
-         ORI_OPCODE :
-            alu_result_reg = or_result;
-         default :
-            alu_result_reg = {DATA_WIDTH{1'b0}};
-      endcase
-   end
- end
-
-
-always@(*) begin
-  case (alu_opcode)
-     BEQZ_OPCODE :
-        alu_branch_result = zero_cmp;
-     BNEZ_OPCODE :
-        alu_branch_result = ~zero_cmp;
-     default :
-        alu_branch_result = {DATA_WIDTH{1'b0}};
-  endcase
-end
 
 
 endmodule

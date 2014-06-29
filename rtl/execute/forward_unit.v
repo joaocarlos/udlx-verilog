@@ -21,7 +21,7 @@
 // FILE NAME   : forward_unit.v
 // KEYWORDS    : dlx, forwarding, hazzard
 // -----------------------------------------------------------------------------
-// PURPOSE: Provide forwarding functionality to uDLX core
+// PURPOSE     : Provide forwarding functionality to uDLX core
 // -----------------------------------------------------------------------------
 module forward_unit
 #(
@@ -29,46 +29,58 @@ module forward_unit
    parameter REG_ADDR_WIDTH = 5
  )
  (
-   input [DATA_WIDTH-1:0] data_alu_a,
-   input [DATA_WIDTH-1:0] data_alu_b,
-   input [REG_ADDR_WIDTH-1:0] addr_alu_a,
-   input [REG_ADDR_WIDTH-1:0] addr_alu_b,
-   input [DATA_WIDTH-1:0] ex_mem_data,
-   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr,
-   input ex_mem_reg_wr_ena,
-   input [DATA_WIDTH-1:0] wb_reg_data,
-   input [REG_ADDR_WIDTH-1:0] wb_reg_addr,
-   input wb_reg_wr_ena,
-   output reg [DATA_WIDTH-1:0] alu_a_mux_sel,
-   output reg [DATA_WIDTH-1:0] alu_b_mux_sel
+   input [DATA_WIDTH-1:0] data_alu_a_in,
+   input [DATA_WIDTH-1:0] data_alu_b_in,
+   input [REG_ADDR_WIDTH-1:0] addr_alu_a_in,
+   input [REG_ADDR_WIDTH-1:0] addr_alu_b_in,
+   input [DATA_WIDTH-1:0] ex_mem_data_in,
+   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr_in,
+   input ex_mem_reg_wr_ena_in,
+   input [DATA_WIDTH-1:0] wb_reg_data_in,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_addr_in,
+   input wb_reg_wr_ena_in,
+   output reg [DATA_WIDTH-1:0] alu_a_mux_sel_out,
+   output reg [DATA_WIDTH-1:0] alu_b_mux_sel_out
 );
 
-//a ALU input
-always@(*)begin
-   if((addr_alu_a==ex_mem_reg_addr)&ex_mem_reg_wr_ena)begin
-      alu_a_mux_sel <= ex_mem_data;
+   // Port-A ALU input
+   always@(*)begin
+      // Forwarding data from MEM -> EXE
+      if((addr_alu_a_in == ex_mem_reg_addr_in) & ex_mem_reg_wr_ena_in)
+      begin
+         alu_a_mux_sel_out <= ex_mem_data_in;
+      end
+      // Forwarding data from WB -> EXE
+      else if((addr_alu_a_in == wb_reg_addr_in) & wb_reg_wr_ena_in)
+      begin
+         alu_a_mux_sel_out <= wb_reg_data_in;
+      end
+      // No forwarding
+      else
+      begin
+         alu_a_mux_sel_out <= data_alu_a_in;
+      end
    end
-   else if((addr_alu_a==wb_reg_addr)&wb_reg_wr_ena)begin
-      alu_a_mux_sel <= wb_reg_data;
-   end
-   else begin
-      alu_a_mux_sel <= data_alu_a;
-   end
-end
 
 
-// b ALU input
-always@(*)begin
-   if((addr_alu_b==ex_mem_reg_addr)&ex_mem_reg_wr_ena)begin
-      alu_b_mux_sel <= ex_mem_data;
+   // Port-B ALU input
+   always@(*)begin
+      // Forwarding data from MEM -> EXE
+      if((addr_alu_b_in == ex_mem_reg_addr_in) & ex_mem_reg_wr_ena_in)
+      begin
+         alu_b_mux_sel_out <= ex_mem_data_in;
+      end
+      // Forwarding data from WB -> EXE
+      else if((addr_alu_b_in == wb_reg_addr_in) & wb_reg_wr_ena_in)
+      begin
+         alu_b_mux_sel_out <= wb_reg_data_in;
+      end
+      // No forwarding
+      else
+      begin
+         alu_b_mux_sel_out <= data_alu_b_in;
+      end
    end
-   else if((addr_alu_b==wb_reg_addr)&wb_reg_wr_ena)begin
-      alu_b_mux_sel <= wb_reg_data;
-   end
-   else begin
-      alu_b_mux_sel <= data_alu_b;
-   end
-end
 
 
 endmodule

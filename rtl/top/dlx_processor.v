@@ -201,7 +201,6 @@ if_id_reg_u0
 // -----------------------------------------------------------------------------
 // Instruction Decode modules
 // -----------------------------------------------------------------------------
-
 instruction_decode
 #(
     .PC_WIDTH(PC_WIDTH),
@@ -336,7 +335,7 @@ execute_address_calculate_u0
    .clk(clk),
    .rst_n(rst_n),
 
-   .flush(flush),
+   .flush_in(flush),
 
    .alu_opcode_in(id_ex_opcode),
    .alu_function_in(id_ex_function),
@@ -359,12 +358,12 @@ execute_address_calculate_u0
    .jmp_use_r_in(id_ex_jump_use_r),
    .instruction_in(id_ex_instruction),
 
-   .ex_mem_reg_data(ex_mem_reg_data),//input
-   .ex_mem_reg_addr(ex_mem_reg_wr_addr),//input
-   .ex_mem_reg_wr_ena(ex_mem_reg_wr_en),//input
-   .wb_reg_data(wb_write_data),
-   .wb_reg_addr(wb_reg_wr_addr),
-   .wb_reg_wr_ena(wb_write_enable),
+   .ex_mem_reg_data_in(ex_mem_reg_data),//input
+   .ex_mem_reg_addr_in(ex_mem_reg_wr_addr),//input
+   .ex_mem_reg_wr_ena_in(ex_mem_reg_wr_en),//input
+   .wb_reg_data_in(wb_write_data),
+   .wb_reg_addr_in(wb_reg_wr_addr),
+   .wb_reg_wr_ena_in(wb_write_enable),
 
    .mem_data_rd_en_out(ex_mem_data_rd_en), //data memory read enable
    .mem_data_wr_en_out(ex_mem_data_wr_en), //data memory write enable

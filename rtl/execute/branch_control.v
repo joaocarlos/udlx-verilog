@@ -19,9 +19,9 @@
 // PROJECT: uDLX core Processor
 // ------------------------------------------------------------------------------
 // FILE NAME   : branch_control.v
-// KEYWORDS    : branch control, dlx
+// KEYWORDS    : branch control, dlx, execute, jump
 // -----------------------------------------------------------------------------
-// PURPOSE:
+// PURPOSE     : Provide internal branch and jump control.
 // -----------------------------------------------------------------------------
 module branch_control
 #(
@@ -30,34 +30,34 @@ module branch_control
    parameter PC_OFFSET_WIDTH = 25
 )
 (
-   input jmp_inst,
-   input jmp_use_r,
-   input branch_inst,
-   input branch_result,
+   input jmp_inst_in,
+   input jmp_use_r_in,
+   input branch_inst_in,
+   input branch_result_in,
    input [PC_WIDTH-1:0] pc_in,
    input [DATA_WIDTH-1:0] reg_a_data_in,
    input [DATA_WIDTH-1:0] reg_b_data_in,
-   input [PC_OFFSET_WIDTH-1:0] pc_offset,
+   input [PC_OFFSET_WIDTH-1:0] pc_offset_in,
 
-   output select_new_pc,
+   output select_new_pc_out,
    output [PC_WIDTH-1:0] pc_out
 
 );
 
-wire [DATA_WIDTH-1:0] jmp_val;
-wire [DATA_WIDTH-1:0] branch_val;
-wire [PC_WIDTH-1:0] pc_jump;
+   wire [DATA_WIDTH-1:0] jmp_val;
+   wire [DATA_WIDTH-1:0] branch_val;
+   wire [PC_WIDTH-1:0] pc_jump;
 
-//assign pc_jump = {pc_in[31:28],pc_offset,{2{1'b0}}};
-// como nesta versao PC tem apenas 20 bits
-assign pc_jump = {pc_offset,{2{1'b0}}};
+   //assign pc_jump = {pc_in[31:28],pc_offset_in,{2{1'b0}}};
+   // como nesta versao PC tem apenas 20 bits
+   assign pc_jump = {pc_offset_in,{2{1'b0}}};
 
-assign select_new_pc = jmp_inst|(branch_inst&branch_result);
+   assign select_new_pc_out = jmp_inst_in | (branch_inst_in & branch_result_in);
 
-assign branch_val = pc_in + ({reg_b_data_in,{2{1'b0}}});
+   assign branch_val = pc_in + ({reg_b_data_in,{2{1'b0}}});
 
-assign jmp_val = jmp_use_r?reg_a_data_in:pc_jump;
+   assign jmp_val = jmp_use_r_in ? reg_a_data_in : pc_jump;
 
-assign pc_out = jmp_inst?jmp_val:branch_val;
+   assign pc_out = jmp_inst_in ? jmp_val : branch_val;
 
 endmodule

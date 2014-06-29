@@ -34,7 +34,7 @@ module execute_pipe
    input clk,
    input rst_n,
 
-   input flush,
+   input flush_in,
 
    //memory signals
    input mem_data_rd_en_in,
@@ -76,7 +76,7 @@ always@(posedge clk, negedge rst_n)begin
       instruction_out <= 0;
    end
    else begin
-      if(flush)begin
+      if(flush_in)begin
           mem_data_rd_en_out <= 0;
           mem_data_wr_en_out <= 0;
           mem_data_out <= 0;

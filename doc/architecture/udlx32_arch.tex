@@ -539,32 +539,33 @@ instruction time.
         \hline
         \endlastfoot
 
-        clock\_in               & 1   & input   & CPU core clock    \\ \hline
-        reset\_in               & 1   & input   & CPU core reset    \\ \hline
-        alu\_src\_in            & TBD & input & Select the input b alu source, constant or register\_b data \\ \hline
-        alu\_opcode\_in         & 3  & input  & ALU opperation code  \\ \hline        
+        clock\_in               & 1  & input  & CPU core clock    \\ \hline
+        reset\_in               & 1  & input  & CPU core reset    \\ \hline
+        alu\_opcode\_in         & 6  & input  & ALU opperation code  \\ \hline
+        alu\_function\_in       & 6  & input  & Selects ALU function \\ \hline
         data\_alu\_a\_in        & 32 & input  & ALU input A data  \\ \hline
         data\_alu\_b\_in        & 32 & input  & ALU input B data  \\ \hline
-        constant\_in            & 32 & input  & 32-bit Sign-extended constant  \\ \hline
-        write\_back\_mux\_sel\_in & TBD & input & Write back mux select \\ \hline  
-        w\_reg\_wr\_en\_in    & 1   & input  & GPR bank write enable \\ \hline 
+        reg\_a\_addr\_in        & 5  & input  & ALU Port-A addr in Register File  \\ \hline
+        reg\_b\_addr\_in        & 5  & input  & ALU Port-B addr in Register File  \\ \hline
+        constant\_in            & 32 & input  & 32-bit constant  \\ \hline
+        imm\_inst\_\_in         & 1  & input  & TBD \\ \hline  
         new\_pc\_in             & 20 & input  & Updated value of PC  \\ \hline 
-        mem\_data\_wr\_en\_in & TBD & input & Enable write into external data memory \\ \hline
-        w\_reg\_addr\_in & TBD & input & GPR bank destiny address \\ \hline
-        branch\_inst\_in & TBD & input & Conditional branch flag \\ \hline
-		jmp\_inst\_in & TBD & input & Incoditional branch flag \\ \hline
-		exe\_mem\_data\_in & TBD & input & Forwarding data from the exe\_mem data register \\ \hline
-		mem\_wb\_data\_in  & TBD & input & Forwarding data from the mem\_wb data register \\ \hline 		
-		mem\_data\_wr\_en\_out & 1 & output & Enable write into external data memory \\ \hline
-        alu\_b\_data\_in\_out        & 32 & output  & ALU input B data  \\ \hline         
-        alu\_data\_out           & 32  & output  & ALU data output \\ \hline
-        write\_back\_mux\_sel\_out & TBD & output & Write back mux select \\ \hline  
-        w\_reg\_wr\_en\_out    & 1   & output  & GPR bank write enable \\ \hline 
-        w\_reg\_addr\_out & 4 & output & GPR bank destiny address \\ \hline
-        branch\_inst\_out      & 1   & output  & Branch result after flag check \\ \hline
-        alu\_zero\_out & 1 & output & Alu zero register compare flag \\ \hline
-        jmp\_inst\_out & 1 & output & Incoditional branch flag \\ \hline
-
+        pc\_offset\_in          & 26 & input  & Constant offset in J-Instructions  \\ \hline 
+        branch\_inst\_in        & 1  & input  & Branch instruction control signal \\ \hline        
+        jmp\_inst\_in           & 1  & input  & Incoditional branch control signal \\ \hline        
+        jmp\_use\_r\_in         & 1  & input  & TBD \\ \hline
+        exe\_mem\_reg\_data\_in & 32 & input  & Forwarding data from the MEM stage data register \\ \hline
+        exe\_mem\_reg\_addr\_in & 5  & input  & Forwarding address from the MEM stage \\ \hline
+        exe\_mem\_reg\_wr\_ena\_in & 1 & input  & Forwarding write enable signal from the MEM stage \\ \hline        
+        w\_reg\_data\_in        & 32  & input  & GPR bank data \\ \hline 
+        w\_reg\_addr\_in        & 5   & input  & GPR bank destiny address \\ \hline 
+        w\_reg\_wr\_en\_in      & 1   & input  & GPR bank write enable \\ \hline 
+        instruction\_in         & 1   & input  & CPU core instruction \\ \hline
+        
+        mem\_data\_out          & 1   & output  & Forwarding output data to be writen in data memory \\ \hline
+        alu\_data\_out          & 32  & output  & ALU output data \\ \hline
+        fetch\_new\_pc\_out     & 32  & output  & TBD \\ \hline
+        fetch\_select\_new\_pc\_out  & 32  & output  & TBD \\ \hline
       \end{longtable}
     \end{center} 
      

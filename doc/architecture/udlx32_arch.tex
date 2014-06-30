@@ -8,6 +8,8 @@
 \pagestyle{fancy}
 \usepackage{libertine}
 \usepackage{epstopdf}
+\usepackage{rotating} % rotate table 90 degrees
+\usepackage{pdflscape} % set ladscape/portrait pdf pages
 
 %\usepackage[author={João Carlos Nunes Bittencourt}]{pdfcomment}
 
@@ -27,7 +29,7 @@
 
   
 \begin{center}
-\begin{Large}\textbf{GNU LGPL License}                          \end{Large}
+\begin{Large}\textbf{GNU LGPL License}\end{Large}
 \end{center}
 \vspace{2cm}
 \fbox{
@@ -217,13 +219,16 @@
     \end{center}
   \end{table}  
 
-\newpage
-  \subsection{Top Architecture}
-     \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{pictures/top_architecture.png}
-  \end{figure}
-   
+
+\begin{landscape}
+  \subsection{Top Architecture \textcolor{red}{(Deprecated: \textit{needs a review})}}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=.7\linewidth]{pictures/top_architecture.eps}
+    \end{figure}
+  \end{landscape}
+
+  
   %\subsection{Parameters and Configurations}
 
 % \FloatBarrier
@@ -687,11 +692,13 @@ instruction time.
   
   \newpage
   \subsection{Pipeline Register Description}
+  The following desciptions hightlights the datapath pipeline registers. For general purpose, the clock and reset signals was supressed. Althought, flush signal was also removed from IF/ID, ID/EX and EX/MEM pipeline registers.
+
   \subsubsection{Instruction Fetch/Instruction Decode}
 
   \FloatBarrier
     \begin{center}
-      \begin{longtable}[pos]{| l | c | m{7.5cm} |} \hline         
+      \begin{longtable}[pos]{| m{4cm} | c | m{7.5cm} |} \hline         
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
@@ -714,11 +721,8 @@ instruction time.
         rst               & 1   & CPU core reset    \\ \hline
         stall             & 1   & Indicates a stall insertion on the datapath \\ \hline
         flush             & 1   & Force flush in pipeline registers \\ \hline
-        pc\_in            & 20  & Stores the next program counter value.\\ \hline
-        inst\_mem\_data\_in  & 32  & Stores the intruction word.    \\ \hline
-        new\_pc\_out      & 20  & The next program counter value. \\ \hline
-        instruction\_reg\_out  & 32   & CPU core fetched instruction. \\ \hline        
-
+        pc                & 20  & Stores the next program counter value.\\ \hline
+        inst\_mem\_data   & 32  & Stores the intruction word.    \\ \hline
       \end{longtable}
     \end{center} 
 
@@ -726,7 +730,7 @@ instruction time.
 
   \FloatBarrier
     \begin{center}
-      \begin{longtable}[pos]{| l | c | m{7.5cm} |} \hline         
+      \begin{longtable}[pos]{| m{4cm} | c | m{7.5cm} |} \hline         
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
@@ -748,25 +752,25 @@ instruction time.
         clk                 & 1   & CPU core clock    \\ \hline
         rst                 & 1   & CPU core reset    \\ \hline
         flush               & 1   & Force flush in pipeline registers \\ \hline
-        data\_alu\_a\_in    & 32  & Stores the value of ALU input port A.  \\ \hline
-        data\_alu\_b\_in    & 32  & Stores the value of ALU input port B. \\ \hline
-        new\_pc\_in         & 20  & Stores the next program counter value.\\ \hline
-        instruction\_in     & 32  & Stores the intruction word.    \\ \hline        
+        data\_alu\_a    & 32  & Stores the value of ALU input port A.  \\ \hline
+        data\_alu\_b    & 32  & Stores the value of ALU input port B. \\ \hline
+        new\_pc         & 20  & Stores the next program counter value.\\ \hline
+        instruction     & 32  & Stores the intruction word.    \\ \hline        
         opcode              & 3   & Stores the instruction opperation code. \\ \hline
-        inst\_function\_in  & 6   & Stores ALU function  \\ \hline
-        reg\_rd\_addr1\_in  & 6   & Stores GPR source A address  \\ \hline
-        reg\_rd\_addr2\_in  & 6   & Stores GPR source B address  \\ \hline
-        reg\_wr\_addr\_in   & 6   & Stores GPR destination address  \\ \hline
-        reg\_wr\_en\_in     & 1   & Stores the signal to enable GPR write back. \\ \hline         
-        constant\_in        & 32  & Stores the signed extended integer constant. \\ \hline 
-        imm\_inst\_in       & 1   & TBD  \\ \hline
-        pc\_offset\_in      & 26  & Stores the PC offset in a J-Instruction \\ \hline
-        mem\_data\_rd\_en\_in & 1  & Stores read enable for data memory \\ \hline
-        mem\_data\_rw\_en\_in & 1  & Stores write enable for data memory \\ \hline
-        write\_back\_mux\_sel\_in  & 1 & Stores the select signal for write back Multiplexer. \\ \hline
-        branch\_inst\_in    & 1   & TBD \\ \hline
-        jump\_inst\_in      & 1   & TBD \\ \hline
-        jump\_use\_r\_in    & 1   & TBD \\ \hline
+        inst\_function  & 6   & Stores ALU function  \\ \hline
+        reg\_rd\_addr1  & 6   & Stores GPR source A address  \\ \hline
+        reg\_rd\_addr2  & 6   & Stores GPR source B address  \\ \hline
+        reg\_wr\_addr   & 6   & Stores GPR destination address  \\ \hline
+        reg\_wr\_en     & 1   & Stores the signal to enable GPR write back. \\ \hline         
+        constant        & 32  & Stores the signed extended integer constant. \\ \hline 
+        immst       & 1   & TBD  \\ \hline
+        pc\_offset      & 26  & Stores the PC offset in a J-Instruction \\ \hline
+        mem\_data\_rd\_en & 1  & Stores read enable for data memory \\ \hline
+        mem\_data\_rw\_en & 1  & Stores write enable for data memory \\ \hline
+        write\_back\_mux\_sel  & 1 & Stores the select signal for write back mux. \\ \hline
+        branchst    & 1   & TBD \\ \hline
+        jump\_inst      & 1   & TBD \\ \hline
+        jump\_use\_r    & 1   & TBD \\ \hline
       \end{longtable}
     \end{center} 
 
@@ -774,7 +778,7 @@ instruction time.
 
   \FloatBarrier
     \begin{center}
-      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+      \begin{longtable}[pos]{| m{4cm} | c | m{9cm} |} \hline         
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
@@ -794,12 +798,15 @@ instruction time.
         \hline
         \endlastfoot
 
-        instruction\_reg        & 32  & Stores the intruction word.    \\ \hline
-        select\_rd\_reg         & 1   & TBD  \\ \hline
-        reg\_file\_w\_en\_reg   & 1   & Stores the signal to enable GPR write back. \\ \hline
-        write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
-        data\_alu\_a            & 32  & Stores the ALU input data A for memory addressing. \\ \hline
-        alu\_data\_reg          & 32  & Stores the ALU output data. \\ \hline
+        mem\_data\_rd\_en     & 1   & TBD \\ \hline
+        mem\_data\_wr\_en     & 1   & TBD \\ \hline
+        mem\_data             & 32  & TBD \\ \hline
+        alu\_data             & 32  & Stores the output ALU Data \\ \hline
+        reg\_wr\_en           & 1   & Stores the write register enable signal \\ \hline
+        reg\_wr\_addr         & 5   & Stores the write register address \\ \hline
+        write\_back\_mux\_sel & 1   & Stores the select signal for write back Multiplexer. \\ \hline
+        select\_new\_pc       & 1   & TBD \\ \hline
+        instruction           & 32  & Stores the intruction word.    \\ \hline
       \end{longtable}
     \end{center}  
 
@@ -807,7 +814,7 @@ instruction time.
 
   \FloatBarrier
     \begin{center}
-      \begin{longtable}[pos]{| l | c | m{9cm} |} \hline         
+      \begin{longtable}[pos]{| m{3,5cm} | c | m{9cm} |} \hline         
         \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Name}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Length}} & 
         \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
@@ -827,13 +834,11 @@ instruction time.
         \hline
         \endlastfoot
 
-        instruction\_reg        & 32  & Stores the intruction word.    \\ \hline
-        select\_rd\_reg         & 1   & TBD  \\ \hline
-        reg\_file\_w\_en\_reg   & 1   & Stores the signal to enable GPR write back. \\ \hline
-        write\_back\_mux\_sel\_reg  & TBD & Stores the select signal for write back Multiplexer. \\ \hline
-        mem\_data\_reg          & 32  & Stores the memory output data. \\ \hline
-        alu\_data\_reg          & 32  & Stores the ALU output data. \\ \hline
-        w\_reg\_addr\_reg       & 4   & Stores the GPR data write address. \\ \hline
+        write\_back\_mux\_sel   & 1   & Stores the select signal for write back Multiplexer. \\ \hline
+        alu\_data               & 32  & Stores the ALU output data. \\ \hline        
+        reg\_wr\_en             & 1   & Stores the signal to enable GPR write back. \\ \hline
+        reg\_wr\_addr           & 5   & Stores the GPR write address. \\ \hline
+        instruction             & 32  & Stores the intruction word.    \\ \hline      
 
       \end{longtable}
     \end{center}   
@@ -1007,15 +1012,84 @@ As the SRAM has half word the controller works with a clock twice faster enablin
   \newpage
   \subsection{Bootloader}
   The bootloader is the ROM memory has the code responsible to initialize the processor and write the code that will be executed in the correct address and consequently each memory device.
-The ROM must have the DLX reset PC register address. When the system is reseted the processor will read instructions from the ROM address. The code inside the ROM will copy the instruction and data code from a static memory to the instruction memory SRAM and the data memory SDRAM.
+
+  The ROM must have the DLX reset PC register address. When the system is reseted the processor will read instructions from the ROM address. The code inside the ROM will copy the instruction and data code from a static memory to the instruction memory SRAM and the data memory SDRAM.
 
   \begin{figure}[H]
     \centering
     \includegraphics[width=.7\linewidth]{pictures/bootloader.eps}
   \end{figure}  
+  
   Usually data in code is read-only data and it is common in compiled C code. Probably there will be only instruction code to be loaded during bootloader operation.
+
+  \newpage
+  \begin{landscape}
+  \section{Processor Control Signals}
+      
+  \begin{table}[htp]
+    \begin{center}
+      \begin{tabular}{|l|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{ 1}{|c|}{\cellcolor[gray]{0.9}\textbf{Signal}} & 
+        \multicolumn{ 1}{c|}{\cellcolor[gray]{0.9}\textbf{R-Type}} & 
+        \multicolumn{ 5}{c|}{\cellcolor[gray]{0.9}\textbf{I-Type}} & 
+        \multicolumn{ 1}{c|}{\cellcolor[gray]{0.9}\textbf{J-PC}} \\ \cline{ 3-7}
+        \multicolumn{ 1}{|c|}{\cellcolor[gray]{0.9}} & 
+        \multicolumn{ 1}{l|}{\cellcolor[gray]{0.9}} & 
+        \cellcolor[gray]{0.9}\textbf{Arith.} & 
+        \cellcolor[gray]{0.9}\textbf{Load} & 
+        \cellcolor[gray]{0.9}\textbf{Store} & 
+        \cellcolor[gray]{0.9}\textbf{Branch} & 
+        \cellcolor[gray]{0.9}\textbf{J-R} & 
+        \multicolumn{ 1}{c|}{\cellcolor[gray]{0.9}} \\ \hline
+        inst\_function        & I[5:0]    & N/A       & N/A       & N/A       & N/A       & N/A       & N/A \\ \hline
+        reg\_rd\_addr1        & I[25:21]  & I[25:21]  & I[25:21]  & I[25:21]  & I[25:21]  & I[25:21]  & 0 \\ \hline
+        reg\_rd\_addr2        & I[20:16]  & 0         & 0         & I[20:16]  & 0         & 0         & 0 \\ \hline
+        reg\_rd\_en1          & 1         & 1         & 1         & 1         & 1         & 1         & 0 \\ \hline
+        reg\_rd\_en2          & 1         & 0         & 0         & 1         & 0         & 0         & 0 \\ \hline
+        reg\_wr\_addr         & I[15:11]  & I[20:16]  & I[20:16]  & 0         & I[20:16]  & N/A       & 0 \\ \hline
+        reg\_wr\_en           & 1         & 1         & 1         & 0         & 0         & 0         & 0 \\ \hline
+        immediate             & 0         & I[15:0]   & I[15:0]   & I[15:0]   & I[15:0]   & N/A       & 0 \\ \hline
+        imm\_inst             & 0         & 1         & 1         & 1         & 1         & 1         & 0 \\ \hline
+        pc\_offset            & 0         & 0         & 0         & 0         & 0         & 0         & I[25:0] \\ \hline
+        mem\_data\_rd\_en     & 0         & 0         & 1         & 0         & 0         & 0         & 0 \\ \hline
+        mem\_data\_wr\_en     & 0         & 0         & 0         & 1         & 0         & 0         & 0 \\ \hline
+        write\_back\_mux\_sel & 0         & 0         & 1         & 0         & 0         & 0         & 0 \\ \hline
+        branch\_inst          & 0         & 0         & 0         & 0         & 1         & 0         & 0 \\ \hline
+        jump\_inst            & 0         & 0         & 0         & 0         & 0         & 1         & 1 \\ \hline
+        jump\_use\_r          & 0         & 0         & 0         & 0         & 0         & 1         & 0 \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table}
+ 
+  \end{landscape}
   
-  
+  \subsection{Signal Description}
+
+  \begin{table}[htbp]
+    \begin{center}
+      \begin{tabular}{|l|l|}
+        \hline
+        \cellcolor[gray]{0.9}\textbf{Signal} & \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Description}} \\ \hline
+        inst\_function & Instruction ALU function. \\ \hline
+        reg\_rd\_addr1 & Register file read address of Port-A. \\ \hline
+        reg\_rd\_addr2 & Register file read address of Port-B. \\ \hline
+        reg\_rd\_en1 & Register file read enable of Port-A. \\ \hline
+        reg\_rd\_en2 & Register file read enable of Port-B. \\ \hline
+        reg\_wr\_addr & Register file write address. \\ \hline
+        reg\_wr\_en & Register file write enable. \\ \hline
+        immediate & Immediate halfword. \\ \hline
+        imm\_inst & Indicates a Immediate instruction type. \\ \hline
+        pc\_offset & Determines the PC offset lenght in a J-type instruction. \\ \hline
+        mem\_data\_rd\_en & Data memory read enable. \\ \hline
+        mem\_data\_wr\_en & Data memory write enable. \\ \hline
+        write\_back\_mux\_sel & Write back mux control signal. \\ \hline
+        branch\_inst & Indicates a branch instruction. \\ \hline
+        jump\_inst & Indicates a jump instruction, either Jump-R or Jump-PC \\ \hline
+        jump\_use\_r & Indicates a Jump-R instruction. \\ \hline
+        \end{tabular}
+    \end{center}
+  \end{table}  
   %\newpage
   %\section{Timing}
     

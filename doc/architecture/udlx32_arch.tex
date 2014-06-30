@@ -1008,23 +1008,10 @@ As the SRAM has half word the controller works with a clock twice faster enablin
         
       \end{longtable}
     \end{center} 
-  
-  \newpage
-  \subsection{Bootloader}
-  The bootloader is the ROM memory has the code responsible to initialize the processor and write the code that will be executed in the correct address and consequently each memory device.
-
-  The ROM must have the DLX reset PC register address. When the system is reseted the processor will read instructions from the ROM address. The code inside the ROM will copy the instruction and data code from a static memory to the instruction memory SRAM and the data memory SDRAM.
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=.7\linewidth]{pictures/bootloader.eps}
-  \end{figure}  
-  
-  Usually data in code is read-only data and it is common in compiled C code. Probably there will be only instruction code to be loaded during bootloader operation.
 
   \newpage
   \begin{landscape}
-  \section{Processor Control Signals}
+  \subsubsection{Micro-instructions}
       
   \begin{table}[htp]
     \begin{center}
@@ -1064,7 +1051,7 @@ As the SRAM has half word the controller works with a clock twice faster enablin
  
   \end{landscape}
   
-  \subsection{Signal Description}
+  \subsubsection{Signals Descriptions}
 
   \begin{table}[htbp]
     \begin{center}
@@ -1090,6 +1077,20 @@ As the SRAM has half word the controller works with a clock twice faster enablin
         \end{tabular}
     \end{center}
   \end{table}  
+  
+  \newpage
+  \subsection{Bootloader}
+  The bootloader is the ROM memory has the code responsible to initialize the processor and write the code that will be executed in the correct address and consequently each memory device.
+
+  The ROM must have the DLX reset PC register address. When the system is reseted the processor will read instructions from the ROM address. The code inside the ROM will copy the instruction and data code from a static memory to the instruction memory SRAM and the data memory SDRAM.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth]{pictures/bootloader.eps}
+  \end{figure}  
+  
+  Usually data in code is read-only data and it is common in compiled C code. Probably there will be only instruction code to be loaded during bootloader operation.
+
   %\newpage
   %\section{Timing}
     

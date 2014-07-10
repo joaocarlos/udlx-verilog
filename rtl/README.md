@@ -5,8 +5,8 @@ Directory Hierarchy
   - fetch     	: Instruction fetch stage modules
   - memory    	: Memory stage modules
   - pipeline  	: Pipeline related components and control unit
-  -- registers : Pipeline registers.
-  -- hazard    : Hazzard related modules
+  - pipeline/registers : Pipeline registers.
+  - pipeline/hazard    : Hazzard related modules
   - write_back : Write back stage modules
 
 

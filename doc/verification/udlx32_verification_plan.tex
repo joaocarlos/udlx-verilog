@@ -10,17 +10,22 @@
 \usepackage{epstopdf}
 \usepackage{rotating} % rotate table 90 degrees
 \usepackage{pdflscape} % set ladscape/portrait pdf pages
+\usepackage[table]{xcolor}
 
 %\usepackage[author={João Carlos Nunes Bittencourt}]{pdfcomment}
+
+%%%%
+\definecolor{darkred}{rgb}{0.55,0.0,0.0}
+%%%%
 
 \sloppy
 
 \title{32-bit $\mu$DLX Core Processor}
 
-\graphicspath{{./pictures/}} % DiretTBDrio padrTBDo de figuras.
+\graphicspath{{./pictures/}}
 \makeindex
 \begin{document}
-  \capa{1.0}{abril}{2014}{32-bit $\mu$DLX Core Processor}{Architecture Specification}{Universidade Federal da Bahia}
+  \capa{1.0}{july}{2014}{32-bit $\mu$DLX Core Processor}{Verification Plan}{Universidade Federal da Bahia}
   \newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,17 +73,19 @@
       \cellcolor[gray]{0.9}
       \textbf{Date} & \cellcolor[gray]{0.9}\textbf{Description} & \cellcolor[gray]{0.9}\textbf{Author(s)}\\ \hline
       \hline
-      \small 04/27/2014 & \small Conception & \small João Carlos Bittencourt \\ \hline
-      \small 04/30/2014 & \small Instruction layout description & \small João Carlos Bittencourt \\ \hline
-      \small 05/09/2014 & 
-      \begin{small}
-        \begin{itemize}
-          \item Text revision;
-          \item Update diagrams and instruction layout;
-          \item Update instruction fetch I/O definitions;
-          \item Missing pictures inclusion;
-          \item Include memory access and write back pin/port definitions;
-        \end{itemize}  
+      \small 05/23/2014 & \small First Verification Plan version. & \small Victor Valente \\ \hline
+      \small 06/07/2014 & \small Adding information to Overview section. & \small Lauê Rami and Igo Amauri \\ \hline
+% Multi-item revision history example
+%      \small 05/09/2014 & 
+%      \begin{small}
+%        \begin{itemize}
+%          \item Text revision;
+%          \item Update diagrams and instruction layout;
+%          \item Update instruction fetch I/O definitions;
+%          \item Missing pictures inclusion;
+%          \item Include memory access and write back pin/port definitions;
+%        \end{itemize}
+%      \end{small}  
     \end{longtable}
   \end{center}
 
@@ -94,7 +101,7 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \section{Introduction}
 
-	\subsection{Purpose}
+	\subsection{Document Purpose}
 	
 	\subsection{Stakeholders}
   \FloatBarrier
@@ -115,10 +122,11 @@
   \FloatBarrier
   \begin{table}[H]
     \begin{center}
-      \begin{tabular}[pos]{|m{2cm} | m{9cm}|} 
+      \begin{tabular}[pos]{|m{2cm} | m{11cm}|} 
 				\hline 
 				\cellcolor[gray]{0.9}\textbf{Acronym} & \cellcolor[gray]{0.9}\textbf{Description} \\ \hline
-				RISC & Reduced Instruction Set Computer \\ \hline
+				ASIC 	& Application Specific Integrated Circuit  \\ \hline
+				DUV		& Design Under Verification \\ \hline
       \end{tabular}
     \end{center}
   \end{table}  
@@ -126,11 +134,13 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% Document description
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\newpage
 	\section{DUV Overview}
 	
+	\newpage
 	\section{Verification Environment}
 	
-	\subsection{Design Under Test Interface (DUT_IF)}
+	\subsection{Design Under Test Interface (DUT\_IF)}
 	
 	\subsection{Monitor}
 	
@@ -141,19 +151,245 @@
 	\subsubsection{Load Hazard}
 	
 	\subsection{Verification Environment Design Specification}
-	
-	\section{Features List}
-	
-	\section{Test List}
-	
-	\section{Assertions}
-	
-	\section{Coverage and Completion Requirements}
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{1}{white}{gray!25}
+      \begin{longtable}[pos]{| m{6cm} | m{8cm} |} \hline  
+	      \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{Component}} & 
+        \multicolumn{1}{c|}{\textbf{Description}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{2}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{Component}} & 
+        \multicolumn{1}{c|}{\textbf{Description}} \\ \hline
+        \endhead
+        \hline \multicolumn{2}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
 
+        \hline
+        \endlastfoot
+      	Document Name and Version 		          & $\mu$DLX Verification Plan  	\\ \hline
+      	Document Version and Date 		          & Version 1.0, June 23, 2014  	\\ \hline      	
+      	Author(s) / Owner(s) 		          			& Lauê Rami / Igo Amauri  	\\ \hline      	
+      \end{longtable}
+    \end{center}	
+	
+	\newpage
+	\section{Features List}
+	The features list, describes the features that are planned to be implemented.
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{1}{darkred}{red!90} 
+      \begin{longtable}[pos]{| c | l | c |} \hline  %14cm
+	      \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Feature Number}}} & 
+        \multicolumn{1}{m{9cm}|}{\centering\textbf{\textcolor{white}{Feature Description}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Priority}}}  \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Feature Number}}} & 
+        \multicolumn{1}{m{8cm}|}{\textbf{\textcolor{white}{Feature Description}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Priority}}}  \\ \hline
+        \endhead
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+      	DLX\_F1      & UDLX Verification Plan  &	10 \\ \hline   	
+      	DLX\_F2      & UDLX Verification Plan  &	10 \\ \hline      	
+      \end{longtable}
+    \end{center}	
+
+\begin{landscape}		
+	\section{Test List}
+	The test list define the tests that will be performed with the DUV to ensure that the behavior is correct. In addition, this tests list ensures achieving coverage levels.
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{1}{white}{gray!25} 
+      \begin{longtable}[pos]{| c | m{5cm} | c | c | c | c | c | c |} \hline  %14cm
+	      \rowcolor{black}
+        \multicolumn{1}{|m{2cm}|}{\centering\textbf{\textcolor{white}{Test \mbox{Number}}}} & 
+        \multicolumn{1}{m{5cm}|}{\centering\textbf{\textcolor{white}{Description}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Method}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Level}}} &
+        \multicolumn{1}{m{3cm}|}{\centering\textbf{\textcolor{white}{Features \mbox{Verified}}}} &                
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Priority}}} & 
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Owner}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Completion}}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{8}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|m{2cm}|}{\centering\textbf{\textcolor{white}{Test \mbox{Number}}}} & 
+        \multicolumn{1}{m{5cm}|}{\centering\textbf{\textcolor{white}{Description}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Method}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Level}}} &
+        \multicolumn{1}{m{3cm}|}{\centering\textbf{\textcolor{white}{Features \mbox{Verified}}}} &                
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Priority}}} & 
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Owner}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Completion}}} \\ \hline
+        \endhead
+        \hline \multicolumn{8}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
+      	DLX\_T2      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
+      \end{longtable}
+    \end{center}		
+  \end{landscape}
+  
+  \newpage
+	\section{Assertions}
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{1}{orange!80}{orange!40} 
+      \begin{longtable}[pos]{| c | l | c |} \hline  %14cm
+	      \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+        \multicolumn{1}{m{9cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}}  \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{3}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+        \multicolumn{1}{m{9cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}}  \\ \hline
+        \endhead
+        \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+      	06/25/2014      & Assertion to the correct fecth\_top operation  &	Not started yet \\ \hline   	
+      	06/25/2014      & Assertion to verify the decode operation 			 &	Not started yet \\ \hline      	
+      \end{longtable}
+    \end{center}		
+	
+	\newpage
+	\section{Coverage and Completion Requirements}
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{1}{red!40}{red!10} 
+      \begin{longtable}[pos]{| c | l | c | c | c |} \hline  %14cm
+	      \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+        \multicolumn{1}{m{4cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
+        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Required Level}}} &
+        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Current Level}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{5}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+        \multicolumn{1}{m{4cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
+        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Required Level}}} &
+        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Current Level}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}} \\ \hline
+        \endhead
+        \hline \multicolumn{5}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+      	06/25/2014      & Block coverage  				&	98\% & 0\% & Not started yet \\ \hline   	
+      	06/25/2014      & Expression coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
+      \end{longtable}
+    \end{center}	
+  
+  \newpage
 	\section{Resource Requirements}
-	
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{4}{gray!25}{white} 
+      \begin{longtable}[pos]{| l | c | c | c | c |} \hline  %14cm
+	      \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Resource}}} & 
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Quantity}}} &
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Description}}} &
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Start}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Duration}}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{5}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Resource}}} & 
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Quantity}}} &
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Description}}} &
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Start}}} &
+        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Duration}}} \\ \hline
+        \endhead
+        \hline \multicolumn{5}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+        \rowcolor{gray}
+				\textbf{Engineering Resources}      & 		&										 	& 		 			&  \\ \hline   	
+      	Verification Engineer      					& 2		&	1 year experience 	& 06/25/14 	& 10 days \\ \hline   
+      	\rowcolor{gray}
+				\textbf{Compute Resources}     			& 		&										 	& 		 			&  \\ \hline   
+				Computer 														& 1		& 										& 06/25/14	& 10 days \\ \hline   
+      	\rowcolor{gray}
+				\textbf{Software Resources} 				& 		&										 	& 		 			&  \\ \hline   
+				Candence Incisive 									& 1		& 										& 06/25/14	& 10 days \\ \hline 	
+				ALTERA Quartus 											& 1		& 										& 06/25/14	& 10 days \\ \hline 				
+				ALTERA ModelSIM		 									& 1		& 										& 06/25/14	& 10 days \\ \hline 
+      \end{longtable}
+    \end{center}		
+  
+  \newpage
 	\section{Schedule}
-	
+  \FloatBarrier
+    \begin{center}
+			\rowcolors{4}{gray!25}{white} 
+      \begin{longtable}[pos]{| l | c | c | m{5.4cm} | m{2cm} |} \hline  %14cm
+	      \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Resource}}} & 
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Start}}} &
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Duration}}} &
+        \multicolumn{1}{m{5.4cm}|}{\centering\textbf{\textcolor{white}{Action}}} &
+        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Compute \mbox{Resource}}}} \\ \hline
+        \endfirsthead
+        \hline
+        \multicolumn{5}{|l|}
+        {{\bfseries continued from previous page}} \\
+        \hline
+        \rowcolor{black}
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Resource}}} & 
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Start}}} &
+        \multicolumn{1}{c|}{\centering\textbf{\textcolor{white}{Duration}}} &
+        \multicolumn{1}{m{5.4cm}|}{\centering\textbf{\textcolor{white}{Action}}} &
+        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Compute \mbox{Resource}}}} \\ \hline
+        \endhead
+        \hline \multicolumn{5}{|r|}{{continued on next page}} \\ \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+      	Lauê Rami      					& 06/20/14	&	2 Days 	& Develop Verification Test Plan 	& N/A \\ \hline
+      \end{longtable}
+    \end{center}	
 		
 	
 

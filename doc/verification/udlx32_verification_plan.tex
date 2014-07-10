@@ -1,0 +1,160 @@
+\documentclass{article}
+
+\usepackage{ipprocess}
+%\usepackage{lmodern}
+\usepackage{longtable}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\pagestyle{fancy}
+\usepackage{libertine}
+\usepackage{epstopdf}
+\usepackage{rotating} % rotate table 90 degrees
+\usepackage{pdflscape} % set ladscape/portrait pdf pages
+
+%\usepackage[author={João Carlos Nunes Bittencourt}]{pdfcomment}
+
+\sloppy
+
+\title{32-bit $\mu$DLX Core Processor}
+
+\graphicspath{{./pictures/}} % DiretTBDrio padrTBDo de figuras.
+\makeindex
+\begin{document}
+  \capa{1.0}{abril}{2014}{32-bit $\mu$DLX Core Processor}{Architecture Specification}{Universidade Federal da Bahia}
+  \newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% GNU LGPL Licence
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  
+\begin{center}
+\begin{Large}\textbf{GNU LGPL License}\end{Large}
+\end{center}
+\vspace{2cm}
+\fbox{
+  \parbox{.7\textwidth}{
+    \vspace{0,5cm}
+    \begin{scriptsize}
+    This file is part of uDLX (micro-DeLuX) soft IP-core.\\
+
+    uDLX is free soft IP-core: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.\\
+
+    uDLX soft core is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with uDLX. If not, see <http://www.gnu.org/licenses/>.
+    \end{scriptsize}
+    \vspace{0,5cm}
+  }
+}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Revision History
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section*{\center Revision History}
+  \vspace*{1cm}
+  \begin{center} % aqui comeTBDa o ambiente tabela
+    \begin{longtable}[pos]{|m{2cm} | m{7.2cm} | m{3.8cm}|} 
+      \hline % este comando coloca uma linha na tabela
+      \cellcolor[gray]{0.9}
+      \textbf{Date} & \cellcolor[gray]{0.9}\textbf{Description} & \cellcolor[gray]{0.9}\textbf{Author(s)}\\ \hline
+      \hline
+      \small 04/27/2014 & \small Conception & \small João Carlos Bittencourt \\ \hline
+      \small 04/30/2014 & \small Instruction layout description & \small João Carlos Bittencourt \\ \hline
+      \small 05/09/2014 & 
+      \begin{small}
+        \begin{itemize}
+          \item Text revision;
+          \item Update diagrams and instruction layout;
+          \item Update instruction fetch I/O definitions;
+          \item Missing pictures inclusion;
+          \item Include memory access and write back pin/port definitions;
+        \end{itemize}  
+    \end{longtable}
+  \end{center}
+
+  \newpage
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	%% Place TOC
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+  \tableofcontents
+  \newpage
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% Document Prelimiary Content
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{Introduction}
+
+	\subsection{Purpose}
+	
+	\subsection{Stakeholders}
+  \FloatBarrier
+  \begin{table}[H] 
+    \begin{center}
+      \begin{tabular}[pos]{|m{5cm} | m{8cm}|} 
+        \hline % este comando coloca uma linha na tabela
+        \cellcolor[gray]{0.9}\textbf{Name} & \cellcolor[gray]{0.9}\textbf{Roles/Responsibilities} \\ \hline
+        Igo Amauri Luz & TBD \\ \hline
+        Lauê Rami Costa & TBD \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table} 
+  
+  \subsection{Document Outline Description}	
+  
+  \subsection{Acronyms and Abbreviations}
+  \FloatBarrier
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[pos]{|m{2cm} | m{9cm}|} 
+				\hline 
+				\cellcolor[gray]{0.9}\textbf{Acronym} & \cellcolor[gray]{0.9}\textbf{Description} \\ \hline
+				RISC & Reduced Instruction Set Computer \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{table}  
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% Document description
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{DUV Overview}
+	
+	\section{Verification Environment}
+	
+	\subsection{Design Under Test Interface (DUT_IF)}
+	
+	\subsection{Monitor}
+	
+	\subsubsection{Forwarding}
+	
+	\subsubsection{Branch Taken}
+	
+	\subsubsection{Load Hazard}
+	
+	\subsection{Verification Environment Design Specification}
+	
+	\section{Features List}
+	
+	\section{Test List}
+	
+	\section{Assertions}
+	
+	\section{Coverage and Completion Requirements}
+
+	\section{Resource Requirements}
+	
+	\section{Schedule}
+	
+		
+	
+
+\end{document}

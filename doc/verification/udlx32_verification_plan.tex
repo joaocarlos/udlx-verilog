@@ -102,7 +102,7 @@
   \section{Introduction}
 
 	\subsection{Document Purpose}
-	
+	The purpose of this document is define the verification plan of the uDLX Implementation. This document includes the 		verification environment used to perform the verification of the processor, beside the main characteristics of the design, the list of tests, list of assertions, and others.
 	\subsection{Stakeholders}
   \FloatBarrier
   \begin{table}[H] 
@@ -136,19 +136,80 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\newpage
 	\section{DUV Overview}
+	The  uDLX is a simplified architecture of the DLX processor. The uDLX correspond to a RISC general propose microprocessor, memory access, arithmetic and logical, and branch instructions. The processor has 5 stages in a pipeline architecture that are : instruction fetch, instruction decode, execute, memory access, and write back.
+
+The uDLX architecture interface is composed by the following components:
+
+	\begin{itemize}
+	  \item uDLX 32-bit Core: The core four-deep pipeline processor.
+	  \item Memory Interface: Provides a middle layer between the core processor and the external memories. This interface also controls the bootloader process. 
+    \item SDRAM Controller: Provides the interface for controlling the external SDRAM.
+	\item SRAM Controller: Provides the interface for controlling the external SRAM.
+	\end{itemize}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{../architecture/pictures/architecture_interface.eps}
+  \end{figure}	
+
+	The figure 1 shows the architecture interface.
+
+	A Harvard architecture is implemented using a SRAM with 16 bits of data width to access the instructions and a SDRAM to access data. In order to avoid stall due to time need to access the memories the processor and memories controllers work in different clock rate.
+
+	The main features of the uDLX are:
+	\begin{itemize}
+		\item uDLX with multiple stages
+		\item Hazard handling
+		\item SRAM memory access
+		\item SDRAM memory access
+	\end{itemize}
+
+The figure 2 shows the Top Architecture of the uDLX Processor.	
+
+\begin{landscape}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=.7\linewidth]{../architecture/pictures/top_architecture.eps}
+    \end{figure}
+  \end{landscape}	
 	
+	In order to be the most close to the DLX and also be as compatible as possible to MIPS R2000 and R3000 architecture few instructions were added to the instruction set of this processor. The instruction set supported in the project are: I-type, R-type and J-type. The figure 3 shows the types of instructions.
+	\begin{figure}[H]
+    	\centering
+    	\includegraphics[width=\linewidth]{../architecture/pictures/instruction_set.eps}
+  	\end{figure} 
+  	
 	\newpage
 	\section{Verification Environment}
 	
+	The verification methodology is based in a simple testbench. Part of the verification will be done using waveform based verification. Some special situations will be verified using assertion based verification. The design under test (DUT) interface will be responsible to catch data from the uDLX and send to the monitor that will have all assertions. The following topics will describe the items that compose the Verification Plan.
+	
+		
+	\begin{figure}[H]
+    	\centering
+    	\includegraphics[width=\linewidth]{pictures/verification_environment.png}
+  	\end{figure} 
+	
 	\subsection{Design Under Test Interface (DUT\_IF)}
+	
+	The Design Under Test Interface (DUT\_IF) makes the interface between the monitor and the DUT. The DUT\_IF is responsible to control the data that are transmitted between the Verification Environment and DUT.
 	
 	\subsection{Monitor}
 	
+	The monitor is responsible to observe the behavior of the DUT and, also, collect the output to verify if the instructions are working as expected. The main forwarding, branch taken, and load hazard.
+The monitor have all assertions that will ensure if the behavior of the DUT is correct.
+	
 	\subsubsection{Forwarding}
+	
+	The forwarding operation can occur between the execution and different blocks. This assertion will be used to ensure the forwarding unit is activating the correct signal and doing what is expected.
 	
 	\subsubsection{Branch Taken}
 	
+	As the uDLX developed work in the branch not taken method, the monitor needs to ensure that when a branch is taken all flush and new address will work correctly.
+	
 	\subsubsection{Load Hazard}
+
+	During a load hazard the uDLX stall and flush specific stages. The assertions will monitor this condition and give warnings for any unpredicted behavior.	
 	
 	\subsection{Verification Environment Design Specification}
   \FloatBarrier
@@ -156,16 +217,16 @@
 			\rowcolors{1}{white}{gray!25}
       \begin{longtable}[pos]{| m{6cm} | m{8cm} |} \hline  
 	      \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{Component}} & 
-        \multicolumn{1}{c|}{\textbf{Description}} \\ \hline
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Component}}} & 
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Description}}} \\ \hline
         \endfirsthead
         \hline
         \multicolumn{2}{|l|}
         {{\bfseries continued from previous page}} \\
         \hline
         \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{Component}} & 
-        \multicolumn{1}{c|}{\textbf{Description}} \\ \hline
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Component}}} & 
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Description}}} \\ \hline
         \endhead
         \hline \multicolumn{2}{|r|}{{continued on next page}} \\ \hline
         \endfoot
@@ -174,7 +235,17 @@
         \endlastfoot
       	Document Name and Version 		          & $\mu$DLX Verification Plan  	\\ \hline
       	Document Version and Date 		          & Version 1.0, June 23, 2014  	\\ \hline      	
-      	Author(s) / Owner(s) 		          			& Lauê Rami / Igo Amauri  	\\ \hline      	
+      	Author(s) / Owner(s) 		          			& Lauê Rami / Igo Amauri  	\\ \hline
+      	Verification Methodology 		          			& Top-Down  	\\ \hline
+      	Verification Methods 		          			& Simulation and Formal Verification  	\\ \hline
+      	Simulation Components 		          			&   	\\ \hline
+      	Application 		          			& Cadence Incisive  	\\ \hline
+      	Languages 		          			& System Verilog  	\\ \hline
+      	Verification Environmentv 	&	Custom testbench  \\ \hline	
+      	Testbench files				&	At directory: \\ \hline
+      	Formal Verification Components	&	Cadence Encounter Conformal \\ \hline
+      	Application		&		\\ \hline
+      	Technologies	&	FPGA DE2-115  \\ \hline
       \end{longtable}
     \end{center}	
 	
@@ -204,8 +275,14 @@
 
         \hline
         \endlastfoot
-      	DLX\_F1      & UDLX Verification Plan  &	10 \\ \hline   	
-      	DLX\_F2      & UDLX Verification Plan  &	10 \\ \hline      	
+      	DLX\_F1      & Instruction must activate the signals corresponding to the functionality  &	10 \\ \hline   	
+      	DLX\_F2      & Forwarding Unit should identify and forward data correctly  &	8 \\ \hline 
+      	DLX\_F3      & During a load hazard the stall should work correctly  &	8 \\ \hline
+      	DLX\_F4      & Jump hazard should flush before instructions and change PC  &	8 \\ \hline
+      	DLX\_F5      & Communication with SRAM must work properly  &	9 \\ \hline
+      	DLX\_F6      & Read and write operation to the SDRAM  &	9 \\ \hline
+      	DLX\_F7      & The registers of the Register Bank must be reading and writing  &	10 \\ \hline
+      	DLX\_F8      & All interfaces protocols must work properly  &	9 \\ \hline     	
       \end{longtable}
     \end{center}	
 
@@ -246,13 +323,25 @@
         \hline
         \endlastfoot
       	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
-      	DLX\_T2      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
+      	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
+      	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
+      	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
+      	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline    
+		DLX\_T6      & Test forwarding unit in all possible situations  &	Sim & Unit & DLX\_F1 DLX\_F2 & 5 & Igo & 0\% \\ \hline   
+		DLX\_T7      & Test the load hazard  &	Sim & Unit & DLX\_F1 DLX\_F3 & 4 & Igo & 0\% \\ \hline   
+		DLX\_T8      & Test jump and branch instructions  &	Sim & Unit & DLX\_F4 & 8 & Igo & 0\% \\ \hline        
+		DLX\_T9      & Test the SDRAM access  &	Sim & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
+		DLX\_T10      & Test the SRAM access  &	Sim & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
+		DLX\_T11      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5 DLX\_F6 & 8 & Igo & 0\% \\ \hline        
+		DLX\_T12      & Test All interfaces protocols  &	Sim & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
+
       \end{longtable}
     \end{center}		
   \end{landscape}
   
   \newpage
 	\section{Assertions}
+	Assertion will be used to verify the instructions, specially the instructions that have stall, forwarding and flush.
   \FloatBarrier
     \begin{center}
 			\rowcolors{1}{orange!80}{orange!40} 
@@ -277,7 +366,14 @@
         \hline
         \endlastfoot
       	06/25/2014      & Assertion to the correct fecth\_top operation  &	Not started yet \\ \hline   	
-      	06/25/2014      & Assertion to verify the decode operation 			 &	Not started yet \\ \hline      	
+      	06/25/2014      & Assertion to verify the decode operation 			 &	Not started yet \\ \hline
+      	07/02/2014      & Assertion for the execution block operation 			 &	Not started yet \\ \hline      	
+      	07/02/2014      & Assertion for the memory read and write back 			 &	Not started yet \\ \hline      	
+      	07/02/2014      & Assertion to forwarding operation 			 &	Not started yet \\ \hline      	
+      	07/02/2014      & Assertion during branches and jumps 			 &	Not started yet \\ \hline      	
+      	07/02/2014      & Assertion during load hazard 			 &	Not started yet \\ \hline
+      	07/02/2014      & Assertion to verify interfaces protocols 			 &	Not started yet \\ \hline      	
+      	
       \end{longtable}
     \end{center}		
 	
@@ -312,6 +408,13 @@
         \endlastfoot
       	06/25/2014      & Block coverage  				&	98\% & 0\% & Not started yet \\ \hline   	
       	06/25/2014      & Expression coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
+      	06/25/2014      & Toggle coverage 	 	&	90\% & 0\% & Not started yet \\ \hline      	
+      	06/25/2014      & Code coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
+      	06/25/2014      & State coverage on FSM 	 	&	100\% & 0\% & Not started yet \\ \hline      	
+      	06/25/2014      & Arc coverage on FSM 	 	&	100\% & 0\% & Not started yet \\ \hline      	
+      	06/25/2014      & Functional coverage 	 	&	100\% & 0\% & Not started yet \\ \hline      	
+      	06/25/2014      & Bug report rate for SPI 	 	&	< 1 bug/day & - & Not started yet \\ \hline      	
+
       \end{longtable}
     \end{center}	
   
@@ -353,8 +456,8 @@
       	\rowcolor{gray}
 				\textbf{Software Resources} 				& 		&										 	& 		 			&  \\ \hline   
 				Candence Incisive 									& 1		& 										& 06/25/14	& 10 days \\ \hline 	
-				ALTERA Quartus 											& 1		& 										& 06/25/14	& 10 days \\ \hline 				
-				ALTERA ModelSIM		 									& 1		& 										& 06/25/14	& 10 days \\ \hline 
+				ALTERA Quartus 											& 1		& WEB Edition										& 06/25/14	& 10 days \\ \hline 				
+				ALTERA ModelSIM		 									& 1		& WEB Edition										& 06/25/14	& 10 days \\ \hline 
       \end{longtable}
     \end{center}		
   
@@ -388,6 +491,13 @@
         \hline
         \endlastfoot
       	Lauê Rami      					& 06/20/14	&	2 Days 	& Develop Verification Test Plan 	& N/A \\ \hline
+      	Igo Amauri      					& 06/22/14	&	1 Day 	& Review \& Approve Test Plan 	& N/A \\ \hline
+      	Lauê Rami      					& 06/25/14	&	5 Days 	& Create Verification Environment 	& Server 1 \\ \hline
+      	Igo Amauri      					& 06/28/14	&	3 Days 	& Features F1,F2,F3, and F4 Verification 	& Server 1 \\ \hline
+      	Igo Amauri      					& 07/02/14	&	4 Days 	& Add assertion and code coverage 	& Server 1 \\ \hline
+      	Lauê Rami      					& 07/10/14	&	2 Days 	& Complete System simulation and functional verification 	& Server 1 \\ \hline
+
+
       \end{longtable}
     \end{center}	
 		

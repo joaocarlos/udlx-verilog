@@ -126,7 +126,7 @@
 				\hline 
 				\cellcolor[gray]{0.9}\textbf{Acronym} & \cellcolor[gray]{0.9}\textbf{Description} \\ \hline
 				ASIC 	& Application Specific Integrated Circuit  \\ \hline
-				DUV		& Design Under Verification \\ \hline
+				DUT		& Design Under Test \\ \hline
       \end{tabular}
     \end{center}
   \end{table}  
@@ -135,7 +135,7 @@
 	%% Document description
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\newpage
-	\section{DUV Overview}
+	\section{DUT Overview}
 	The  uDLX is a simplified architecture of the DLX processor. The uDLX correspond to a RISC general propose microprocessor, memory access, arithmetic and logical, and branch instructions. The processor has 5 stages in a pipeline architecture that are : instruction fetch, instruction decode, execute, memory access, and write back.
 
 The uDLX architecture interface is composed by the following components:
@@ -147,12 +147,14 @@ The uDLX architecture interface is composed by the following components:
 	\item SRAM Controller: Provides the interface for controlling the external SRAM.
 	\end{itemize}
 
+	The Figure \ref{fig:architecture_if} shows the architecture interface.
+
   \begin{figure}[H]
     \centering
     \includegraphics[width=.8\linewidth]{../architecture/pictures/architecture_interface.eps}
+    \caption{$\mu$DLX Architecture Interface.}
+    \label{fig:architecture_if}    
   \end{figure}	
-
-	The figure 1 shows the architecture interface.
 
 	A Harvard architecture is implemented using a SRAM with 16 bits of data width to access the instructions and a SDRAM to access data. In order to avoid stall due to time need to access the memories the processor and memories controllers work in different clock rate.
 
@@ -164,19 +166,24 @@ The uDLX architecture interface is composed by the following components:
 		\item SDRAM memory access
 	\end{itemize}
 
-The figure 2 shows the Top Architecture of the uDLX Processor.	
+The Figure \ref{fig:top_architecture} shows the Top Architecture of the $\mu$DLX Processor.	
 
 \begin{landscape}
     \begin{figure}[H]
       \centering
       \includegraphics[width=.7\linewidth]{../architecture/pictures/top_architecture.eps}
+    	\caption{$\mu$DLX top level architecture overview.}
+    	\label{fig:top_architecture}       
     \end{figure}
   \end{landscape}	
 	
-	In order to be the most close to the DLX and also be as compatible as possible to MIPS R2000 and R3000 architecture few instructions were added to the instruction set of this processor. The instruction set supported in the project are: I-type, R-type and J-type. The figure 3 shows the types of instructions.
+	In order to be the most close to the DLX and also be as compatible as possible to MIPS R2000 and R3000 architecture few instructions were added to the instruction set of this processor. The instruction set supported in the project are: I-type, R-type and J-type. The Figure \ref{fig:isa} shows the types of instructions.
+	
 	\begin{figure}[H]
     	\centering
     	\includegraphics[width=\linewidth]{../architecture/pictures/instruction_set.eps}
+    	\caption{$\mu$DLX Instruction Set types definitions.}
+    	\label{fig:isa}       	
   	\end{figure} 
   	
 	\newpage
@@ -255,9 +262,9 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
   \FloatBarrier
     \begin{center}
 			\rowcolors{1}{darkred}{red!90} 
-      \begin{longtable}[pos]{| c | l | c |} \hline  %14cm
+      \begin{longtable}[pos]{| c | m{9cm} | c |} \hline  %14cm
 	      \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Feature Number}}} & 
+        \multicolumn{1}{|m{2cm}|}{\centering\textbf{\textcolor{white}{Feature Number}}} & 
         \multicolumn{1}{m{9cm}|}{\centering\textbf{\textcolor{white}{Feature Description}}} &
         \multicolumn{1}{c|}{\textbf{\textcolor{white}{Priority}}}  \\ \hline
         \endfirsthead
@@ -266,8 +273,8 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
         {{\bfseries continued from previous page}} \\
         \hline
         \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Feature Number}}} & 
-        \multicolumn{1}{m{8cm}|}{\textbf{\textcolor{white}{Feature Description}}} &
+        \multicolumn{1}{|m{2cm}|}{\centering\textbf{\textcolor{white}{Feature Number}}} & 
+        \multicolumn{1}{m{9cm}|}{\textbf{\textcolor{white}{Feature Description}}} &
         \multicolumn{1}{c|}{\textbf{\textcolor{white}{Priority}}}  \\ \hline
         \endhead
         \hline \multicolumn{3}{|r|}{{continued on next page}} \\ \hline
@@ -288,7 +295,7 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 
 \begin{landscape}		
 	\section{Test List}
-	The test list define the tests that will be performed with the DUV to ensure that the behavior is correct. In addition, this tests list ensures achieving coverage levels.
+	The test list define the tests that will be performed with the DUT to ensure that the behavior is correct. In addition, this tests list ensures achieving coverage levels.
   \FloatBarrier
     \begin{center}
 			\rowcolors{1}{white}{gray!25} 
@@ -327,12 +334,12 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
       	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
       	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
       	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline    
-		DLX\_T6      & Test forwarding unit in all possible situations  &	Sim & Unit & DLX\_F1 DLX\_F2 & 5 & Igo & 0\% \\ \hline   
-		DLX\_T7      & Test the load hazard  &	Sim & Unit & DLX\_F1 DLX\_F3 & 4 & Igo & 0\% \\ \hline   
+		DLX\_T6      & Test forwarding unit in all possible situations  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 0\% \\ \hline   
+		DLX\_T7      & Test the load hazard  &	Sim & Unit & DLX\_F1, DLX\_F3 & 4 & Igo & 0\% \\ \hline   
 		DLX\_T8      & Test jump and branch instructions  &	Sim & Unit & DLX\_F4 & 8 & Igo & 0\% \\ \hline        
 		DLX\_T9      & Test the SDRAM access  &	Sim & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
 		DLX\_T10      & Test the SRAM access  &	Sim & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
-		DLX\_T11      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5 DLX\_F6 & 8 & Igo & 0\% \\ \hline        
+		DLX\_T11      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5, DLX\_F6 & 8 & Igo & 0\% \\ \hline        
 		DLX\_T12      & Test All interfaces protocols  &	Sim & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
 
       \end{longtable}

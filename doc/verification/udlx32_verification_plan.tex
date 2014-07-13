@@ -189,12 +189,14 @@ The Figure \ref{fig:top_architecture} shows the Top Architecture of the $\mu$DLX
 	\newpage
 	\section{Verification Environment}
 	
-	The verification methodology is based in a simple testbench. Part of the verification will be done using waveform based verification. Some special situations will be verified using assertion based verification. The design under test (DUT) interface will be responsible to catch data from the uDLX and send to the monitor that will have all assertions. The following topics will describe the items that compose the Verification Plan.
+	The verification methodology is based in a simple testbench. Part of the verification will be done using waveform based verification. Some special situations will be verified using assertion based verification. The design under test (DUT) interface will be responsible to catch data from the uDLX and send to the monitor that will have all assertions. The following topics will describe the items that compose the Verification Plan. The Figure \ref{fig:ver_env} shows the Verification Environment. 
 	
 		
 	\begin{figure}[H]
     	\centering
     	\includegraphics[width=\linewidth]{pictures/verification_environment.png}
+    	\caption{$\mu$DLX Verification Environment.}
+    	\label{fig:ver_env}
   	\end{figure} 
 	
 	\subsection{Design Under Test Interface (DUT\_IF)}

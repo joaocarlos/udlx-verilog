@@ -1,0 +1,75 @@
+module inst_memory_controller_tb;
+//*******************************************************
+//Internal
+//*******************************************************
+//Local Parameters
+
+
+parameter INST_DATA_WIDTH = 32;
+parameter INST_ADDR_DATA_WIDTH = 20;
+parameter SRAM_DATA_WIDTH = 16;
+parameter SRAM_ADDR_WIDTH = 20;
+   
+//Wires
+
+reg    clk;
+reg    rst_n;
+reg    instr_rd_en;
+reg    [INST_ADDR_WIDTH-1:0] instr_addr;
+wire   [INST_DATA_WIDTH-1:0] instruction;
+//SRAM
+wire   [SRAM_ADDR_WIDTH-1:0] sram_addr;
+wire   sram_ce_n;
+wire    [SRAM_DATA_WIDTH-1:0] sram_dq;
+wire   sram_lb_n;
+wire   sram_oe_n;
+wire   sram_ub_n;
+wire   sram_we_n;
+
+//Registers
+
+//*******************************************************
+//General Purpose Signals
+//*******************************************************
+
+initial begin
+   clk = 0;
+   #1
+   rst_n = 0;
+   #1
+   rst_n = 1;
+   #1
+   rst_n = 0;
+end
+
+always begin
+   clk = #1 ~clk;
+end
+
+//*******************************************************
+//Instantiations
+//*******************************************************
+
+inst_memory_controll
+   #(
+     .INST_DATA_WIDTH(INST_DATA_WIDTH),
+     .INST_ADDR_DATA_WIDTH(INST_ADDR_DATA_WIDTH)
+     .SRAM_DATA_WIDTH(SRAM_DATA_WIDTH),
+     .SRAM_ADDR_WIDTH(SRAM_ADDR_WIDTH)
+         
+   )
+   (/*autoport*/
+      .clk(clk),
+      .rst_n(rst_n),.instr_rd_en(instr_rd_en),
+      .instr_addr(instr_addr),
+      .instruction(instruction),
+      .sram_addr(sram_addr),
+      .sram_ce_n(sram_ce_n),
+      .sram_dq(sram_dq),
+      .sram_lb_n(sram_lb_n),
+      .sram_oe_n(sram_oe_n),
+      .sram_ub_n(sram_ub_n),
+      .sram_we_n(sram_we_n)
+   );
+
+endmodule

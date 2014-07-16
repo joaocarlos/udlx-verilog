@@ -30,7 +30,7 @@ module signal_extend
    parameter IN_DATA_WIDTH = 16
 )(
    input [IN_DATA_WIDTH-1:0] signal_in,
-   output [OUT_DATA_WIDTH-1:0] signal_out
+   input [OUT_DATA_WIDTH-1:0] signal_out
 );
 
 // Verificar se vai extender o sinal apenas de uma forma

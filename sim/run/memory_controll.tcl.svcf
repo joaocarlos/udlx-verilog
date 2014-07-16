@@ -1,0 +1,452 @@
+# SimVision Command Script (Mon Jul 14 04:06:10 PM BRT 2014)
+#
+# Version 12.10.p001
+#
+# You can restore this configuration with:
+#
+#      irun -access +rwc ../../rtl/data_memory_controll/data_memory_controll.v ../../fpga/rtl/MT48LC8M16A2.v ../ver/data_memory_controller_tb.v -s -input /proj/hercules/work/linton/dlx/udlx-verilog/sim/run/memory_controll.tcl
+#
+
+
+#
+# Preferences
+#
+preferences set toolbar-Standard-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-SimControl-WatchList {
+  usual
+  position -row 1 -pos 1
+}
+preferences set txe-locate-add-fibers 1
+preferences set txe-navigate-search-locate 0
+preferences set txe-view-hold 0
+preferences set toolbar-SimControl-WaveWindow {
+  usual
+  position -anchor e
+}
+preferences set toolbar-Windows-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-Uvm-WatchList {
+  usual
+  position -row 1 -pos 3 -anchor w
+}
+preferences set txe-navigate-waveform-locate 1
+preferences set txe-view-hidden 0
+preferences set txe-search-show-linenumbers 1
+preferences set toolbar-OperatingMode-WaveWindow {
+  usual
+  position -pos 3
+  name OperatingMode
+}
+preferences set plugin-enable-svdatabrowser 0
+preferences set toolbar-txe_waveform_toggle-WaveWindow {
+  usual
+  position -pos 1
+}
+preferences set plugin-enable-groupscope 0
+preferences set key-bindings {File>CloseWindow Ctrl+Shift+w Simulation>ReinvokeSimulator Ctrl+r,Ctrl+R Simulation>Return {}}
+preferences set plugin-enable-interleaveandcompare 0
+preferences set toolbar-SimControl-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-Windows-WaveWindow {
+  usual
+  position -pos 2 -anchor w
+}
+preferences set txe-navigate-waveform-next-child 1
+preferences set toolbar-Windows-WatchList {
+  usual
+  position -pos 2
+}
+preferences set toolbar-TimeSearch-WatchList {
+  usual
+  position -pos 2
+}
+preferences set txe-locate-scroll-x 1
+preferences set txe-locate-scroll-y 1
+preferences set txe-locate-pop-waveform 1
+preferences set toolbar-TimeSearch-WatchWindow {
+  usual
+  shown 0
+}
+
+#
+# Simulator
+#
+database require simulator -hints {
+	simulator "irun -access +rwc ../../rtl/data_memory_controll/data_memory_controll.v ../../fpga/rtl/MT48LC8M16A2.v ../ver/data_memory_controller_tb.v -gui -s -input memory_controll.tcl"
+}
+
+#
+# Groups
+#
+catch {group new -name controller -overlay 0}
+catch {group new -name {simulator::data_memory_controller_tb.sdram_memory.Write_precharge[0:3]} -overlay 0}
+catch {group new -name tb -overlay 0}
+catch {group new -name {sdram 1} -overlay 0}
+catch {group new -name {sdram 2} -overlay 0}
+
+group using controller
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.data_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.data_in[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.data_out[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.data_rd_en}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.data_wr_en}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_ba[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_cas_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_cke}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_cs_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_dq_in[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_dq_out[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_dqm[3:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_ras_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.dram_we_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.rst_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.count_sdram[5:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.row_address[12:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.state[3:0]}]} ]
+
+group using {simulator::data_memory_controller_tb.sdram_memory.Write_precharge[0:3]}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+
+group using tb
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {data_memory_controller_tb.clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.data_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.data_in[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.data_out[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.data_rd_en}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.data_wr_en}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_ba[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_cas_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_cke}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_cs_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_dq[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_dq_in[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_dq_out[31:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_dqm[3:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_ras_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.dram_we_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.rst_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.memory_controll.sdram_command[3:0]}]} ]
+
+group using {sdram 1}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.A10_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Act_b0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Act_b1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Act_b2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Act_b3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Active_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Aref_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Auto_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.B0_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.B1_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.B2_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.B3_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Ba[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Bank[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Bank_addr[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Bank_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_counter[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_length_1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_length_2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_length_4}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_length_8}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_length_f}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Burst_term}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Cas_latency_2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Cas_latency_3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Cas_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Cke}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.CkeZ}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Col[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Col_addr[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Col_brst[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Col_temp[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Command[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Count_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Cs_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Data_in_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Data_out_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Debug}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dq[15:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dq_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dq_dqm[15:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dq_reg[15:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dqm[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dqm_reg0[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Dqm_reg1[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.MRD_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Mode_reg[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Mode_reg_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Pc_b0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Pc_b1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Pc_b2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Pc_b3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Prech_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Prev_bank[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RAS_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RAS_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RAS_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RAS_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RCD_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RCD_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RCD_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RCD_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RC_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RC_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RC_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RC_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RFC_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RP_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RP_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RP_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RP_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RRD_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RW_interrupt_bank[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RW_interrupt_counter[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RW_interrupt_read[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.RW_interrupt_write[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Ras_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Read_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Read_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Row[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Sys_clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.WR_chkm[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.We_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Write_burst_mode}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Write_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.Write_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.addr_bits}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.col_bits}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.data_bits}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_1.mem_sizes}]} ]
+
+group using {sdram 2}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Aref_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Mode_reg_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Active_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Write_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Read_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Prech_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_term}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dqm[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Command[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Bank[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Col[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Row[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.A10_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Act_b0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Act_b1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Act_b2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Act_b3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Auto_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.B0_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.B1_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.B2_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.B3_row_addr[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Ba[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Bank_addr[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Bank_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_counter[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_length_1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_length_2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_length_4}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_length_8}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Burst_length_f}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Cas_latency_2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Cas_latency_3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Cas_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Cke}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.CkeZ}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Col_addr[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Col_brst[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Col_temp[8:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Count_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Cs_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Data_in_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Data_out_enable}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Debug}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dq[15:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dq_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dq_dqm[15:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dq_reg[15:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dqm_reg0[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Dqm_reg1[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.MRD_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Mode_reg[19:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Pc_b0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Pc_b1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Pc_b2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Pc_b3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Prev_bank[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RAS_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RAS_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RAS_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RAS_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RCD_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RCD_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RCD_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RCD_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RC_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RC_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RC_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RC_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RFC_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RP_chk0}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RP_chk1}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RP_chk2}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RP_chk3}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RRD_chk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RW_interrupt_bank[1:0]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RW_interrupt_counter[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RW_interrupt_read[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.RW_interrupt_write[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Ras_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Read_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Sys_clk}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.WR_chkm[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.We_n}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Write_burst_mode}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.Write_precharge[0:3]}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.addr_bits}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.col_bits}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.data_bits}]} ] \
+    [subst  {simulator::[format {data_memory_controller_tb.sdram_memory_2.mem_sizes}]} ]
+
+#
+# Cursors
+#
+set time 118000ps
+if {[catch {cursor new -name  TimeA -time $time}] != ""} {
+    cursor set -using TimeA -time $time
+}
+
+#
+# Mnemonic Maps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+
+#
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 1024x1205+0+25}] != ""} {
+    window geometry "Design Browser 1" 1024x1205+0+25
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set -scope [subst  {simulator::[format {data_memory_controller_tb}]} ]
+browser set \
+    -signalsort name
+browser yview see [subst  {simulator::[format {data_memory_controller_tb}]} ]
+browser timecontrol set -lock 0
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1280x998+1280+0}] != ""} {
+    window geometry "Waveform 1" 1280x998+1280+0
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 202 \
+    -units ps \
+    -valuewidth 75
+cursor set -using TimeA -time 118,000ps
+waveform baseline set -time 121,000ps
+
+
+set groupId0 [waveform add -groups controller]
+
+
+set groupId0 [waveform add -groups tb]
+
+set id [waveform add -signals [subst  {
+	{simulator::[format {data_memory_controller_tb.sdram_memory_1.Bank0[0:2097151]}]}
+	{simulator::[format {data_memory_controller_tb.sdram_memory_2.Bank0[0:2097151]}]}
+	} ]]
+
+set groupId0 [waveform add -groups {{sdram 2}}]
+
+
+set groupId0 [waveform add -groups {{sdram 1}}]
+waveform hierarchy collapse $groupId0
+
+
+waveform xview limits 109281ps 129281ps
+
+#
+# Waveform Window Links
+#
+
+#
+# Source Browser windows
+#
+if {[catch {window new SrcBrowser -name "Source Browser 2" -geometry 1024x1205+0+25}] != ""} {
+    window geometry "Source Browser 2" 1024x1205+0+25
+}
+window target "Source Browser 2" on
+srcbrowser using {Source Browser 2}
+srcbrowser set \
+    -primarycursor TimeA \
+    -units ps \
+    -radix default \
+    -showstrength 0 \
+    -showcallstack 0 \
+    -displayvalues 1
+
+srcbrowser show -scope data_memory_controller_tb.sdram_memory_2 -file /proj/hercules/work/linton/dlx/udlx-verilog/fpga/rtl/MT48LC8M16A2.v -line 93
+
+srcbrowser sidebar visibility partial
+
+#
+# Console windows
+#
+console set -windowname Console
+window geometry Console 1024x1205+0+25
+

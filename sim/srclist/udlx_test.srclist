@@ -21,6 +21,7 @@
 ../../rtl/write_back/write_back.v
 
 ../../rtl/top/dlx_processor.v
+../../rtl/top/top.v
 
 ../../rtl/pipeline/registers/if_id_reg.v
 ../../rtl/pipeline/registers/id_ex_reg.v
@@ -30,6 +31,14 @@
 ../../rtl/common/sp_ram.v
 ../../rtl/common/rom.v
 
-../ver/tosco_tb/tosco_tb.sv
+../../rtl/data_memory_controll/data_memory_controll.v
+../../rtl/bootloader/mux_sram.v
+../../rtl/bootloader/bootloader.v 
+../../rtl/common/clk_rst_mngr.v
+../../fpga/rtl/MT48LC8M16A2.v
+../../rtl/inst_memory_controll/sram_ctrl.v
+../../rtl/common/rom.v
+
+../ver/tosco_tb/top_tb.sv
 
 

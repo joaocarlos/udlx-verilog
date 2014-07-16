@@ -21,7 +21,7 @@ module data_memory_controll
          output reg [DATA_WIDTH-1:0] data_out,
          input [DATA_WIDTH-1:0] data_in,
          output reg data_out_valid,
-         output reg bus_busy,
+         output reg bus_busy
          //SDRAM
          input  [SDRAM_DATA_WIDTH-1:0]  dram_dq_in,       // sdram data bus 16 bits
          output  [SDRAM_DATA_WIDTH-1:0]  dram_dq_out,       // sdram data bus 16 bits

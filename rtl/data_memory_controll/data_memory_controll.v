@@ -82,7 +82,8 @@ localparam  INITIALIZE_SDRAM = 0,
 //Wires
 wire [9:0] row_address;
 wire [1:0] bank_address;
-
+wire [1:0] col_address;
+ 
 //Registers
 reg [SDRAM_COMMAND_WIDTH-1:0] sdram_command;
 
@@ -95,12 +96,27 @@ reg [STATE_WIDTH-1:0] state,
                       next_state;
 
 reg data_rd_en_reg;
+reg data_wr_en_reg;
 
-assign bank_address = data_addr[13:12];
-assign row_address = data_addr[11:2];
-assign col_address = data_addr[1:0];
-assign dram_dq_out = data_in;
+reg [ADDR_WIDTH-1:0] data_addr_reg;
+reg [DATA_WIDTH-1:0] data_in_reg;
 
+assign bank_address = data_addr_reg[12:11];
+assign row_address = data_addr_reg[10:1];
+assign col_address = {1'b0, data_addr_reg[0]};
+assign dram_dq_out = data_in_reg;
+
+
+always @(posedge clk or posedge rst_n) begin
+   if (!rst_n) begin
+      data_addr_reg <= {ADDR_WIDTH{1'b0}};
+      data_in_reg <= {DATA_WIDTH{1'b0}};
+   end
+   else if ((state == IDLE) && (data_rd_en || data_wr_en)) begin
+      data_addr_reg <= data_addr;
+      data_in_reg <= data_in;
+   end
+end
 
 always @(posedge clk or negedge rst_n) begin
    if (!rst_n) begin
@@ -114,12 +130,17 @@ end
 always @(posedge clk or negedge rst_n) begin
    if (!rst_n) begin
       data_rd_en_reg <= 1'b0;
+      data_wr_en_reg <= 1'b0;
    end
    else begin
-      if (state == IDLE)
+      if (state == IDLE) begin
          data_rd_en_reg <= data_rd_en;
-      else if ((state == PRECHARGE)&& (count_state == 0)) 
+         data_wr_en_reg <= data_wr_en;
+      end
+      else if ((state == PRECHARGE)&& (count_state == 0))  begin
          data_rd_en_reg <= 1'b0;
+         data_wr_en_reg <= 1'b0;
+      end
    end
 end
 
@@ -129,7 +150,7 @@ always @(posedge clk or negedge rst_n) begin
       data_out <= {DATA_WIDTH{1'b0}};
    end
    else begin
-      if ((state == PRECHARGE ) && data_rd_en_reg) begin
+      if ((state == READ_DATA ) && count_state == 2) begin
          data_out_valid <= 1'b1;
          data_out <= dram_dq_in;
       end
@@ -194,7 +215,7 @@ always @(*) begin
       end
       IDLE: begin
          sdram_command = NOP_CMD;
-         if (data_rd_en || data_wr_en) begin
+         if (data_rd_en || data_wr_en_reg) begin
             next_state = ACTIVATE_BANK;
          end
       end
@@ -247,7 +268,13 @@ end
 
 always @(*) begin
    case (state)
-      READ_DATA: dram_dqm = 4'b0000;
+      READ_DATA: begin 
+         if (sdram_command == READ_CMD) 
+            dram_dqm = 4'b0000;
+         else begin
+            dram_dqm = 4'b1111;
+         end
+      end
       WRITE_DATA: dram_dqm = 4'b0000;  
       default : dram_dqm = 4'b1111;
    endcase

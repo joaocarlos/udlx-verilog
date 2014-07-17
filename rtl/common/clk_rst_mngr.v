@@ -16,6 +16,8 @@ module clk_rst_mngr (
 reg [2:0] counter;
 reg synch_rst_reg1_n, synch_rst_reg2_n;
 
+reg en_clk_div8_reg;
+
 // clock divider
 always@(posedge clk_in)begin
   if(!rst_async_n)
@@ -29,8 +31,17 @@ assign clk_div2 = counter[0];
 assign clk_div4 = counter[1];
 assign clk_div8 = counter[2];
 
+//change to make one delay to release the processor
+always@(posedge clk_div8, negedge rst_async_n)begin
+  if(!rst_async_n)begin
+      en_clk_div8_reg <= 0;
+  end
+  else begin
+      en_clk_div8_reg <= en_clk_div8;
+  end
+end
 //"clock gate"
-assign clk_div8_proc = en_clk_div8?counter[2]:1'b0;
+assign clk_div8_proc = en_clk_div8_reg?counter[2]:1'b0;
 
 
 always@(posedge clk_div8, negedge rst_async_n)begin

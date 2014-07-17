@@ -28,7 +28,7 @@ localparam INIT_BOOT = 0,
            END_BOOT = 3;
 localparam COUNT_WIDTH = ADDR_WIDTH;
 localparam STATE_WIDTH = 2;
-localparam SRAM_SIZE = 'h1e;
+localparam SRAM_SIZE = 'h120;
 //Wires
 
 //Registers
@@ -113,7 +113,7 @@ always @(posedge clk or negedge rst_n) begin
    end
    else begin
       if (state == WRITE_INST) begin
-         inst_mem_addr <= count;
+         inst_mem_addr <= {count,2'b00};
          inst_mem_wr_en <= 1'b1;
       end
       else begin

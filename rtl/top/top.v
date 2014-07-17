@@ -38,7 +38,8 @@ module top
          output clk_out,
          output clk_div2,
          output clk_div4,
-         output clk_div8
+         output clk_div8,
+         output [DATA_WIDTH-1:0] gpio_o
 
       );
 
@@ -66,11 +67,14 @@ wire sram_mem_wr_en;
 wire sram_mem_rd_en;
 wire [DATA_WIDTH-1:0] sram_mem_wr_data;
 wire [DATA_WIDTH-1:0] sram_mem_rd_data;
-wire [DATA_ADDR_WIDTH-1:0] sram_mem_addr;
+wire [INST_ADDR_WIDTH-1:0] sram_mem_addr;
 //bootloader
 wire boot_mem_wr_en;
 wire [INST_ADDR_WIDTH-1:0] boot_mem_addr;
 wire [DATA_WIDTH-1:0] boot_mem_wr_data;
+//sdram mux
+wire wr_en_sdram;
+wire [DATA_WIDTH-1:0] wr_data_sdram;
 
 clk_rst_mngr
    clk_rst_mngr_u0
@@ -154,15 +158,15 @@ bootloader
    .inst_mem_addr(boot_mem_addr)
    );
 
-sram_fsm 
-   sram_fsm_u0
+sram_ctrl 
+   sram_ctrl_u0
    (
    .clk(clk_div4),
    .rst_n(rst_sync_n),
    .wr_en(sram_mem_wr_en),
    .rd_en(sram_mem_rd_en),
    .wr_data(sram_mem_wr_data),
-   .addr(sram_mem_addr),
+   .addr({1'b0,sram_mem_addr[19:0]}),
    .rd_data(sram_mem_rd_data),
    .sram_ub_n(sram_ub_n),
    .sram_lb_n(sram_lb_n),
@@ -173,6 +177,24 @@ sram_fsm
    .sram_wr_data(sram_wr_data),
    .sram_rd_data(sram_rd_data)
    );
+
+mux_sdram
+#(
+   .DATA_WIDTH(DATA_WIDTH),
+   .ADDR_WIDTH(DATA_ADDR_WIDTH)
+      
+)
+mux_sdram_u0
+(/*autoport*/
+   // inputs
+   .wr_en(data_wr_en_proc),
+   .wr_data(data_write_proc),
+   .wr_address(data_addr_proc),
+   // output
+   .wr_en_sdram(wr_en_sdram),
+   .wr_data_gpio(gpio_o),
+   .wr_data_sdram(wr_data_sdram)
+);
 
 data_memory_controll
   #(
@@ -187,10 +209,10 @@ data_memory_controll
    .clk(clk_out),
    .rst_n(rst_sync_n),
    .data_rd_en(data_rd_en_proc),
-   .data_wr_en(data_wr_en_proc),
+   .data_wr_en(wr_en_sdram),
    .data_addr(data_addr_proc),
    .data_out(data_read_proc),
-   .data_in(data_write_proc),
+   .data_in(wr_data_sdram),
    //SDRAM
    .dram_dq_in(dram_dq_in),       // sdram data bus in 32 bits
    .dram_dq_out(dram_dq_out),       // sdram data bus  out 32 bits

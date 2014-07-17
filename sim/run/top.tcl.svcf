@@ -1,10 +1,10 @@
-# SimVision Command Script (Wed Jul 16 02:16:42 PM BRT 2014)
+# SimVision Command Script (Thu Jul 17 09:41:31 AM BRT 2014)
 #
 # Version 12.10.p001
 #
 # You can restore this configuration with:
 #
-#      irun -access +rwc -f ../srclist/udlx_test.srclist -timescale 1ns/1ps -s -input /proj/hercules/work/linton/dlx/udlx-verilog/sim/run/top.tcl
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -timescale 1ns/1ps -s -input /proj/hercules/work/linton/dlx/udlx-verilog/sim/run/top.tcl
 #
 
 
@@ -75,7 +75,7 @@ preferences set toolbar-TimeSearch-WatchWindow {
 # Simulator
 #
 database require simulator -hints {
-	simulator "irun -access +rwc -f ../srclist/udlx_test.srclist -gui -timescale 1ns/1ps -s -input top.tcl"
+	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -gui -timescale 1ns/1ps -s -input top.tcl"
 }
 
 #
@@ -89,6 +89,8 @@ catch {group new -name {mux sram} -overlay 0}
 catch {group new -name {sram fsm} -overlay 0}
 catch {group new -name rom -overlay 0}
 catch {group new -name top -overlay 0}
+catch {group new -name {sram ctrl} -overlay 0}
+catch {group new -name instruction_pipeline -overlay 0}
 
 group using bootloader
 group set -overlay 0
@@ -134,48 +136,6 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.ACTIVATE_BANK}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.ACTIVATE_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.ACTIVATE_LATENCY}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.AUTO_REFRESH_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.BURST_LENGH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.BURST_TYPE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.CAS_LATENCY}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.DATA_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.IDLE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.INITIALIZE_SDRAM}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.INIT_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.INIT_LATENCY}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.LATENCY_MODE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.LOAD_MODE_REGISTER}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.MODE_REGISTER_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.NOP_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.OPERATION_MODE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.PRECHARGE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.PRECHARGE_ALL_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.PRECHARGE_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.PRECHARGE_LATENCY}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.READ_AUTO_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.READ_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.READ_DATA}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.READ_DATA_ACT}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.READ_LATENCY}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SDRAM_ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SDRAM_BA_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SDRAM_CLOCK}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SDRAM_COMMAND_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SDRAM_DATA_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SDRAM_DQM_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SELF_REFRESH_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.SELF_REFRESH_EXIT_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.STATE_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.WRITE_AUTO_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.WRITE_CMD}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.WRITE_DATA}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.WRITE_DATA_ACT}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.WRITE_LATENCY}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.WRITE_OPERATION_MODE}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.bank_address[1:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.bus_busy}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.clk}]} ] \
@@ -329,33 +289,6 @@ group set -overlay 0
 group set -comment {}
 group clear 0 end
 
-group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.ST_IDLE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.ST_READ_0}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.ST_READ_1}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.ST_WRITE_0}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.addr[20:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.addr_plus2[20:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.addr_reg[20:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.next_state[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.rd_data_concat[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.rd_data_reg[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_ce_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_lb_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_oe_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_rd_data[15:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_ub_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_we_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.sram_wr_data[15:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.state[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.wr_data_reg[15:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0.wr_en}]} ]
 
 group using rom
 group set -overlay 0
@@ -412,7 +345,6 @@ group insert \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_addr[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_ce_n}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_lb_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_addr[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_rd_data[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_rd_en}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_wr_data[31:0]}]} ] \
@@ -423,10 +355,52 @@ group insert \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_we_n}]} ] \
     [subst  {simulator::[format {tosco_tb.top_u0.sram_wr_data[31:0]}]} ]
 
+group using {sram ctrl}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_IDLE}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_READ_0}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_READ_1}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_WRITE_0}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.addr[20:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.addr_plus2[20:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.clk}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.next_state[1:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_data_concat[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_data_reg[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_en}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rst_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_ce_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_lb_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_oe_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_rd_data[15:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_ub_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_we_n}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_wr_data[15:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.state[1:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.wr_en}]} ]
+
+group using instruction_pipeline
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} ]
+
 #
 # Cursors
 #
-set time 10310000ps
+set time 11750000ps
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -440,38 +414,88 @@ mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor ora
 {%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
 {%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
 {%x=* -label %x -linecolor gray -shape bus}}
+mmap new -reuse -name instruction_map -radix %x -contents {{%x=00000000 -bgcolor #ffffff -font -*-courier-medium-r-normal--12-* -label NOP -shape bus -textcolor #000000}
+{%b=100011?????????????????????????? -bgcolor #b1ff2b -font -*-courier-medium-r-normal--12-* -label LW -shape bus -textcolor #000000}
+{%b=101011?????????????????????????? -bgcolor #66bc09 -font -*-courier-medium-r-normal--12-* -label SW -shape bus -textcolor #000000}
+{%b=001000?????????????????????????? -bgcolor #ff0000 -font -*-courier-medium-r-normal--12-* -label ADDI -shape bus -textcolor #000000}
+{%b=001010?????????????????????????? -bgcolor #d34121 -font -*-courier-medium-r-normal--12-* -label SUBI -shape bus -textcolor #000000}
+{%b=001100?????????????????????????? -bgcolor #ff8c0b -font -*-courier-medium-r-normal--12-* -label ANDI -shape bus -textcolor #000000}
+{%b=001101?????????????????????????? -bgcolor #f3c41c -font -*-courier-medium-r-normal--12-* -label ORI -shape bus -textcolor #000000}
+{%b=001001?????????????????????????? -bgcolor #5e6e14 -font -*-courier-medium-r-normal--12-* -label BRFL -shape bus -textcolor #000000}
+{%b=000100?????????????????????????? -bgcolor #085b24 -font -*-courier-medium-r-normal--12-* -label BNEZ -shape bus -textcolor #000000}
+{%b=000101?????????????????????????? -bgcolor #002600 -font -*-courier-medium-r-normal--12-* -label BEQZ -shape bus -textcolor #000000}
+{%b=000110?????????????????????????? -bgcolor #9900ff -font -*-courier-medium-r-normal--12-* -label JR -shape bus -textcolor #000000}
+{%b=000010?????????????????????????? -bgcolor #710099 -font -*-courier-medium-r-normal--12-* -label JPC -shape bus -textcolor #000000}
+{%b=111110?????????????????????????? -bgcolor #ff00ff -font -*-courier-medium-r-normal--12-* -label CALL -shape bus -textcolor #000000}
+{%b=111111?????????????????????????? -bgcolor #ff0099 -font -*-courier-medium-r-normal--12-* -label RET -shape bus -textcolor #000000}
+{%b=000000????????????????????100000 -bgcolor #0000ff -font -*-courier-medium-r-normal--12-* -label ADD -shape bus -textcolor #000000}
+{%b=000000????????????????????100010 -bgcolor #0099ff -font -*-courier-medium-r-normal--12-* -label SUB -shape bus -textcolor #000000}
+{%b=000000????????????????????100100 -bgcolor #00c183 -font -*-courier-medium-r-normal--12-* -label AND -shape bus -textcolor #000000}
+{%b=000000????????????????????100111 -bgcolor #58ecb8 -font -*-courier-medium-r-normal--12-* -label NOR -shape bus -textcolor #000000}
+{%b=000000????????????????????100101 -bgcolor #608e99 -font -*-courier-medium-r-normal--12-* -label OR -shape bus -textcolor #000000}
+{%b=000000????????????????????101010 -bgcolor #5bf879 -font -*-courier-medium-r-normal--12-* -label DIV -shape bus -textcolor #000000}
+{%b=000000????????????????????101000 -bgcolor #007054 -font -*-courier-medium-r-normal--12-* -label MULT -shape bus -textcolor #000000}
+{%b=000000????????????????????101100 -bgcolor #513e21 -font -*-courier-medium-r-normal--12-* -label CMP -shape bus -textcolor #000000}
+{%b=000000????????????????????101101 -bgcolor #241e49 -font -*-courier-medium-r-normal--12-* -label NOT -shape bus -textcolor #000000}}
 
 #
 # Design Browser windows
 #
-if {[catch {window new WatchList -name "Design Browser 1" -geometry 1024x1205+0+25}] != ""} {
-    window geometry "Design Browser 1" 1024x1205+0+25
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 1020x1201+0+25}] != ""} {
+    window geometry "Design Browser 1" 1020x1201+0+25
 }
 window target "Design Browser 1" on
 browser using {Design Browser 1}
-browser set -scope [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0}]} ]
 browser set \
     -signalsort name
-browser yview see [subst  {simulator::[format {tosco_tb.top_u0.sram_fsm_u0}]} ]
 browser timecontrol set -lock 0
 
 #
 # Waveform windows
 #
-if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1280x998+1280+0}] != ""} {
-    window geometry "Waveform 1" 1280x998+1280+0
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1276x994+1280+0}] != ""} {
+    window geometry "Waveform 1" 1276x994+1280+0
 }
 window target "Waveform 1" on
 waveform using {Waveform 1}
-waveform sidebar visibility partial
+waveform sidebar select designbrowser
 waveform set \
     -primarycursor TimeA \
     -signalnames name \
     -signalwidth 215 \
     -units ps \
     -valuewidth 75
-cursor set -using TimeA -time 10,310,000ps
-waveform baseline set -time 10,310,000ps
+cursor set -using TimeA -time 11,750,000ps
+waveform baseline set -time 11,910,000ps
+
+
+set groupId0 [waveform add -groups instruction_pipeline]
+set gpGlist0 [waveform hierarchy contents $groupId0]
+set gpID0 [lindex $gpGlist0 0]
+foreach {name attrs} [subst  {
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} {-radix instruction_map}
+}] childcmds {
+    {}
+    {}
+    {}
+    {}
+} {
+    set expected [ join [waveform signals -format fullpath $gpID0] ]
+    if {[string equal $name $expected] || $name == "cdivider"} {
+        if {$attrs != ""} {
+            eval waveform format $gpID0 $attrs
+        }
+        if { $childcmds != ""} {
+            eval $childcmds
+        }
+    }
+    set gpGlist0 [lrange $gpGlist0 1 end]
+    set gpID0 [lindex $gpGlist0 0]
+}
+waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups bootloader]
@@ -483,36 +507,226 @@ waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups {{data memory controll}}]
-waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups dlx]
+set gpGlist0 [waveform hierarchy contents $groupId0]
+set gpID0 [lindex $gpGlist0 0]
+foreach {name attrs} [subst  {
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.DATA_ADDR_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.DATA_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.FUNCTION_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.IMEDIATE_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.INSTRUCTION_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.INST_ADDR_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.OPCODE_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_INITIAL_ADDRESS}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_OFFSET_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.REG_ADDR_WIDTH}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.alu_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.branch_inst}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.clk}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.constant[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_addr[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_alu_a[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_alu_b[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_rd_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.decode_flush}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_alu_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_rd_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_write[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_new_pc[19:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_select_new_pc}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_write_back_mux_sel}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.fetch_new_pc[19:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.fetch_select_new_pc}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.flush}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.flush_in}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_branch_inst}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_constant[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_data_alu_a[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_data_alu_b[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_function[5:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_imm_inst}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_jump_inst}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_jump_use_r}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_mem_data_rd_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_mem_data_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_new_pc[19:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_opcode[5:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_pc_offset[25:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_a_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_b_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_rd_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_write_back_mux_sel}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_new_pc[19:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.imm_inst}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.inst_function[5:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instr_addr[19:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instr_rd_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.jump_inst}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.jump_use_r}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data_rd_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_alu_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_mem_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_write_back_mux_sel}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.new_pc[19:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.opcode[5:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.pc_offset[25:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_rd_addr1[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_rd_addr2[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_wr_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_wr_en}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.rst_n}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.stall}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_reg_wr_addr[4:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_write_data[31:0]}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_write_enable}]} {}
+    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.write_back_mux_sel}]} {}
+}] childcmds {
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+} {
+    set expected [ join [waveform signals -format fullpath $gpID0] ]
+    if {[string equal $name $expected] || $name == "cdivider"} {
+        if {$attrs != ""} {
+            eval waveform format $gpID0 $attrs
+        }
+        if { $childcmds != ""} {
+            eval $childcmds
+        }
+    }
+    set gpGlist0 [lrange $gpGlist0 1 end]
+    set gpID0 [lindex $gpGlist0 0]
+}
 waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups {{mux sram}}]
-
-
-set groupId0 [waveform add -groups {{sram fsm}}]
 waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups rom]
+waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups top]
 waveform hierarchy collapse $groupId0
 
 
-waveform xview limits 0 8192000ps
+set groupId0 [waveform add -groups {{sram ctrl}}]
+waveform hierarchy collapse $groupId0
+
+
+waveform xview limits 11640608ps 12019712ps
 
 #
 # Waveform Window Links
 #
-
-#
-# Console windows
-#
-console set -windowname Console
-window geometry Console 700x250+1280+554
 

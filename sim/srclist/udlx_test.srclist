@@ -30,7 +30,7 @@
 
 ../../rtl/common/sp_ram.v
 ../../rtl/common/rom.v
-
+../../rtl/common/mux_sdram.v
 ../../rtl/data_memory_controll/data_memory_controll.v
 ../../rtl/bootloader/mux_sram.v
 ../../rtl/bootloader/bootloader.v 

@@ -1,21 +1,16 @@
-# SimVision Command Script (Thu Jun 19 07:39:35 AM BRT 2014)
+# SimVision Command Script (Sex Jul 18 03:43:26 BRT 2014)
 #
 # Version 12.10.p001
 #
 # You can restore this configuration with:
 #
-#      irun -f ../srclist/udlx_test.srclist -access +rwc -s -input /home/victor/materias_mestrado/sintese_ci/trabalho_dlx/udlx-verilog/sim/run/test_processor.tcl
+#      irun -timescale 1ns/10ps -f ../srclist/udlx_test.srclist -access +rwc -s -input /home/joaocarlos/workinprogress/udlx32/sim/run/test_processor.tcl
 #
 
 
 #
 # Preferences
 #
-preferences set toolbar-OperatingMode-WaveWindow {
-  usual
-  position -pos 4
-  name OperatingMode
-}
 preferences set plugin-enable-svdatabrowser 0
 preferences set plugin-enable-groupscope 0
 preferences set plugin-enable-interleaveandcompare 0
@@ -24,7 +19,7 @@ preferences set plugin-enable-interleaveandcompare 0
 # Simulator
 #
 database require simulator -hints {
-	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -s -input test_processor.tcl"
+	simulator "irun -timescale 1ns/10ps -f ../srclist/udlx_test.srclist -access +rwc -GUI -s -input test_processor.tcl"
 }
 
 #
@@ -74,10 +69,7 @@ group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.pc_mux_data[19:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.pc_adder_data[19:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.pc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.new_pc_out[19:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.new_pc_in[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.instruction_reg_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.inst_mem_data_in[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.inst_mem_addr_out[19:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.PC_INITIAL_ADDRESS}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_fetch_u0.PC_DATA_WIDTH}]} ] \
@@ -97,32 +89,14 @@ group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.constant_in[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.data_alu_a_in[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.data_alu_b_in[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.ex_mem_reg_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.ex_mem_reg_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.ex_mem_reg_wr_ena}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.imm_inst_in}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.jmp_inst_in}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.jmp_use_r_in}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_rd_en_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_rd_en_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_wr_en_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.mem_data_wr_en_out}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.new_pc_in[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.new_pc_out[19:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_a_addr_in[4:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_b_addr_in[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_addr_in[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_addr_out[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_en_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.reg_wr_en_out}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.select_new_pc_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.wb_reg_wr_ena}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.write_back_mux_sel_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.write_back_mux_sel_out}]} ]
 
 group using execute_io
 group set -overlay 0
@@ -135,17 +109,6 @@ group set -overlay 0
 group set -comment {}
 group clear 0 end
 
-group insert \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.alu_data_in[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.alu_data_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_addr_in[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_addr_out[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_en_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.reg_wr_en_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.write_back_mux_sel_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.memory_access_u0.write_back_mux_sel_out}]} ]
 
 group using write_back_io
 group set -overlay 0
@@ -202,17 +165,19 @@ group clear 0 end
 group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.DATA_WIDTH}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.PC_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_result}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_inst_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_result_in}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.branch_val[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_use_r}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_inst_in}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_use_r_in}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.jmp_val[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.pc_in[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.pc_jump[19:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.pc_offset_in[25:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.pc_out[19:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.reg_a_data_in[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.reg_b_data_in[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.select_new_pc}]} ]
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.branch_control_u0.select_new_pc_out}]} ]
 
 group using reg_bank
 group set -overlay 0
@@ -240,18 +205,23 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_branch_result}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_in_a[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_in_b[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_function[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_opcode[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_result_reg[32:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.and_result[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.or_result[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sub_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_function_in[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_opcode_in[5:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_a_in[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_b_in[31:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sum_result[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.zero_cmp}]} ]
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sub_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.or_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.and_result[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flags_reg[3:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_over_underflow}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_error}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_equal}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_above}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.zero_cmp}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_result_reg[32:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_out[31:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_branch_result_out}]} ]
 
 group using foward_unit
 group set -overlay 0
@@ -260,19 +230,7 @@ group clear 0 end
 
 group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.DATA_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.REG_ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.addr_alu_a[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.addr_alu_b[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.alu_a_mux_sel[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.alu_b_mux_sel[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.data_alu_a[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.data_alu_b[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.ex_mem_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.ex_mem_reg_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.ex_mem_reg_wr_ena}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.wb_reg_wr_ena}]} ]
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.forward_unit.REG_ADDR_WIDTH}]} ]
 
 group using instruction_pipeline
 group set -overlay 0
@@ -293,10 +251,10 @@ group clear 0 end
 
 group insert \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.id_ex_mem_data_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.id_ex_reg_wr_addr}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_a_addr}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.id_ex_reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_a_addr[4:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_a_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_b_addr}]} ] \
+    [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_b_addr[4:0]}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.if_id_rd_reg_b_en}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.inst_rd_en}]} ] \
     [subst  {simulator::[format {tosco_tb.dlx_processor_u0.instruction_decode_u0.control_u0.load_hazard}]} ] \
@@ -306,7 +264,7 @@ group insert \
 #
 # Cursors
 #
-set time 250ns
+set time 411ns
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -361,8 +319,8 @@ browser timecontrol set -lock 0
 #
 # Waveform windows
 #
-if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1366x721+0+0}] != ""} {
-    window geometry "Waveform 1" 1366x721+0+0
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1366x721+516+121}] != ""} {
+    window geometry "Waveform 1" 1366x721+516+121
 }
 window target "Waveform 1" on
 waveform using {Waveform 1}
@@ -373,7 +331,7 @@ waveform set \
     -signalwidth 207 \
     -units ns \
     -valuewidth 75
-cursor set -using TimeA -time 250ns
+cursor set -using TimeA -time 411ns
 waveform baseline set -time 150ns
 
 
@@ -400,6 +358,57 @@ waveform hierarchy collapse $groupId0
 set groupId0 [waveform add -groups execute_io]
 
 set groupId0 [waveform add -groups alu]
+set gpGlist0 [waveform hierarchy contents $groupId0]
+set gpID0 [lindex $gpGlist0 0]
+foreach {name attrs} [subst  {
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_function_in[5:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_opcode_in[5:0]}]} {-radix %x}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_a_in[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_b_in[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sum_result[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.sub_result[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.or_result[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.and_result[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flags_reg[3:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_over_underflow}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_error}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_equal}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.flag_above}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.zero_cmp}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_result_reg[32:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_data_out[31:0]}]} {}
+    {simulator::[format {tosco_tb.dlx_processor_u0.execute_address_calculate_u0.alu_u0.alu_branch_result_out}]} {}
+}] childcmds {
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+} {
+    set expected [ join [waveform signals -format fullpath $gpID0] ]
+    if {[string equal $name $expected] || $name == "cdivider"} {
+        if {$attrs != ""} {
+            eval waveform format $gpID0 $attrs
+        }
+        if { $childcmds != ""} {
+            eval $childcmds
+        }
+    }
+    set gpGlist0 [lrange $gpGlist0 1 end]
+    set gpID0 [lindex $gpGlist0 0]
+}
 waveform hierarchy collapse $groupId0
 
 
@@ -424,7 +433,6 @@ waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups data_ram]
-waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups instruction_pipeline]
@@ -457,7 +465,7 @@ foreach {name attrs} [subst  {
 }
 
 
-waveform xview limits 0 500ns
+waveform xview limits 194.956ns 444.956ns
 
 #
 # Waveform Window Links

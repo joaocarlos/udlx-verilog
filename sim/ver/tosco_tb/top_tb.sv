@@ -1,4 +1,4 @@
-module tosco_tb;
+module top_tb;
 
 parameter DATA_WIDTH = 32;
 parameter DATA_ADDR_WIDTH = 32;

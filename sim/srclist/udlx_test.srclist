@@ -40,5 +40,6 @@
 ../../rtl/common/rom.v
 
 ../ver/tosco_tb/top_tb.sv
+../ver/tosco_tb/tosco_tb.sv
 
 

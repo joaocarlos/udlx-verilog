@@ -1,4 +1,4 @@
-module tosco_tb;
+module tosco_tb_v2;
 
 
 reg clk, rst_n;

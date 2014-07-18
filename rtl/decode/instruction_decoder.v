@@ -92,8 +92,8 @@ module instruction_decoder
                inst_function = instruction_in[5:0];
                reg_rd_addr1_out = instruction_in[25:21];
                reg_rd_addr2_out = instruction_in[20:16];
-               reg_rd_en1_out = 1;
-               reg_rd_en2_out = 1;
+               reg_rd_en1_out = 1'b1;
+               reg_rd_en2_out = 1'b1;
                reg_wr_addr_out = instruction_in[15:11];
                reg_wr_en_out = 1'b1;
                immediate_out = 0;
@@ -192,7 +192,7 @@ module instruction_decoder
                jump_use_r_out = 1'b0;
             end
             //  -------- ----- ----- -----------
-            // | Opcode | RS1 | N/A | Immediate |
+            // | Opcode | RS1 | N/A |    N/A    |
             //  -------- ----- ----- -----------
             //      6      5     5       16
             JR_OPCODE: begin

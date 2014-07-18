@@ -381,7 +381,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
-      .flush_in(flush_in),
+      .flush_in(flush),
 
       .mem_data_rd_en_in(id_ex_mem_data_rd_en),
       .mem_data_wr_en_in(id_ex_mem_data_wr_en),

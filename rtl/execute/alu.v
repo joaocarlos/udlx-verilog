@@ -61,8 +61,8 @@ module alu
 
    assign sum_result = alu_data_a_in + alu_data_b_in;
    assign sub_result = alu_data_a_in - alu_data_b_in;
-   assign and_result = alu_data_a_in && alu_data_b_in;
-   assign or_result  = alu_data_a_in || alu_data_b_in;
+   assign and_result = alu_data_a_in & alu_data_b_in;
+   assign or_result  = alu_data_a_in | alu_data_b_in;
    assign zero_cmp   = alu_data_a_in == {DATA_WIDTH{1'b0}};
 
    assign alu_data_out = alu_result_reg;

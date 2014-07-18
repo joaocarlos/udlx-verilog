@@ -1,0 +1,7 @@
+#!/bin/bash
+export TIMESCALE='1ns/10ps'
+irun \
+-timescale $TIMESCALE \
+-f ../srclist/udlx_test.srclist \
+-access +rwc  -GUI \
+-s -input ../run/test_processor.tcl

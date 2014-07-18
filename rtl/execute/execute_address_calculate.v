@@ -149,6 +149,8 @@ module execute_address_calculate
    )
    alu_u0
    (
+     .clk(clk),
+     .rst(rst),
      .alu_data_a_in(alu_data_in_a),
      .alu_data_b_in(alu_data_in_b),
      .alu_opcode_in(alu_opcode_in),

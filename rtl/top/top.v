@@ -39,7 +39,8 @@ module top
          output clk_div2,
          output clk_div4,
          output clk_div8,
-         output [DATA_WIDTH-1:0] gpio_o
+         output [DATA_WIDTH-1:0] gpio_o,
+         output we_gpio
 
       );
 
@@ -193,6 +194,7 @@ mux_sdram_u0
    // output
    .wr_en_sdram(wr_en_sdram),
    .wr_data_gpio(gpio_o),
+   .we_gpio(we_gpio),
    .wr_data_sdram(wr_data_sdram)
 );
 

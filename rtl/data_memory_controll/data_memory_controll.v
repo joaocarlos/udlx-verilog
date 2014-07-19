@@ -79,6 +79,7 @@ localparam  INITIALIZE_SDRAM = 0,
             PRECHARGE = 6,
             READ_DATA_ACT = 7, 
             WRITE_DATA_ACT = 8;
+localparam COUNT_WIDTH = 5;
 //Wires
 wire [9:0] row_address;
 wire [1:0] bank_address;
@@ -87,7 +88,7 @@ wire [1:0] col_address;
 //Registers
 reg [SDRAM_COMMAND_WIDTH-1:0] sdram_command;
 
-reg [4:0] count_state; // atualizar depois
+reg [COUNT_WIDTH-1:0] count_state; // atualizar depois
 
 //*******************************************************
 //General Purpose Signals
@@ -107,7 +108,7 @@ assign col_address = {1'b0, data_addr_reg[0]};
 assign dram_dq_out = data_in_reg;
 
 
-always @(posedge clk or posedge rst_n) begin
+always @(posedge clk or negedge rst_n) begin
    if (!rst_n) begin
       data_addr_reg <= {ADDR_WIDTH{1'b0}};
       data_in_reg <= {DATA_WIDTH{1'b0}};
@@ -150,7 +151,7 @@ always @(posedge clk or negedge rst_n) begin
       data_out <= {DATA_WIDTH{1'b0}};
    end
    else begin
-      if ((state == READ_DATA ) && count_state == 2) begin
+      if ((state == READ_DATA ) && count_state == 1) begin
          data_out_valid <= 1'b1;
          data_out <= dram_dq_in;
       end
@@ -170,41 +171,42 @@ end
 
 always @(*) begin
    next_state = state;
+   sdram_command = NOP_CMD;
    case (state)
       INITIALIZE_SDRAM: begin
          if (count_state == 0)
             sdram_command = NOP_CMD;
-         else if (count_state == 1)
+         else if (count_state == 5'd1)
             sdram_command = PRECHARGE_ALL_CMD;
-         else if (count_state == 2)
+         else if (count_state == 5'd2)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 3)
+         else if (count_state == 5'd3)
             sdram_command = NOP_CMD;
-         else if (count_state == 4)
+         else if (count_state == 5'd4)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 5)
+         else if (count_state == 5'd5)
             sdram_command = NOP_CMD;
-         else if (count_state == 6)
+         else if (count_state == 5'd6)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 7)
+         else if (count_state == 5'd7)
             sdram_command = NOP_CMD;
-         else if (count_state == 8)
+         else if (count_state == 5'd8)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 9)
+         else if (count_state == 5'd9)
             sdram_command = NOP_CMD;
-         else if (count_state == 10)
+         else if (count_state == 5'd10)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 11)
+         else if (count_state == 5'd11)
             sdram_command = NOP_CMD;
-         else if (count_state == 12)
+         else if (count_state == 5'd12)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 13)
+         else if (count_state == 5'd13)
             sdram_command = NOP_CMD;
-         else if (count_state == 14)
+         else if (count_state == 5'd14)
             sdram_command = AUTO_REFRESH_CMD;
-         else if (count_state == 15)
+         else if (count_state == 5'd15)
             sdram_command = NOP_CMD;
-         else if (count_state == 16) begin
+         else if (count_state == 5'd16) begin
             sdram_command = AUTO_REFRESH_CMD;
             next_state = LOAD_MODE_REGISTER;
          end
@@ -220,7 +222,7 @@ always @(*) begin
          end
       end
       ACTIVATE_BANK: begin
-         if (count_state == 0)
+         if (count_state == 5'd0)
             sdram_command = ACTIVATE_CMD;
          else if (count_state == ACTIVATE_LATENCY) begin      
             if (data_rd_en_reg) begin
@@ -234,7 +236,7 @@ always @(*) begin
             sdram_command = NOP_CMD;
       end
       WRITE_DATA: begin
-         if (count_state == 0)
+         if (count_state == 5'd0)
             sdram_command = WRITE_CMD;
          else if (count_state == WRITE_LATENCY) begin         
             next_state = PRECHARGE; 
@@ -244,7 +246,7 @@ always @(*) begin
             sdram_command = NOP_CMD;
       end
       READ_DATA: begin
-         if (count_state == 0)
+         if (count_state == 5'd0)
             sdram_command = READ_CMD;
          else if (count_state == READ_LATENCY) begin         
             next_state = PRECHARGE;
@@ -254,7 +256,7 @@ always @(*) begin
             sdram_command = NOP_CMD;
       end
       PRECHARGE: begin
-         if (count_state == 0)
+         if (count_state == 5'd0)
             sdram_command = PRECHARGE_CMD;
          else if (count_state == PRECHARGE_LATENCY) begin         
             next_state = IDLE;
@@ -413,57 +415,66 @@ always @(*) begin
          dram_addr = {SDRAM_ADDR_WIDTH {1'd0}}; // dont care
          dram_cke = 1'b1;
       end
+      default begin
+         dram_cs_n = 1'b0;
+         dram_ras_n = 1'b1;
+         dram_cas_n = 1'b1;
+         dram_we_n = 1'b1;
+         dram_ba = 2'b00; //dont care
+         dram_addr = {SDRAM_ADDR_WIDTH{1'b0}};//dont care
+         dram_cke = 1'b1;
+      end
    endcase
 end
 
 always @(posedge clk or negedge rst_n) begin
    if (!rst_n) begin
-      count_state <= 0;
+      count_state <= 5'd0;
    end
    else begin
       case (state)
          INITIALIZE_SDRAM: begin
             if (count_state == INIT_LATENCY) begin
-               count_state <= 0;
+               count_state <= 5'd0;
             end
             else begin
-               count_state <= count_state + 1;
+               count_state <= count_state + 5'd1;
             end
          end
          ACTIVATE_BANK: begin
              if (count_state == ACTIVATE_LATENCY) begin
-               count_state <= 0;
+               count_state <= 5'd0;
             end
             else begin
-               count_state <= count_state + 1;
+               count_state <= count_state + 5'd1;
             end
          end
          READ_DATA: begin
              if (count_state == READ_LATENCY) begin
-               count_state <= 0;
+               count_state <= 5'd0;
             end
             else begin
-               count_state <= count_state + 1;
+               count_state <= count_state + 5'd1;
             end
          end
          WRITE_DATA: begin
              if (count_state == WRITE_LATENCY) begin
-               count_state <= 0;
+               count_state <= 5'd0;
             end
             else begin
-               count_state <= count_state + 1;
+               count_state <= count_state + 5'd1;
             end
          end
          PRECHARGE: begin
              if (count_state == PRECHARGE_LATENCY) begin
-               count_state <= 0;
+               count_state <= 5'd0;
             end
             else begin
-               count_state <= count_state + 1;
+               count_state <= count_state + 5'd1;
             end
          end
          IDLE:
-            count_state <= 0;
+            count_state <= 5'd0;
       endcase
    end
 end

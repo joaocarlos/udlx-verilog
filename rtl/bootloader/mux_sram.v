@@ -33,6 +33,7 @@ always @(*) begin
       sram_mem_rd_en = 1'b0;
       sram_mem_wr_data = boot_mem_rd_data;
       sram_mem_addr = boot_mem_addr;
+		inst_mem_rd_data = {DATA_WIDTH{1'b0}};
    end
    else begin
       sram_mem_wr_en = inst_mem_wr_en;

@@ -1,7 +1,7 @@
 module top_tb;
 
 parameter DATA_WIDTH = 32;
-parameter DATA_ADDR_WIDTH = 32;
+parameter DATA_ADDR_WIDTH = 20;
 parameter INST_ADDR_WIDTH = 20;
 parameter DQM_WIDTH = 4;
 parameter BA_WIDTH = 2;
@@ -40,6 +40,8 @@ wire clk_div2;
 wire clk_div4;
 wire clk_div8;
 
+wire [DATA_WIDTH-1:0] gpio_o;
+wire we_gpio;
 //Registers
 assign dram_dq = &dram_dqm ?  {DATA_WIDTH {1'bZ}} : dram_dq_out;
 assign dram_dq_in = dram_dq;
@@ -83,7 +85,9 @@ top
          .clk_out(clk_out),
          .clk_div2(clk_div2),
          .clk_div4(clk_div4),
-         .clk_div8(clk_div8)
+         .clk_div8(clk_div8),
+         .gpio_o(gpio_o),
+         .we_gpio(we_gpio)
       );
 
 
@@ -102,9 +106,14 @@ sp_ram_u0
    .rd_data(sram_rd_data)
 );
 
+
+wire clk_dl;
+
+assign #3 clk_dl =  dram_clk;
+
 mt48lc8m16a2
   #(
-    .data_bits(DATA_ADDR_WIDTH/2),
+    .data_bits(DATA_WIDTH/2),
     .addr_bits(DATA_ADDR_WIDTH)
   )
   sdram_memory_2
@@ -112,7 +121,7 @@ mt48lc8m16a2
     .Dq(dram_dq[31:16]),
     .Addr(dram_addr),
     .Ba(dram_ba),
-    .Clk(dram_clk),
+    .Clk(clk_dl),
     .Cke(dram_cke),
     .Cs_n(dram_cs_n),
     .Ras_n(dram_ras_n),
@@ -123,7 +132,7 @@ mt48lc8m16a2
 
 mt48lc8m16a2
   #(
-    .data_bits(DATA_ADDR_WIDTH/2),
+    .data_bits(DATA_WIDTH/2),
     .addr_bits(DATA_ADDR_WIDTH)
   )
   sdram_memory_1
@@ -131,7 +140,7 @@ mt48lc8m16a2
     .Dq(dram_dq[15:0]),
     .Addr(dram_addr),
     .Ba(dram_ba),
-    .Clk(dram_clk),
+    .Clk(clk_dl),
     .Cke(dram_cke),
     .Cs_n(dram_cs_n),
     .Ras_n(dram_ras_n),
@@ -159,7 +168,7 @@ initial begin
 end
 
 always begin
-   #10  clk = ~clk;
+   #25  clk = ~clk;
 end
 
 initial begin
@@ -172,4 +181,179 @@ rst_n = 0;
 rst_n = 1;
 end
 
+reg [7:0]  display_1,
+            display_2,
+            display_3,
+            display_4,
+            display_5,
+            display_6,
+            display_7,
+            display_8;
+
+always @(posedge clk or negedge rst_n) begin
+   if (!rst_n) begin
+      display_1 =  7'b1000000;
+      display_2 =  7'b1000000;
+      display_3 =  7'b1000000;
+      display_4 =  7'b1000000;
+      display_5 =  7'b1000000;
+      display_6 =  7'b1000000;
+      display_7 =  7'b1000000;
+      display_8 =  7'b1000000;
+   end
+    else if (we_gpio) begin
+       case (gpio_o[3:0])
+         4'h0: display_1 = 7'b1000000;
+         4'h1: display_1 = 7'b1111001;
+         4'h2: display_1 = 7'b0100100;
+         4'h3: display_1 = 7'b0110000;
+         4'h4: display_1 = 7'b0011001;
+         4'h5: display_1 = 7'b0010010;
+         4'h6: display_1 = 7'b0000010;
+         4'h7: display_1 = 7'b1111000;
+         4'h8: display_1 = 7'b0000000;
+         4'h9: display_1 = 7'b0011000;
+         4'hA: display_1 = 7'b0001000;
+         4'hB: display_1 = 7'b0000011;
+         4'hC: display_1 = 7'b1000110;
+         4'hD: display_1 = 7'b0100001;
+         4'hE: display_1 = 7'b0000110;
+         4'hF: display_1 = 7'b0001110;
+         default: display_1 = 7'b0110110;
+       endcase
+       case (gpio_o[7:4])
+         4'h0: display_2 = 7'b1000000;
+         4'h1: display_2 = 7'b1111001;
+         4'h2: display_2 = 7'b0100100;
+         4'h3: display_2 = 7'b0110000;
+         4'h4: display_2 = 7'b0011001;
+         4'h5: display_2 = 7'b0010010;
+         4'h6: display_2 = 7'b0000010;
+         4'h7: display_2 = 7'b1111000;
+         4'h8: display_2 = 7'b0000000;
+         4'h9: display_2 = 7'b0011000;
+         4'hA: display_2 = 7'b0001000;
+         4'hB: display_2 = 7'b0000011;
+         4'hC: display_2 = 7'b1000110;
+         4'hD: display_2 = 7'b0100001;
+         4'hE: display_2 = 7'b0000110;
+         4'hF: display_2 = 7'b0001110;
+         default: display_2 = 7'b0110110;
+       endcase
+       case (gpio_o[11:8])
+         4'h0: display_3 = 7'b1000000;
+         4'h1: display_3 = 7'b1111001;
+         4'h2: display_3 = 7'b0100100;
+         4'h3: display_3 = 7'b0110000;
+         4'h4: display_3 = 7'b0011001;
+         4'h5: display_3 = 7'b0010010;
+         4'h6: display_3 = 7'b0000010;
+         4'h7: display_3 = 7'b1111000;
+         4'h8: display_3 = 7'b0000000;
+         4'h9: display_3 = 7'b0011000;
+         4'hA: display_3 = 7'b0001000;
+         4'hB: display_3 = 7'b0000011;
+         4'hC: display_3 = 7'b1000110;
+         4'hD: display_3 = 7'b0100001;
+         4'hE: display_3 = 7'b0000110;
+         4'hF: display_3 = 7'b0001110;
+         default: display_3 = 7'b0110110;
+       endcase
+       case (gpio_o[15:12])
+         4'h0: display_4 = 7'b1000000;
+         4'h1: display_4 = 7'b1111001;
+         4'h2: display_4 = 7'b0100100;
+         4'h3: display_4 = 7'b0110000;
+         4'h4: display_4 = 7'b0011001;
+         4'h5: display_4 = 7'b0010010;
+         4'h6: display_4 = 7'b0000010;
+         4'h7: display_4 = 7'b1111000;
+         4'h8: display_4 = 7'b0000000;
+         4'h9: display_4 = 7'b0011000;
+         4'hA: display_4 = 7'b0001000;
+         4'hB: display_4 = 7'b0000011;
+         4'hC: display_4 = 7'b1000110;
+         4'hD: display_4 = 7'b0100001;
+         4'hE: display_4 = 7'b0000110;
+         4'hF: display_4 = 7'b0001110;
+         default: display_4 = 7'b0110110;
+       endcase
+       case (gpio_o[19:16])
+         4'h0: display_5 = 7'b1000000;
+         4'h1: display_5 = 7'b1111001;
+         4'h2: display_5 = 7'b0100100;
+         4'h3: display_5 = 7'b0110000;
+         4'h4: display_5 = 7'b0011001;
+         4'h5: display_5 = 7'b0010010;
+         4'h6: display_5 = 7'b0000010;
+         4'h7: display_5 = 7'b1111000;
+         4'h8: display_5 = 7'b0000000;
+         4'h9: display_5 = 7'b0011000;
+         4'hA: display_5 = 7'b0001000;
+         4'hB: display_5 = 7'b0000011;
+         4'hC: display_5 = 7'b1000110;
+         4'hD: display_5 = 7'b0100001;
+         4'hE: display_5 = 7'b0000110;
+         4'hF: display_5 = 7'b0001110;
+         default: display_5 = 7'b0110110;
+       endcase
+       case (gpio_o[23:20])
+         4'h0: display_6 = 7'b1000000;
+         4'h1: display_6 = 7'b1111001;
+         4'h2: display_6 = 7'b0100100;
+         4'h3: display_6 = 7'b0110000;
+         4'h4: display_6 = 7'b0011001;
+         4'h5: display_6 = 7'b0010010;
+         4'h6: display_6 = 7'b0000010;
+         4'h7: display_6 = 7'b1111000;
+         4'h8: display_6 = 7'b0000000;
+         4'h9: display_6 = 7'b0011000;
+         4'hA: display_6 = 7'b0001000;
+         4'hB: display_6 = 7'b0000011;
+         4'hC: display_6 = 7'b1000110;
+         4'hD: display_6 = 7'b0100001;
+         4'hE: display_6 = 7'b0000110;
+         4'hF: display_6 = 7'b0001110;
+         default: display_6 = 7'b0110110;
+       endcase
+       case (gpio_o[27:24])
+         4'h0: display_7 = 7'b1000000;
+         4'h1: display_7 = 7'b1111001;
+         4'h2: display_7 = 7'b0100100;
+         4'h3: display_7 = 7'b0110000;
+         4'h4: display_7 = 7'b0011001;
+         4'h5: display_7 = 7'b0010010;
+         4'h6: display_7 = 7'b0000010;
+         4'h7: display_7 = 7'b1111000;
+         4'h8: display_7 = 7'b0000000;
+         4'h9: display_7 = 7'b0011000;
+         4'hA: display_7 = 7'b0001000;
+         4'hB: display_7 = 7'b0000011;
+         4'hC: display_7 = 7'b1000110;
+         4'hD: display_7 = 7'b0100001;
+         4'hE: display_7 = 7'b0000110;
+         4'hF: display_7 = 7'b0001110;
+         default: display_7 = 7'b0110110;
+       endcase
+       case (gpio_o[31:28])
+         4'h0: display_8 = 7'b1000000;
+         4'h1: display_8 = 7'b1111001;
+         4'h2: display_8 = 7'b0100100;
+         4'h3: display_8 = 7'b0110000;
+         4'h4: display_8 = 7'b0011001;
+         4'h5: display_8 = 7'b0010010;
+         4'h6: display_8 = 7'b0000010;
+         4'h7: display_8 = 7'b1111000;
+         4'h8: display_8 = 7'b0000000;
+         4'h9: display_8 = 7'b0011000;
+         4'hA: display_8 = 7'b0001000;
+         4'hB: display_8 = 7'b0000011;
+         4'hC: display_8 = 7'b1000110;
+         4'hD: display_8 = 7'b0100001;
+         4'hE: display_8 = 7'b0000110;
+         4'hF: display_8 = 7'b0001110;
+         default: display_8 = 7'b0110110;
+       endcase
+   end
+end
 endmodule

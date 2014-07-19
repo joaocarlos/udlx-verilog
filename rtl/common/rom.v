@@ -11,7 +11,8 @@ module rom
    output reg [DATA_WIDTH-1:0] data
 );
 
-localparam MEM_SIZE = 2**ADDR_WIDTH;
+//localparam MEM_SIZE = 2**ADDR_WIDTH;
+localparam MEM_SIZE = 'd1024;
 
 reg [DATA_WIDTH-1:0] mem [0:MEM_SIZE-1] ;
 

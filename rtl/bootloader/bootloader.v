@@ -63,6 +63,7 @@ always @(*) begin
          else begin
             next_state = READ_BOOT;
          end
+		default next_state = INIT_BOOT;
    endcase     
 end
 

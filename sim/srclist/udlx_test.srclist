@@ -1,6 +1,6 @@
 
--incdir ../../rtl/common
-
+-incdir ../../rtl/common \
+-incdir ../tb
 
 ../../rtl/common/mux_data.v
 
@@ -39,7 +39,11 @@
 ../../rtl/inst_memory_controll/sram_ctrl.v
 ../../rtl/common/rom.v
 
-../ver/tosco_tb/top_tb.sv
-../ver/tosco_tb/tosco_tb.sv
-
+//../ver/tosco_tb/top_tb.sv
+//../ver/tosco_tb/tosco_tb.sv
+../tb/udlx_data_item.sv
+../tb/dut_if.sv
+../tb/udlx_tb.sv
+../tb/udlx_monitor.sv
+../tb/defines.sv
 

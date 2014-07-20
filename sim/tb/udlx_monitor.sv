@@ -81,7 +81,7 @@ class udlx_monitor;
       int error_reg;
       int error_mem;
 
-      $sformat (compile_c, "gcc main.c -o udlx_golden_model.o");
+      $sformat (compile_c, "gcc ../golden_model/main.c -o udlx_golden_model.o");
       $system(compile_c);
       $sformat (execute_c, "./udlx_golden_model.o ../tests/code_test0.hex");
       $system(execute_c);

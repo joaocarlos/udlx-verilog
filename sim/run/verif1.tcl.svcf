@@ -1,0 +1,204 @@
+# SimVision Command Script (Fri Jul 18 06:19:05 PM BRT 2014)
+#
+# Version 12.10.p001
+#
+# You can restore this configuration with:
+#
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -vtimescale 1ns/10ps -s -input /home/users/ljesus/cadence/Laue_project/udlx-verilog-master/sim/run/verif1.tcl
+#
+
+
+#
+# Preferences
+#
+preferences set toolbar-Standard-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-SimControl-WatchList {
+  usual
+  hide set_break
+}
+preferences set txe-locate-add-fibers 1
+preferences set txe-navigate-search-locate 0
+preferences set txe-view-hold 0
+preferences set toolbar-Windows-WatchWindow {
+  usual
+  shown 0
+}
+preferences set txe-navigate-waveform-locate 1
+preferences set txe-view-hidden 0
+preferences set txe-search-show-linenumbers 1
+preferences set toolbar-OperatingMode-WaveWindow {
+  usual
+  position -pos 4
+  name OperatingMode
+}
+preferences set plugin-enable-svdatabrowser 0
+preferences set toolbar-txe_waveform_toggle-WaveWindow {
+  usual
+  position -pos 3
+}
+preferences set plugin-enable-groupscope 0
+preferences set key-bindings {Simulation>ReinvokeSimulator Ctrl+r}
+preferences set plugin-enable-interleaveandcompare 0
+preferences set toolbar-SimControl-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-Windows-WaveWindow {
+  usual
+  position -pos 2
+}
+preferences set txe-navigate-waveform-next-child 1
+preferences set txe-locate-scroll-x 1
+preferences set txe-locate-scroll-y 1
+preferences set txe-locate-pop-waveform 1
+preferences set toolbar-TimeSearch-WatchWindow {
+  usual
+  shown 0
+}
+
+#
+# Simulator
+#
+database require simulator -hints {
+	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -vtimescale 1ns/10ps -s -input verif1.tcl"
+}
+
+#
+# Groups
+#
+catch {group new -name bootloader -overlay 0}
+catch {group new -name dlx_processor -overlay 0}
+catch {group new -name dut_if -overlay 0}
+
+group using bootloader
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mem_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mode}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.count[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.inst_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.inst_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.inst_mem_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.next_state[1:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.rst_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.state[1:0]}]} ]
+
+group using dlx_processor
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_addr[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.instr_addr[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.instr_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.instruction[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.rst_n}]} ]
+
+group using dut_if
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.dut_if.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_addr[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_read[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_write[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.instr_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.instruction[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.regs[0:31]}]} ]
+
+#
+# Cursors
+#
+set time 0
+if {[catch {cursor new -name  TimeA -time $time}] != ""} {
+    cursor set -using TimeA -time $time
+}
+cursor set -using TimeA -marching 1
+
+#
+# Mnemonic Maps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+
+#
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 1024x1204+1280+25}] != ""} {
+    window geometry "Design Browser 1" 1024x1204+1280+25
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set -scope [subst  {simulator::[format {udlx_tb.dut_if}]} ]
+browser set \
+    -signalsort name
+browser yview see [subst  {simulator::[format {udlx_tb.dut_if}]} ]
+browser timecontrol set -lock 0
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1280x998+0+0}] != ""} {
+    window geometry "Waveform 1" 1280x998+0+0
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 175 \
+    -units ps \
+    -valuewidth 75
+cursor set -using TimeA -time 0
+cursor set -using TimeA -marching 1
+waveform baseline set -time 0
+
+
+set groupId0 [waveform add -groups bootloader]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups dlx_processor]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups dut_if]
+waveform hierarchy collapse $groupId0
+
+
+waveform xview limits 0 2000ps
+
+#
+# Waveform Window Links
+#
+
+#
+# Console windows
+#
+console set -windowname Console
+window geometry Console 1024x1204+1280+25
+

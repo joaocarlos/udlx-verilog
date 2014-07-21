@@ -194,7 +194,7 @@ The Figure \ref{fig:top_architecture} shows the Top Architecture of the $\mu$DLX
 		
 	\begin{figure}[H]
     	\centering
-    	\includegraphics[width=\linewidth]{pictures/verification_environment.png}
+    	\includegraphics[width=.7\linewidth]{pictures/verification_environment_v2.eps}
     	\caption{$\mu$DLX Verification Environment.}
     	\label{fig:ver_env}
   	\end{figure} 
@@ -331,7 +331,13 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 
         \hline
         \endlastfoot
-      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
+      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
+        DLX\_T1\_1    & Execution of addi and subi instructions. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_2    & Execution of andi instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_3    & Execution of ori instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_4    & Execution of add and sub instructions. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_5    & Execution of and instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_6    & Execution of or instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
       	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
       	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
       	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   

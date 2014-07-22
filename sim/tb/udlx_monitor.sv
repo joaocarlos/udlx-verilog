@@ -58,7 +58,7 @@ class udlx_monitor;
         @(negedge dut_if.clk_dlx);
         instruction = dut_if.instruction;
         if(instruction == 'h00) begin
-          if(cnt_stop == 3) begin
+          if(cnt_stop == 5) begin
             cnt_stop = 0;
             repeat(15)@(negedge dut_if.clk_dlx);
             check();

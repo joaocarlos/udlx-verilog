@@ -201,13 +201,13 @@ The Figure \ref{fig:top_architecture} shows the Top Architecture of the $\mu$DLX
 	
 	\subsection{Design Under Test Interface (DUT\_IF)}
 	
-	The Design Under Test Interface (DUT\_IF) makes the interface between the monitor and the DUT. The DUT\_IF is responsible to control the data that are transmitted between the Verification Environment and DUT.
+	The Design Under Test Interface (DUT\_IF) makes the interface between the monitor and the DUT. The DUT\_IF is responsible to control the data that are transmitted between the Verification Environment and DUT, so it contains the instance of all DUT signals that will be used to perform the verification.
 	
-	\subsection{Monitor}
-	
-	The monitor is responsible to observe the behavior of the DUT and, also, collect the output to verify if the instructions are working as expected. The main forwarding, branch taken, and load hazard.
-The monitor have all assertions that will ensure if the behavior of the DUT is correct.
-	
+The DUT Interface, also, have all assertions that is implemented to ensure if the behavior of the DUT signals are correct. 
+This interface is instantiated at the Top Level of Verification Environment and the signals are connected with the signals of the DUT.
+
+Through the assertions, the verification ensure, mainly, that the Forwarding, Branch Taken and Load Hazard instructions are working as expected.
+
 	\subsubsection{Forwarding}
 	
 	The forwarding operation can occur between the execution and different blocks. This assertion will be used to ensure the forwarding unit is activating the correct signal and doing what is expected.
@@ -219,6 +219,18 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 	\subsubsection{Load Hazard}
 
 	During a load hazard the uDLX stall and flush specific stages. The assertions will monitor this condition and give warnings for any unpredicted behavior.	
+	
+	\subsection{Monitor}
+	
+	The monitor is responsible to observe the behavior of the DUT and, also, collect the output to verify if the instructions are working as expected.
+	
+	The monitor observe the behavior of the control signals and, when necessary, capture the data that is stored in data memory and in registers.
+	
+	When the software ends, the monitor identify it and call the Checker.
+The Checker is responsible to execute the Golden Model with the same software that was used by DUT and compare the data stored in data memory and in registers. If any mismatch are found, the errors are reported.
+
+	
+
 	
 	\subsection{Verification Environment Design Specification}
   \FloatBarrier
@@ -263,7 +275,7 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 	The features list, describes the features that are planned to be implemented.
   \FloatBarrier
     \begin{center}
-			\rowcolors{1}{darkred}{red!90} 
+			\rowcolors{1}{white}{gray!25} 
       \begin{longtable}[pos]{| c | m{9cm} | c |} \hline  %14cm
 	      \rowcolor{black}
         \multicolumn{1}{|m{2cm}|}{\centering\textbf{\textcolor{white}{Feature Number}}} & 
@@ -332,23 +344,33 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
         \hline
         \endlastfoot
       	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-        DLX\_T1\_1    & Execution of addi and subi instructions. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_2    & Execution of andi instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_3    & Execution of ori instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_4    & Execution of add and sub instructions. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_5    & Execution of and instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_6    & Execution of or instruction. All the registers is used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
-      	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   	
-      	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-      	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-      	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline    
-		DLX\_T6      & Test forwarding unit in all possible situations  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 0\% \\ \hline   
-		DLX\_T7      & Test the load hazard  &	Sim & Unit & DLX\_F1, DLX\_F3 & 4 & Igo & 0\% \\ \hline   
-		DLX\_T8      & Test jump and branch instructions  &	Sim & Unit & DLX\_F4 & 8 & Igo & 0\% \\ \hline        
-		DLX\_T9      & Test the SDRAM access  &	Sim & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
-		DLX\_T10      & Test the SRAM access  &	Sim & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
-		DLX\_T11      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5, DLX\_F6 & 8 & Igo & 0\% \\ \hline        
-		DLX\_T12      & Test All interfaces protocols  &	Sim & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
+        DLX\_T1\_1    & Execution of addi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_2    & Execution of subi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T1\_3    & Execution of add instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline	
+        DLX\_T1\_4    & Execution of sub instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline	
+        DLX\_T1\_5    & Execution of cmp instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the comparison   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
+        DLX\_T1\_6    & Execution of not instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
+      	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
+        DLX\_T2\_1    & Execution of sw instruction. Store determined value in all positions of memory   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
+        DLX\_T2\_2    & Execution of lw instruction. Load the values previously stored in all positions of memory   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
+      	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline  
+        DLX\_T3\_1    & Execution of andi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T3\_2    & Execution of ori instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
+        DLX\_T3\_3    & Execution of and instruction. All the registers are used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline	
+         DLX\_T3\_4    & Execution of or instruction. All the registers are used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline
+
+      	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline 
+      	DLX\_T4\_1   & Execution of beqz instruction. Execute a software that have beqz instruction, and, at least, the condition is satisfied and not.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
+      	DLX\_T4\_2   & Execution of bnez instruction. Execute a software that have bnez instruction, and, at least, the condition is satisfied and not.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
+      	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline 
+       	DLX\_T5\_1   & Execution of jr instruction. Execute a software that have jr instructions and use more than one register as source.   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline   
+       	DLX\_T5\_2   & Execution of jpc instruction.  &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline   
+	DLX\_T6      & Test forwarding unit in all possible situations  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 0\% \\ \hline   
+	DLX\_T7      & Test the load hazard  &	Sim & Unit & DLX\_F1, DLX\_F3 & 4 & Igo & 0\% \\ \hline   
+	DLX\_T8      & Test the SDRAM access  &	Assertion & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
+	DLX\_T9      & Test the SRAM access  &	Assertion & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
+	DLX\_T10      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5, DLX\_F6 & 8 & Igo & 0\% \\ \hline        
+	DLX\_T11      & Test All interfaces protocols  & Assertion & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
 
       \end{longtable}
     \end{center}		
@@ -359,7 +381,7 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 	Assertion will be used to verify the instructions, specially the instructions that have stall, forwarding and flush.
   \FloatBarrier
     \begin{center}
-			\rowcolors{1}{orange!80}{orange!40} 
+			\rowcolors{1}{white}{gray!25} 
       \begin{longtable}[pos]{| c | l | c |} \hline  %14cm
 	      \rowcolor{black}
         \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
@@ -396,7 +418,7 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 	\section{Coverage and Completion Requirements}
   \FloatBarrier
     \begin{center}
-			\rowcolors{1}{red!40}{red!10} 
+			\rowcolors{1}{white}{gray!25} 
       \begin{longtable}[pos]{| c | l | c | c | c |} \hline  %14cm
 	      \rowcolor{black}
         \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
@@ -519,3 +541,4 @@ The monitor have all assertions that will ensure if the behavior of the DUT is c
 	
 
 \end{document}
+

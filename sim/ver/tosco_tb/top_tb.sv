@@ -1,3 +1,5 @@
+`include "../../fpga/rtl/dlx_de2_115_defines.v"
+
 module top_tb;
 
 parameter DATA_WIDTH = 32;
@@ -34,12 +36,8 @@ wire [BA_WIDTH-1:0] dram_ba;       // sdram bank address
 wire dram_clk;      // sdram clock
 wire dram_cke;
 //clk rst manager
-wire rst_sync_n;
-wire clk_out;
-wire clk_div2;
-wire clk_div4;
-wire clk_div8;
-
+reg clk_proc;
+reg clk_sram;
 wire [DATA_WIDTH-1:0] gpio_o;
 wire we_gpio;
 //Registers
@@ -56,6 +54,7 @@ top
       (/*autoport*/
          .clk(clk),
          .rst_n(rst_n),
+         .clk_proc(clk_proc),
          //boot rom memory interface
          .boot_rom_rd_en(boot_rom_rd_en),
          .boot_rom_addr(boot_rom_addr),
@@ -81,11 +80,6 @@ top
          .dram_ba(dram_ba),       // sdram bank address
          .dram_clk(dram_clk),      // sdram clock
          .dram_cke(dram_cke),
-         .rst_sync_n(rst_sync_n),
-         .clk_out(clk_out),
-         .clk_div2(clk_div2),
-         .clk_div4(clk_div4),
-         .clk_div8(clk_div8),
          .gpio_o(gpio_o),
          .we_gpio(we_gpio)
       );
@@ -98,7 +92,7 @@ sp_ram
 )
 sp_ram_u0
 (
-   .clk(clk_div4),
+   .clk(clk_sram),
    .rd_ena(!sram_ce_n&sram_we_n),
    .wr_ena(!sram_ce_n&!sram_we_n),
    .address(sram_addr),
@@ -156,8 +150,8 @@ rom
 )
 rom_u0
 (
-   .clk(clk_div8),
-   .rst_n(rst_sync_n),
+   .clk(clk_proc),
+   .rst_n(rst_n),
    .rd_ena(boot_rom_rd_en),
    .address(boot_rom_addr),
    .data(boot_rom_rd_data)
@@ -165,10 +159,21 @@ rom_u0
 
 initial begin
  clk = 0;
+ clk_proc =0;
+ clk_sram = 0;
 end
 
 always begin
-   #25  clk = ~clk;
+   #100  clk = ~clk;
+end
+
+always begin
+   #1000  clk_proc = ~clk_proc;
+end
+
+
+always begin
+   #10  clk_sram = ~clk_sram;
 end
 
 initial begin

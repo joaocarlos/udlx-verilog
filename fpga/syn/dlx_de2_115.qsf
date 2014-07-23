@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE EP4CE115F29C7
 set_global_assignment -name TOP_LEVEL_ENTITY dlx_de2_115
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 11.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "17:29:15  JANUARY 31, 2012"
-set_global_assignment -name LAST_QUARTUS_VERSION 11.1
+set_global_assignment -name LAST_QUARTUS_VERSION 13.1
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
@@ -1231,7 +1231,7 @@ set_global_assignment -name EDA_GENERATE_GATE_LEVEL_SIMULATION_COMMAND_SCRIPT ON
 
 
 set_global_assignment -name SEARCH_PATH ../rtl/
-
+set_global_assignment -name SEARCH_PATH ../../rtl/common
 set_global_assignment -name USE_CONFIGURATION_DEVICE ON
 set_global_assignment -name CYCLONEIII_CONFIGURATION_DEVICE EPCS64
 set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
@@ -1252,8 +1252,39 @@ set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to SW
 set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX3[1]
 set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX3[0]
 
-set_global_assignment -name VERILOG_FILE ../rtl/dlx_de2115.v
+
 
 set_global_assignment -name MISC_FILE dlx_de2_115.dpf
 set_global_assignment -name MISC_FILE "/proj/hercules/work/linton/dlx/udlx-verilog/fpga/syn/dlx_de2_115.dpf"
+set_global_assignment -name VERILOG_FILE ../rtl/dlx_de2_115.v
+set_global_assignment -name VERILOG_FILE ../rtl/dlx_de2_115_defines.v
+set_global_assignment -name VERILOG_FILE ../../rtl/common/clk_rst_mngr.v
+set_global_assignment -name VERILOG_FILE ../../rtl/top/top.v
+set_global_assignment -name VERILOG_FILE ../../rtl/bootloader/mux_sram.v
+set_global_assignment -name VERILOG_FILE ../../rtl/bootloader/bootloader.v
+set_global_assignment -name VERILOG_FILE ../../rtl/common/mux_data.v
+set_global_assignment -name VERILOG_FILE ../../rtl/common/boot_rom.v
+set_global_assignment -name VERILOG_FILE ../../rtl/fetch/top_fetch.v
+set_global_assignment -name VERILOG_FILE ../../rtl/decode/instruction_decode.v
+set_global_assignment -name VERILOG_FILE ../../rtl/decode/instruction_decoder.v
+set_global_assignment -name VERILOG_FILE ../../rtl/decode/register_bank.v
+set_global_assignment -name VERILOG_FILE ../../rtl/decode/signal_extend.v
+set_global_assignment -name VERILOG_FILE ../../rtl/decode/control.v
+set_global_assignment -name VERILOG_FILE ../../rtl/execute/execute_address_calculate.v
+set_global_assignment -name VERILOG_FILE ../../rtl/execute/branch_control.v
+set_global_assignment -name VERILOG_FILE ../../rtl/execute/forward_unit.v
+set_global_assignment -name VERILOG_FILE ../../rtl/execute/alu.v
+set_global_assignment -name VERILOG_FILE ../../rtl/write_back/write_back.v
+set_global_assignment -name VERILOG_FILE ../../rtl/top/dlx_processor.v
+set_global_assignment -name VERILOG_FILE ../../rtl/pipeline/registers/if_id_reg.v
+set_global_assignment -name VERILOG_FILE ../../rtl/pipeline/registers/id_ex_reg.v
+set_global_assignment -name VERILOG_FILE ../../rtl/pipeline/registers/ex_mem_reg.v
+set_global_assignment -name VERILOG_FILE ../../rtl/pipeline/registers/mem_wb_reg.v
+set_global_assignment -name VERILOG_FILE ../../rtl/common/sp_ram.v
+set_global_assignment -name VERILOG_FILE ../../rtl/data_memory_controll/data_memory_controll.v
+set_global_assignment -name VERILOG_FILE ../../rtl/inst_memory_controll/sram_ctrl.v
+set_global_assignment -name QIP_FILE rom.qip
+set_global_assignment -name QIP_FILE clk_40.qip
+set_global_assignment -name QIP_FILE clk_1mhz.qip
+set_global_assignment -name QIP_FILE clk_10mhz.qip
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

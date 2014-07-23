@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Tue Jul 22 15:12:05 2014
+Quartus II 32-bit Version : 13.1.0 Build 162 10/23/2013 SJ Full Version
+Revision Name : dlx_de2_115
+Top-level Entity Name : dlx_de2_115
+Family : Cyclone IV E
+Total logic elements : 4,868
+    Total combinational functions : 3,695
+    Dedicated logic registers : 1,685
+Total registers : 1685
+Total pins : 254
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 6
+Total PLLs : 2

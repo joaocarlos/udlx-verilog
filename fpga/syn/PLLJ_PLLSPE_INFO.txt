@@ -1,0 +1,10 @@
+PLL_Name	clk_1mhz:clk_1_u0|altpll:altpll_component|clk_1mhz_altpll:auto_generated|pll1
+PLLJITTER	35
+PLLSPEmax	84
+PLLSPEmin	-53
+
+PLL_Name	clk_10mhz:clk_10_u0|altpll:altpll_component|clk_10mhz_altpll:auto_generated|pll1
+PLLJITTER	30
+PLLSPEmax	84
+PLLSPEmin	-53
+

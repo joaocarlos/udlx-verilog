@@ -1,0 +1,70 @@
+MIF/HEX Update report for dlx_de2_115
+Tue Jul 22 09:19:26 2014
+Quartus II 32-bit Version 11.1 Build 173 11/01/2011 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. MIF/HEX Update Summary
+  3. MIF/HEX Update Processed Files
+  4. MIF/HEX Update Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2011 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++-----------------------------------------------------------+
+; MIF/HEX Update Summary                                    ;
++-----------------------+-----------------------------------+
+; MIF/HEX Update Status ; Failed - Tue Jul 22 09:19:26 2014 ;
+; Revision Name         ; dlx_de2_115                       ;
+; Top-level Entity Name ; dlx_de2_115                       ;
+; Family                ; Cyclone IV E                      ;
+; Device                ; EP4CE115F29C7                     ;
++-----------------------+-----------------------------------+
+
+
++--------------------------------+
+; MIF/HEX Update Processed Files ;
++--------------------------------+
+; File Name                      ;
++--------------------------------+
+
+
++-------------------------+
+; MIF/HEX Update Messages ;
++-------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 32-bit MIF/HEX Update
+    Info: Version 11.1 Build 173 11/01/2011 SJ Web Edition
+    Info: Processing started: Tue Jul 22 09:19:24 2014
+Info: Command: quartus_cdb dlx_de2_115 -c dlx_de2_115 --update_mif
+Warning (125092): Tcl Script File rom.qip not found
+    Info (125063): set_global_assignment -name QIP_FILE rom.qip
+Error (39022): Found no valid Memory Initialization File to process
+Error: Quartus II 32-bit MIF/HEX Update was unsuccessful. 1 error, 1 warning
+    Error: Peak virtual memory: 292 megabytes
+    Error: Processing ended: Tue Jul 22 09:19:26 2014
+    Error: Elapsed time: 00:00:02
+    Error: Total CPU time (on all processors): 00:00:01
+
+

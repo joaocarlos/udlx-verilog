@@ -151,7 +151,7 @@ always @(posedge clk or negedge rst_n) begin
       data_out <= {DATA_WIDTH{1'b0}};
    end
    else begin
-      if ((state == READ_DATA ) && count_state == 1) begin
+      if ((state == READ_DATA ) && count_state == 2) begin
          data_out_valid <= 1'b1;
          data_out <= dram_dq_in;
       end

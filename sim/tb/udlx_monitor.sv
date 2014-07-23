@@ -16,7 +16,7 @@ class udlx_monitor;
 
   udlx_data_item data_collected = new;
   virtual interface dut_if dut_if;
-
+  
   int cnt_stop;
   logic [DATA_WIDTH-1:0] instruction;
   logic [DATA_WIDTH-1:0] regs_reference [0:(2**ADDRESS_WIDTH)-1];
@@ -83,8 +83,10 @@ class udlx_monitor;
 
       $sformat (compile_c, "gcc ../golden_model/main.c -o udlx_golden_model.o");
       $system(compile_c);
-      $sformat (execute_c, "./udlx_golden_model.o ../tests/code_test0.hex");
+      //$sformat (execute_c, "./udlx_golden_model.o ../tests/DLX_T1_1.hex");
+      $sformat (execute_c, "./udlx_golden_model.o %s ",DLX_TEST);
       $system(execute_c);
+      $display("DISPLAYYYY: %s",DLX_TEST);
 
       f_path = "./registers.hex";
       fp = $fopen( f_path, "r");

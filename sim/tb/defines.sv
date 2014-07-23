@@ -18,3 +18,7 @@ localparam ADDRESS_WIDTH = 5;
 localparam NUM_REGS = 32;
 localparam EOF = 32'hFFFF_FFFF;
 
+localparam DLX_TEST = "../tests/DLX_T1_1.hex";
+//localparam DLX_TEST = "../tests/DLX_T1_2.hex";
+//localparam DLX_TEST = "../tests/DLX_T1_3.hex";
+//localparam DLX_TEST = "../tests/DLX_T1_4.hex";

@@ -41,7 +41,8 @@ module dlx_processor
    output data_wr_en,
    output [DATA_ADDR_WIDTH-1:0] data_addr,
    input [DATA_WIDTH-1:0] data_read,
-   output [DATA_WIDTH-1:0] data_write
+   output [DATA_WIDTH-1:0] data_write,
+   input boot_mode
 );
 
    localparam INSTRUCTION_WIDTH = DATA_WIDTH;
@@ -53,7 +54,7 @@ module dlx_processor
    localparam PC_OFFSET_WIDTH = 26;
 
 
-   localparam PC_INITIAL_ADDRESS = 20'h40000;
+   localparam PC_INITIAL_ADDRESS = 20'h00000;
 
    // -----------------------------------------------------------------------------
    // Internal signals
@@ -173,7 +174,8 @@ module dlx_processor
       .new_pc_in(fetch_new_pc),
 
       .pc_out(new_pc),
-      .inst_mem_addr_out(instr_addr)
+      .inst_mem_addr_out(instr_addr),
+      .boot_mode(boot_mode)
    );
 
    // -----------------------------------------------------------------------------
@@ -381,7 +383,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
-      .flush_in(flush),
+      .flush_in(flush_in),
 
       .mem_data_rd_en_in(id_ex_mem_data_rd_en),
       .mem_data_wr_en_in(id_ex_mem_data_wr_en),

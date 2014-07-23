@@ -41,7 +41,8 @@ module top_fetch
     // output reg [PC_DATA_WIDTH-1:0] new_pc_out,                // Updated value of the Program Counter
     output [PC_DATA_WIDTH-1:0] pc_out,                    // Value of the Program Counter
     // output reg [INSTRUCTION_WIDTH-1:0] instruction_reg_out,   // CPU core fetched instruction
-    output [PC_DATA_WIDTH-1:0] inst_mem_addr_out              // Instruction SRAM address bus
+    output [PC_DATA_WIDTH-1:0] inst_mem_addr_out,              // Instruction SRAM address bus
+    input boot_mode
 );
 
 
@@ -76,7 +77,11 @@ assign inst_mem_addr_out = pc;
 always@(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         pc <= PC_INITIAL_ADDRESS;
-    end else if(!stall) begin
+    end 
+    else if (boot_mode) begin
+        pc <= PC_INITIAL_ADDRESS;
+    end
+    else if(!stall) begin
         pc <= pc_mux_data;
     end
 end

@@ -229,7 +229,10 @@ Through the assertions, the verification ensure, mainly, that the Forwarding, Br
 	When the software ends, the monitor identify it and call the Checker.
 The Checker is responsible to execute the Golden Model with the same software that was used by DUT and compare the data stored in data memory and in registers. If any mismatch are found, the errors are reported.
 
+	\subsection{Golden Model}
+	To ensure that the DLX Processor execute the instructions correctly, was created a Golden Model that simulate the same behavior of the DLX Processor.
 	
+	The Golden Model was developed using C Language. It is able to execute all the instructions supported by DLX Processor, so the same instruction set that is used to simulate the DUT can be applied to Golden Model. This software stores the data that will be store in SDRAM Memories and in the Register Bank by DUT, so, these data are compared with the same data collected by Verification Environment.
 
 	
 	\subsection{Verification Environment Design Specification}
@@ -343,11 +346,11 @@ The Checker is responsible to execute the Golden Model with the same software th
 
         \hline
         \endlastfoot
-      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-        DLX\_T1\_1    & Execution of addi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_2    & Execution of subi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T1\_3    & Execution of add instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline	
-        DLX\_T1\_4    & Execution of sub instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline	
+      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 64\% \\ \hline   
+        DLX\_T1\_1    & Execution of addi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline	
+        DLX\_T1\_2    & Execution of subi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline	
+        DLX\_T1\_3    & Execution of add instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 100\% \\ \hline	
+        DLX\_T1\_4    & Execution of sub instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 100\% \\ \hline	
         DLX\_T1\_5    & Execution of cmp instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the comparison   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
         DLX\_T1\_6    & Execution of not instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
       	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
@@ -402,10 +405,10 @@ The Checker is responsible to execute the Golden Model with the same software th
 
         \hline
         \endlastfoot
-      	06/25/2014      & Assertion to the correct fecth\_top operation  &	Not started yet \\ \hline   	
-      	06/25/2014      & Assertion to verify the decode operation 			 &	Not started yet \\ \hline
-      	07/02/2014      & Assertion for the execution block operation 			 &	Not started yet \\ \hline      	
-      	07/02/2014      & Assertion for the memory read and write back 			 &	Not started yet \\ \hline      	
+      	06/25/2014      & Assertion to the correct fecth\_top operation  &	Completed \\ \hline   	
+      	06/25/2014      & Assertion to verify the decode operation 			 &	Completed \\ \hline
+      	07/02/2014      & Assertion for the execution block operation 			 &	Completed \\ \hline      	
+      	07/02/2014      & Assertion for the memory read and write back 			 &	Completed \\ \hline      	
       	07/02/2014      & Assertion to forwarding operation 			 &	Not started yet \\ \hline      	
       	07/02/2014      & Assertion during branches and jumps 			 &	Not started yet \\ \hline      	
       	07/02/2014      & Assertion during load hazard 			 &	Not started yet \\ \hline

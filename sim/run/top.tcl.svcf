@@ -1,4 +1,4 @@
-# SimVision Command Script (Thu Jul 17 09:41:31 AM BRT 2014)
+# SimVision Command Script (Sun Jul 20 09:23:06 AM BRT 2014)
 #
 # Version 12.10.p001
 #
@@ -91,6 +91,9 @@ catch {group new -name rom -overlay 0}
 catch {group new -name top -overlay 0}
 catch {group new -name {sram ctrl} -overlay 0}
 catch {group new -name instruction_pipeline -overlay 0}
+catch {group new -name {sram ctrl_2} -overlay 0}
+catch {group new -name spram -overlay 0}
+catch {group new -name dlx_2 -overlay 0}
 
 group using bootloader
 group set -overlay 0
@@ -98,18 +101,18 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.boot_mem_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.boot_mem_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.boot_mem_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.boot_mode}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.count[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.inst_mem_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.inst_mem_wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.inst_mem_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.next_state[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.bootloader_u0.state[1:0]}]} ]
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.boot_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.boot_mode}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.count[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.inst_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.inst_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.inst_mem_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.next_state[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.rst_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.state[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.boot_mem_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.bootloader_u0.boot_mem_addr[19:0]}]} ]
 
 group using clk_rst_mng
 group set -overlay 0
@@ -117,18 +120,18 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.clk_div2}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.clk_div4}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.clk_div8}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.clk_div8_proc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.clk_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.clk_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.counter[2:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.en_clk_div8}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.rst_async_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.rst_sync_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.synch_rst_reg1_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_rst_mngr_u0.synch_rst_reg2_n}]} ]
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.clk_div2}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.clk_div4}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.clk_div8}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.clk_div8_proc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.clk_in}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.clk_out}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.counter[2:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.en_clk_div8}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.rst_async_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.rst_sync_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.synch_rst_reg1_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_rst_mngr_u0.synch_rst_reg2_n}]} ]
 
 group using {data memory controll}
 group set -overlay 0
@@ -136,34 +139,33 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.bank_address[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.bus_busy}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.col_address}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.count_state[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_addr[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_in[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_out_valid}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_rd_en_reg}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.data_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_addr[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_ba[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_cas_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_cke}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_cs_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_dq_in[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_dq_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_dqm[3:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_ras_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.dram_we_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.next_state[3:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.row_address[9:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.sdram_command[3:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_memory_controll_u0.state[3:0]}]} ]
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.bank_address[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.bus_busy}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.col_address[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.count_state[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.data_in[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.data_out[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.data_out_valid}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.data_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.data_rd_en_reg}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.data_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_addr[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_ba[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_cas_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_cke}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_cs_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_dq_in[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_dq_out[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_dqm[3:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_ras_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.dram_we_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.next_state[3:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.row_address[9:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.rst_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.sdram_command[3:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_memory_controll_u0.state[3:0]}]} ]
 
 group using dlx
 group set -overlay 0
@@ -171,118 +173,28 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.DATA_ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.DATA_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.FUNCTION_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.IMEDIATE_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.INSTRUCTION_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.INST_ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.OPCODE_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_INITIAL_ADDRESS}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_OFFSET_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.REG_ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.alu_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.branch_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.constant[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_addr[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_alu_a[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_alu_b[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.decode_flush}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_alu_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_write[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_new_pc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_select_new_pc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_write_back_mux_sel}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.fetch_new_pc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.fetch_select_new_pc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.flush}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.flush_in}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_branch_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_constant[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_data_alu_a[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_data_alu_b[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_function[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_imm_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_jump_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_jump_use_r}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_mem_data_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_mem_data_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_new_pc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_opcode[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_pc_offset[25:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_a_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_b_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_write_back_mux_sel}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_new_pc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.imm_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.inst_function[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instr_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instr_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.jump_inst}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.jump_use_r}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_alu_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_mem_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_write_back_mux_sel}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.new_pc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.opcode[5:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.pc_offset[25:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_rd_addr1[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_rd_addr2[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_wr_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.stall}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_reg_wr_addr[4:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_write_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_write_enable}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.write_back_mux_sel}]} ]
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.ADDR_WIDTH}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.boot_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.boot_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.boot_mem_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.boot_mode}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.inst_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.inst_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.inst_mem_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.inst_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.inst_mem_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.sram_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.sram_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.sram_mem_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.sram_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.mux_sram_u0.sram_mem_wr_en}]} ]
 
 group using {mux sram}
 group set -overlay 0
 group set -comment {}
 group clear 0 end
 
-group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.ADDR_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.DATA_WIDTH}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.boot_mem_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.boot_mem_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.boot_mem_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.boot_mode}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.inst_mem_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.inst_mem_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.inst_mem_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.inst_mem_wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.inst_mem_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.sram_mem_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.sram_mem_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.sram_mem_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.sram_mem_wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.mux_sram_u0.sram_mem_wr_en}]} ]
 
 group using {sram fsm}
 group set -overlay 0
@@ -296,11 +208,12 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.rom_u0.address[9:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.rom_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.rom_u0.data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.rom_u0.rd_ena}]} ] \
-    [subst  {simulator::[format {tosco_tb.rom_u0.rst_n}]} ]
+    [subst  {simulator::[format {top_tb.rom_u0.address[9:0]}]} ] \
+    [subst  {simulator::[format {top_tb.rom_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.rom_u0.mem[0:1023]}]} ] \
+    [subst  {simulator::[format {top_tb.rom_u0.data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.rom_u0.rd_ena}]} ] \
+    [subst  {simulator::[format {top_tb.rom_u0.rst_n}]} ]
 
 group using top
 group set -overlay 0
@@ -308,83 +221,73 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_mem_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_mem_wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_mem_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_mode}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_rom_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_rom_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.boot_rom_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_div2}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_div4}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_div8}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_div8_proc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.clk_out}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_addr_proc[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_rd_en_proc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_read_proc[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_wr_en_proc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.data_write_proc[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_ba[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_cas_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_cke}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_cs_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_dq_in[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_dq_out[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_dqm[3:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_ras_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dram_we_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.inst_mem_addr_proc[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.inst_mem_rd_data_proc[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.inst_mem_rd_en_proc}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.rst_sync_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_addr[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ce_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_lb_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_mem_wr_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_oe_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ub_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_we_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_wr_data[31:0]}]} ]
+    [subst  {simulator::[format {top_tb.sp_ram_u0.ADDR_WIDTH}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.DATA_WIDTH}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.MEM_SIZE}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.address[9:0]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.mem[0:1023]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.rd_data[15:0]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.rd_ena}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.wr_data[15:0]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.wr_ena}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_mem_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_mode}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_rom_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_rom_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.boot_rom_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_div2}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_div4}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_div8}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_div8_proc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.clk_out}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_addr_proc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_rd_en_proc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_read_proc[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_wr_en_proc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.data_write_proc[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_ba[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_cas_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_cke}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_cs_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_dq_in[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_dq_out[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_dqm[3:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_ras_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dram_we_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.gpio_o[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.inst_mem_addr_proc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.inst_mem_rd_data_proc[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.inst_mem_rd_en_proc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.rst_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.rst_sync_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ce_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_lb_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_mem_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_mem_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_oe_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ub_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_we_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.we_gpio}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.wr_data_sdram[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.wr_en_sdram}]} ]
 
 group using {sram ctrl}
 group set -overlay 0
 group set -comment {}
 group clear 0 end
 
-group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_IDLE}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_READ_0}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_READ_1}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.ST_WRITE_0}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.addr[20:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.addr_plus2[20:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.clk}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.next_state[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_data_concat[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_data_reg[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rd_en}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.rst_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_addr[19:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_ce_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_lb_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_oe_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_rd_data[15:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_ub_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_we_n}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.sram_wr_data[15:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.state[1:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.wr_data[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.sram_ctrl_u0.wr_en}]} ]
 
 group using instruction_pipeline
 group set -overlay 0
@@ -392,15 +295,143 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} ] \
-    [subst  {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} ]
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} ]
+
+group using {sram ctrl_2}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.mem[0:1023]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.rst_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.addr[20:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.addr_plus2[20:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.next_state[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.rd_data_concat[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.rd_data_reg[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_ce_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_ub_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_lb_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_oe_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_rd_data[15:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_we_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.sram_wr_data[15:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.state[1:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.sram_ctrl_u0.wr_en}]} ]
+
+group using spram
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.address[9:0]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.mem[0:1023]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.rd_data[15:0]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.rd_ena}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.wr_data[15:0]}]} ] \
+    [subst  {simulator::[format {top_tb.sp_ram_u0.wr_ena}]} ]
+
+group using dlx_2
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.instruction_decode_u0.register_bank_u0.reg_file[0:31]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.alu_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.branch_inst}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.clk}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.constant[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_alu_a[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_alu_b[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.decode_flush}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_alu_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_data_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_data_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_data_write[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_new_pc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_reg_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_select_new_pc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_write_back_mux_sel}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.fetch_new_pc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.fetch_select_new_pc}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.flush}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.flush_in}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_branch_inst}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_constant[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_data_alu_a[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_data_alu_b[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_function[5:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_imm_inst}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_jump_inst}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_jump_use_r}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_mem_data_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_mem_data_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_new_pc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_opcode[5:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_pc_offset[25:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_reg_a_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_reg_b_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_reg_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_write_back_mux_sel}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.if_id_new_pc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.imm_inst}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.inst_function[5:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.instr_addr[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.instr_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.jump_inst}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.jump_use_r}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_data_rd_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_data_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_alu_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_mem_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_write_back_mux_sel}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.new_pc[19:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.opcode[5:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.pc_offset[25:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.reg_rd_addr1[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.reg_rd_addr2[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.reg_wr_en}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.rst_n}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.stall}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.wb_reg_wr_addr[4:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.wb_write_data[31:0]}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.wb_write_enable}]} ] \
+    [subst  {simulator::[format {top_tb.top_u0.dlx_processor_u0.write_back_mux_sel}]} ]
 
 #
 # Cursors
 #
-set time 11750000ps
+set time 231725000ps
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -453,30 +484,30 @@ browser timecontrol set -lock 0
 #
 # Waveform windows
 #
-if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1276x994+1280+0}] != ""} {
-    window geometry "Waveform 1" 1276x994+1280+0
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1280x998+1280+0}] != ""} {
+    window geometry "Waveform 1" 1280x998+1280+0
 }
 window target "Waveform 1" on
 waveform using {Waveform 1}
-waveform sidebar select designbrowser
+waveform sidebar visibility partial
 waveform set \
     -primarycursor TimeA \
     -signalnames name \
     -signalwidth 215 \
     -units ps \
     -valuewidth 75
-cursor set -using TimeA -time 11,750,000ps
-waveform baseline set -time 11,910,000ps
+cursor set -using TimeA -time 231,725,000ps
+waveform baseline set -time 1,775,000ps
 
 
 set groupId0 [waveform add -groups instruction_pipeline]
 set gpGlist0 [waveform hierarchy contents $groupId0]
 set gpID0 [lindex $gpGlist0 0]
 foreach {name attrs} [subst  {
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} {-radix instruction_map}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} {-radix instruction_map}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} {-radix instruction_map}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {top_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {top_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {top_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} {-radix instruction_map}
+    {simulator::[format {top_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} {-radix instruction_map}
 }] childcmds {
     {}
     {}
@@ -495,11 +526,9 @@ foreach {name attrs} [subst  {
     set gpGlist0 [lrange $gpGlist0 1 end]
     set gpID0 [lindex $gpGlist0 0]
 }
-waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups bootloader]
-waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups clk_rst_mng]
@@ -507,208 +536,6 @@ waveform hierarchy collapse $groupId0
 
 
 set groupId0 [waveform add -groups {{data memory controll}}]
-
-
-set groupId0 [waveform add -groups dlx]
-set gpGlist0 [waveform hierarchy contents $groupId0]
-set gpID0 [lindex $gpGlist0 0]
-foreach {name attrs} [subst  {
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.DATA_ADDR_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.DATA_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.FUNCTION_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.IMEDIATE_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.INSTRUCTION_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.INST_ADDR_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.OPCODE_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_INITIAL_ADDRESS}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_OFFSET_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.PC_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.REG_ADDR_WIDTH}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.alu_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.branch_inst}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.clk}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.constant[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_addr[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_alu_a[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_alu_b[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_rd_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.decode_flush}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_alu_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_rd_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_data_write[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_instruction[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_new_pc[19:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_reg_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_select_new_pc}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.ex_mem_write_back_mux_sel}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.fetch_new_pc[19:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.fetch_select_new_pc}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.flush}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.flush_in}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_branch_inst}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_constant[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_data_alu_a[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_data_alu_b[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_function[5:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_imm_inst}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_instruction[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_jump_inst}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_jump_use_r}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_mem_data_rd_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_mem_data_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_new_pc[19:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_opcode[5:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_pc_offset[25:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_a_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_b_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_rd_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_reg_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.id_ex_write_back_mux_sel}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_instruction[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.if_id_new_pc[19:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.imm_inst}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.inst_function[5:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instr_addr[19:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instr_rd_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.instruction[31:0]}]} {-radix instruction_map}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.jump_inst}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.jump_use_r}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data_rd_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_data_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_alu_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_instruction[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_mem_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_reg_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.mem_wb_write_back_mux_sel}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.new_pc[19:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.opcode[5:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.pc_offset[25:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_rd_addr1[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_rd_addr2[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_wr_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.reg_wr_en}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.rst_n}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.stall}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_reg_wr_addr[4:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_write_data[31:0]}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.wb_write_enable}]} {}
-    {simulator::[format {tosco_tb.top_u0.dlx_processor_u0.write_back_mux_sel}]} {}
-}] childcmds {
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-    {}
-} {
-    set expected [ join [waveform signals -format fullpath $gpID0] ]
-    if {[string equal $name $expected] || $name == "cdivider"} {
-        if {$attrs != ""} {
-            eval waveform format $gpID0 $attrs
-        }
-        if { $childcmds != ""} {
-            eval $childcmds
-        }
-    }
-    set gpGlist0 [lrange $gpGlist0 1 end]
-    set gpID0 [lindex $gpGlist0 0]
-}
-waveform hierarchy collapse $groupId0
-
-
-set groupId0 [waveform add -groups {{mux sram}}]
 waveform hierarchy collapse $groupId0
 
 
@@ -716,17 +543,56 @@ set groupId0 [waveform add -groups rom]
 waveform hierarchy collapse $groupId0
 
 
-set groupId0 [waveform add -groups top]
+set groupId0 [waveform add -groups {{sram ctrl_2}}]
+
+
+set groupId0 [waveform add -groups dlx_2]
 waveform hierarchy collapse $groupId0
 
 
-set groupId0 [waveform add -groups {{sram ctrl}}]
-waveform hierarchy collapse $groupId0
-
-
-waveform xview limits 11640608ps 12019712ps
+waveform xview limits 229350732ps 234065712ps
 
 #
 # Waveform Window Links
 #
+
+#
+# Memory Viewer windows
+#
+if {[catch {window new MemViewer -name "Memory Viewer 2" -geometry 700x500+70+25}] != ""} {
+    window geometry "Memory Viewer 2" 700x500+70+25
+}
+window target "Memory Viewer 2" on
+memviewer using {Memory Viewer 2}
+memviewer set \
+-primarycursor TimeA \
+-units ps \
+-radix default \
+-addressradix default \
+-addressorder MSBtoLSB
+
+memviewer add [subst  {simulator::[format {top_tb.rom_u0.mem[0:1023]}]} ]
+
+memviewer sidebar visibility partial
+
+if {[catch {window new MemViewer -name "Memory Viewer 3" -geometry 700x500+70+504}] != ""} {
+    window geometry "Memory Viewer 3" 700x500+70+504
+}
+memviewer using {Memory Viewer 3}
+memviewer set \
+-primarycursor TimeA \
+-units ps \
+-radix default \
+-addressradix default \
+-addressorder MSBtoLSB
+
+memviewer add [subst  {simulator::[format {top_tb.sp_ram_u0.mem[0:1023]}]} ]
+
+memviewer sidebar visibility partial
+
+#
+# Console windows
+#
+console set -windowname Console
+window geometry Console 1024x1205+0+25
 

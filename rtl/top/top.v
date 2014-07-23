@@ -9,6 +9,7 @@ module top
       (/*autoport*/
          input clk,
          input rst_n,
+         input clk_proc,
          //boot rom memory interface
          output boot_rom_rd_en,
          output [INST_ADDR_WIDTH-1:0] boot_rom_addr,
@@ -34,11 +35,6 @@ module top
          output [BA_WIDTH-1:0] dram_ba,       // sdram bank address
          output dram_clk,      // sdram clock
          output dram_cke,
-         output rst_sync_n,
-         output clk_out,
-         output clk_div2,
-         output clk_div4,
-         output clk_div8,
          output [DATA_WIDTH-1:0] gpio_o,
          output we_gpio
 
@@ -77,20 +73,6 @@ wire [DATA_WIDTH-1:0] boot_mem_wr_data;
 wire wr_en_sdram;
 wire [DATA_WIDTH-1:0] wr_data_sdram;
 
-clk_rst_mngr
-   clk_rst_mngr_u0
-   (
-   .clk_in(clk),
-   .rst_async_n(rst_n),
-   .en_clk_div8(!boot_mode),
-   .rst_sync_n(rst_sync_n),
-   .clk_out(clk_out),
-   .clk_div2(clk_div2),
-   .clk_div4(clk_div4),
-   .clk_div8(clk_div8),
-   .clk_div8_proc(clk_div8_proc)
-   );
-
 
 dlx_processor
    #(
@@ -100,8 +82,8 @@ dlx_processor
    )
 dlx_processor_u0
    (
-   .clk(clk_div8_proc),
-   .rst_n(rst_sync_n),
+   .clk(clk_proc),
+   .rst_n(rst_n),
 
    .instr_rd_en(inst_mem_rd_en_proc),
    .instr_addr(inst_mem_addr_proc),
@@ -111,7 +93,8 @@ dlx_processor_u0
    .data_wr_en(data_wr_en_proc),
    .data_addr(data_addr_proc),
    .data_read(data_read_proc),
-   .data_write(data_write_proc)
+   .data_write(data_write_proc),
+   .boot_mode(boot_mode)
    );
 
 mux_sram
@@ -147,8 +130,8 @@ bootloader
    )
    bootloader_u0
    (/*autoport*/
-   .clk(clk_div8),
-   .rst_n(rst_sync_n),
+   .clk(clk_proc),
+   .rst_n(rst_n),
    .boot_mode(boot_mode),
    .boot_mem_rd_en(boot_rom_rd_en),
    .boot_mem_addr(boot_rom_addr),
@@ -162,8 +145,9 @@ bootloader
 sram_ctrl 
    sram_ctrl_u0
    (
-   .clk(clk_div4),
-   .rst_n(rst_sync_n),
+   .clk(clk),
+   .rst_n(rst_n),
+   .clk_proc(clk_proc),
    .wr_en(sram_mem_wr_en),
    .rd_en(sram_mem_rd_en),
    .wr_data(sram_mem_wr_data),
@@ -208,8 +192,8 @@ data_memory_controll
   )
   data_memory_controll_u0
   (/*autoport*/
-   .clk(clk_out),
-   .rst_n(rst_sync_n),
+   .clk(clk),
+   .rst_n(rst_n),
    .data_rd_en(data_rd_en_proc),
    .data_wr_en(wr_en_sdram),
    .data_addr(data_addr_proc),

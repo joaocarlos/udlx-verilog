@@ -25,6 +25,7 @@ interface dut_if (input bit clk);
     logic [DATA_WIDTH-1:0] data_write;
     logic [DATA_ADDR_WIDTH-1:0] data_addr;
     logic [DATA_WIDTH-1:0] regs [0:(2**ADDRESS_WIDTH)-1];
+    logic [INST_ADDR_WIDTH-1:0] dram_addr;
     logic reg_rd_en1_out;
     logic reg_rd_en2_out;
     logic reg_wr_en_out;
@@ -35,23 +36,31 @@ interface dut_if (input bit clk);
     logic branch_inst_out;
     logic jump_inst_out;
     logic jump_use_r_out;
+    logic dram_we_n;
+    logic dram_cas_n;
+    logic dram_ras_n;
+    logic dram_cs_n;
+    logic dram_cke;
+    bit rst_n;
     bit clk_dlx;
+    bit clk_dl;
+    bit clk_env;
 
     property activate_control_signals_lw0;
         @(posedge clk_dlx)
         (instruction[31:26] == LW_OPCODE) |-> ##[1:2] ((reg_rd_en1_out) and
-                                                       (reg_wr_en_out) and
-                                                       (imm_inst_out) and
-                                                       (mem_data_rd_en_out) and
-                                                       (write_back_mux_sel_out));
+                                                        (reg_wr_en_out) and
+                                                         (imm_inst_out) and
+                                                   (mem_data_rd_en_out) and
+                                              (write_back_mux_sel_out));
     endproperty
 
     property activate_control_signals_rt0;
         @(posedge clk_dlx)
-        ((instruction[31:26] == R_TYPE_OPCODE) and instruction[5:0] !== 6'b0) |-> ##[0:2] (
-                                                       (reg_rd_en1_out) and
-                                                       (reg_rd_en2_out) and
-                                                       (reg_wr_en_out));
+        ((instruction[31:26] == R_TYPE_OPCODE) and instruction[5:0] !== 6'b0) |-> ##[0:2]
+                                                                    ((reg_rd_en1_out) and
+                                                                     (reg_rd_en2_out) and
+                                                                     (reg_wr_en_out));
     endproperty
 
     property activate_control_signals_add0;
@@ -60,16 +69,16 @@ interface dut_if (input bit clk);
          (instruction[31:26] == SUBI_OPCODE) or
          (instruction[31:26] == ANDI_OPCODE) or
          (instruction[31:26] == ORI_OPCODE)) |-> ##[1:2] ((reg_rd_en1_out) and
-                                                       (reg_wr_en_out) and
-                                                       (imm_inst_out));
+                                                           (reg_wr_en_out) and
+                                                           (imm_inst_out));
     endproperty
 
     property activate_control_signals_sw0;
         @(posedge clk_dlx)
         (instruction[31:26] == SW_OPCODE) |-> ##[1:2] ((reg_rd_en1_out) and
                                                        (reg_rd_en2_out) and
-                                                       (imm_inst_out) and
-                                                       (mem_data_wr_en_out));
+                                                         (imm_inst_out) and
+                                                  (mem_data_wr_en_out));
     endproperty
 
     property activate_control_signals_beq0;
@@ -77,20 +86,35 @@ interface dut_if (input bit clk);
         ((instruction[31:26] == BEQZ_OPCODE) or
          (instruction[31:26] == BNEZ_OPCODE) or
          (instruction[31:26] == BRFL_OPCODE)) |-> ##[1:2] ((reg_rd_en1_out) and
-                                                       (imm_inst_out) and
-                                                       (branch_inst_out));
+                                                             (imm_inst_out) and
+                                                         (branch_inst_out));
     endproperty
 
     property activate_control_signals_jr0;
         @(posedge clk_dlx)
         (instruction[31:26] == JR_OPCODE) |-> ##[1:2] ((reg_rd_en1_out) and
-                                                       (jump_inst_out) and
-                                                       (jump_use_r_out));
+                                                        (jump_inst_out) and
+                                                      (jump_use_r_out));
     endproperty
 
     property activate_control_signals_jpc0;
         @(posedge clk_dlx)
         (instruction[31:26] == JPC_OPCODE) |-> ##[1:2] jump_inst_out;
+    endproperty
+
+    property activate_sdram_wr_signals0;
+        @(posedge clk_dl)
+        ((data_wr_en) and (!data_addr[19])) |-> ##[1:4] ((dram_cke) and (!dram_cs_n) and (dram_ras_n) and (!dram_cas_n) and (!dram_we_n));
+    endproperty
+
+    property activate_sdram_rd_signals0;
+        @(posedge clk_dl)
+        (data_rd_en) |-> ##[1:4] ((dram_cke) and (!dram_cs_n) and (dram_ras_n) and (!dram_cas_n) and (dram_we_n));
+    endproperty
+
+    property sdram_dlx_addr_cmp0;
+        @(posedge clk_dlx)
+        ((data_rd_en) or (data_wr_en)) |-> dram_addr == data_addr;
     endproperty
 
     assert property (activate_control_signals_lw0);
@@ -100,5 +124,8 @@ interface dut_if (input bit clk);
     assert property (activate_control_signals_beq0);
     assert property (activate_control_signals_jr0);
     assert property (activate_control_signals_jpc0);
+    //assert property (activate_sdram_wr_signals0);
+    //assert property (activate_sdram_rd_signals0);
+    //assert property (sdram_dlx_addr_cmp0);
 
 endinterface

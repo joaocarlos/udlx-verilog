@@ -16,7 +16,7 @@ class udlx_monitor;
 
   udlx_data_item data_collected = new;
   virtual interface dut_if dut_if;
-  
+
   int cnt_stop;
   logic [DATA_WIDTH-1:0] instruction;
   logic [DATA_WIDTH-1:0] regs_reference [0:(2**ADDRESS_WIDTH)-1];
@@ -33,6 +33,14 @@ class udlx_monitor;
       for(int i=0; i<MAX_LENGTH; i++)begin
         data_collected.data_write[i] = 0;
       end
+      dut_if.rst_n = 1;
+      #10;
+      dut_if.rst_n = 0;
+      #30;
+      @(posedge dut_if.clk_env);
+      #1
+      dut_if.rst_n = 1;
+      @(negedge dut_if.boot_mode);
     end
   endtask
 
@@ -43,11 +51,6 @@ class udlx_monitor;
         @(posedge dut_if.data_wr_en);
         data_collected.data_write[dut_if.data_addr] = dut_if.data_write;
       end
-      // forever begin
-      //   @(posedge dut_if.data_rd_en);
-      //   @(posedge dut_if.clk_dlx);
-      //   data_collected.data_read[dut_if.data_addr] = dut_if.data_read;
-      // end
     join_none
   endtask
 
@@ -55,7 +58,8 @@ class udlx_monitor;
     fork
       forever begin
         //$display("-------------- READ INSTRUCTION MONITOR ----------------");
-        @(negedge dut_if.clk_dlx);
+        @(posedge dut_if.clk_dlx);
+        //$display("instruction: %x", dut_if.instruction);
         instruction = dut_if.instruction;
         if(instruction == 'h00) begin
           if(cnt_stop == 5) begin
@@ -66,6 +70,9 @@ class udlx_monitor;
           else begin
             cnt_stop = cnt_stop + 1;
           end
+        end
+        else begin
+          cnt_stop = 0;
         end
     end
     join_none

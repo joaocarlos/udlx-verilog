@@ -297,10 +297,10 @@ Some arithmetic immediate instructions were added because they make easier assem
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
 	 100011/0x23 	& lw & $R_D = mem$ \\ \hline
 	 101011/0x2b 	& sw & $mem = R_D$ \\ \hline
-	 101010/0x2A 	& brfl & $TBD$ \\ \hline
+	 101010/0x09 	& brfl & $TBD$ \\ \hline
 	 001000/0x08 & addi & $R_D = R_S1 + Sext(imm)$ \\ \hline
 	 001010/0x10 & subi & $R_D = R_S1 - Sext(imm)$ \\ \hline
-	 001101/0x12 & andi & $R_D = R_S1 \land Sext(imm)$ \\ \hline
+	 001101/0x0c & andi & $R_D = R_S1 \land Sext(imm)$ \\ \hline
 	 001101/0x13 & ori & $R_D = R_S1 \lor Sext(imm)$ \\ \hline
 	 000100/0x04 & beqz & $PC = PC + 4 +(R_S1 = 0~?~SExt(imm): 0)$ \\ \hline
 	 000101/0x05 & bnez & $Fixme$ \\ \hline
@@ -318,7 +318,7 @@ This instructions realize registers operations, most operations are arithmetic. 
   \begin{table}[H]
     \begin{center}
       \begin{tabular}[pos]{| c | l | l |} \hline 	
-      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OPCODE}} & 
+      \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{FUNCTION}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mneumonic}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
 	 100000/0x20 	& add & $R_D = R_S1 + R_S2$ \\ \hline

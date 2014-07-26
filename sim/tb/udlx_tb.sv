@@ -16,7 +16,6 @@ module udlx_tb;
 udlx_monitor monitor_u0;
 
 bit clk;
-reg rst_n;
 
 //dut_if interface
 dut_if dut_if(clk);
@@ -47,12 +46,10 @@ wire [BA_WIDTH-1:0] dram_ba;       // sdram bank address
 wire dram_clk;      // sdram clock
 wire dram_cke;
 //clk rst manager
-wire rst_sync_n;
-wire clk_out;
-wire clk_div2;
-wire clk_div4;
-wire clk_div8;
-
+reg clk_proc;
+reg clk_sram;
+wire [DATA_WIDTH-1:0] gpio_o;
+wire we_gpio;
 //Registers
 assign dram_dq = &dram_dqm ?  {DATA_WIDTH {1'bZ}} : dram_dq_out;
 assign dram_dq_in = dram_dq;
@@ -66,7 +63,8 @@ top
       top_u0
       (/*autoport*/
          .clk(clk),
-         .rst_n(rst_n),
+         .rst_n(dut_if.rst_n),
+         .clk_proc(clk_proc),
          //boot rom memory interface
          .boot_rom_rd_en(boot_rom_rd_en),
          .boot_rom_addr(boot_rom_addr),
@@ -92,11 +90,8 @@ top
          .dram_ba(dram_ba),       // sdram bank address
          .dram_clk(dram_clk),      // sdram clock
          .dram_cke(dram_cke),
-         .rst_sync_n(rst_sync_n),
-         .clk_out(clk_out),
-         .clk_div2(clk_div2),
-         .clk_div4(clk_div4),
-         .clk_div8(clk_div8)
+         .gpio_o(gpio_o),
+         .we_gpio(we_gpio)
       );
 
 
@@ -107,7 +102,7 @@ sp_ram
 )
 sp_ram_u0
 (
-   .clk(clk_div4),
+   .clk(clk_sram),
    .rd_ena(!sram_ce_n&sram_we_n),
    .wr_ena(!sram_ce_n&!sram_we_n),
    .address(sram_addr),
@@ -115,9 +110,14 @@ sp_ram_u0
    .rd_data(sram_rd_data)
 );
 
+
+wire clk_dl;
+
+assign #3 clk_dl =  dram_clk;
+
 mt48lc8m16a2
   #(
-    .data_bits(DATA_ADDR_WIDTH/2),
+    .data_bits(DATA_WIDTH/2),
     .addr_bits(DATA_ADDR_WIDTH)
   )
   sdram_memory_2
@@ -125,7 +125,7 @@ mt48lc8m16a2
     .Dq(dram_dq[31:16]),
     .Addr(dram_addr),
     .Ba(dram_ba),
-    .Clk(dram_clk),
+    .Clk(clk_dl),
     .Cke(dram_cke),
     .Cs_n(dram_cs_n),
     .Ras_n(dram_ras_n),
@@ -136,7 +136,7 @@ mt48lc8m16a2
 
 mt48lc8m16a2
   #(
-    .data_bits(DATA_ADDR_WIDTH/2),
+    .data_bits(DATA_WIDTH/2),
     .addr_bits(DATA_ADDR_WIDTH)
   )
   sdram_memory_1
@@ -144,7 +144,7 @@ mt48lc8m16a2
     .Dq(dram_dq[15:0]),
     .Addr(dram_addr),
     .Ba(dram_ba),
-    .Clk(dram_clk),
+    .Clk(clk_dl),
     .Cke(dram_cke),
     .Cs_n(dram_cs_n),
     .Ras_n(dram_ras_n),
@@ -160,19 +160,30 @@ rom
 )
 rom_u0
 (
-   .clk(clk_div8),
-   .rst_n(rst_sync_n),
+   .clk(clk_proc),
+   .rst_n(dut_if.rst_n),
    .rd_ena(boot_rom_rd_en),
    .address(boot_rom_addr),
    .data(boot_rom_rd_data)
 );
 
 initial begin
-  clk = 0;
+ clk = 0;
+ clk_proc =0;
+ clk_sram = 0;
 end
 
 always begin
-   #10  clk = ~clk;
+   #50  clk = ~clk;
+end
+
+always begin
+   #1000  clk_proc = ~clk_proc;
+end
+
+
+always begin
+   #10  clk_sram = ~clk_sram;
 end
 
 //------------------------------------ MONITOR -----------------------------------------//
@@ -186,6 +197,7 @@ always@(*)begin
    dut_if.data_write  = top_u0.dlx_processor_u0.data_write;
    dut_if.boot_mode   = top_u0.bootloader_u0.boot_mode;
    dut_if.clk_dlx     = top_u0.dlx_processor_u0.clk;
+   dut_if.clk_env     = clk;
    for(int i=0;i<NUM_REGS;i++)begin
     dut_if.regs[i]       = top_u0.dlx_processor_u0.instruction_decode_u0.register_bank_u0.reg_file[i];
    end
@@ -199,6 +211,13 @@ always@(*)begin
    dut_if.branch_inst_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.branch_inst_out;
    dut_if.jump_inst_out   = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.jump_inst_out;
    dut_if.jump_use_r_out  = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.jump_use_r_out;
+   dut_if.clk_dl = clk_dl;
+   dut_if.dram_cke = dram_cke;
+   dut_if.dram_cs_n = dram_cs_n;
+   dut_if.dram_ras_n = dram_ras_n;
+   dut_if.dram_cas_n = dram_cas_n;
+   dut_if.dram_we_n = dram_we_n;
+   dut_if.dram_addr = dram_addr;
 end
 //--------------------------------------------------------------------------------------//
 
@@ -213,13 +232,6 @@ begin
    monitor_u0.reset();
    monitor_u0.read_data();
    monitor_u0.read_instruction();
-   rst_n = 1;
-   #10;
-   rst_n = 0;
-   #30;
-   @(posedge clk);
-   #1
-   rst_n = 1;
    repeat(100)@(posedge clk);
 end
 

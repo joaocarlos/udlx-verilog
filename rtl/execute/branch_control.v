@@ -32,6 +32,7 @@ module branch_control
 (
    input jmp_inst_in,
    input jmp_use_r_in,
+   input branch_use_r_in,
    input branch_inst_in,
    input branch_result_in,
    input [PC_WIDTH-1:0] pc_in,
@@ -54,7 +55,7 @@ module branch_control
 
    assign select_new_pc_out = jmp_inst_in | (branch_inst_in & branch_result_in);
 
-   assign branch_val = pc_in + ({reg_b_data_in,{2{1'b0}}});
+   assign branch_val = branch_use_r_in? reg_a_data_in : pc_in + ({reg_b_data_in,{2{1'b0}}}) + 4;
 
    assign jmp_val = jmp_use_r_in ? reg_a_data_in : pc_jump;
 

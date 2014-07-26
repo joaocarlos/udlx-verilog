@@ -40,9 +40,18 @@ module instruction_decode
    input rst_n,
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
    // input [PC_WIDTH-1:0] new_pc_in,
-   input wb_write_enable_in,
-   input [DATA_WIDTH-1:0] wb_write_data_in,
-   input [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr_in,
+   
+   input [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_in,
+   input [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_in,
+   input [DATA_WIDTH-1:0] reg_a_wr_data_in,
+   input [DATA_WIDTH-1:0] reg_b_wr_data_in,
+   input reg_a_wr_en_in,
+   input reg_b_wr_en_in,
+
+//   input wb_write_enable_in,
+//   input [DATA_WIDTH-1:0] wb_write_data_in,
+//   input [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr_in,
+
    input select_new_pc_in,
 
    input id_ex_mem_data_rd_en_in,
@@ -58,8 +67,10 @@ module instruction_decode
    output mem_data_rd_en_out,
    output mem_data_wr_en_out,
    output write_back_mux_sel_out,
-   output reg_wr_en_out,
-   output [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
+   output [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_out,
+   output [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_out,
+   output reg_a_wr_en_out,
+   output reg_b_wr_en_out,
    output [DATA_WIDTH-1:0] constant_out,
    output imm_inst_out,
    output [DATA_WIDTH-1:0] data_alu_a_out,
@@ -67,6 +78,7 @@ module instruction_decode
    // output [PC_WIDTH-1:0] new_pc_out,
    output [PC_OFFSET_WIDTH-1:0] pc_offset_out,
    output branch_inst_out,
+   output branch_use_r_out,
    output jump_inst_out,
    output jump_use_r_out,
 
@@ -125,8 +137,10 @@ instruction_decoder_u0
    .reg_rd_addr2_out(reg_rd_addr2),
    .reg_rd_en1_out(reg_rd_en1),
    .reg_rd_en2_out(reg_rd_en2),
-   .reg_wr_addr_out(reg_wr_addr_out),
-   .reg_wr_en_out(reg_wr_en_out),
+   .reg_a_wr_addr_out(reg_a_wr_addr_out),
+   .reg_b_wr_addr_out(reg_b_wr_addr_out),
+   .reg_a_wr_en_out(reg_a_wr_en_out),
+   .reg_b_wr_en_out(reg_b_wr_en_out),
    .immediate_out(immediate),
    .imm_inst_out(imm_inst_out),
    .pc_offset(pc_offset_out),
@@ -134,6 +148,7 @@ instruction_decoder_u0
    .mem_data_rd_en_out(mem_data_rd_en_out),
    .write_back_mux_sel_out(write_back_mux_sel_out),
    .branch_inst_out(branch_inst_out),
+   .branch_use_r_out(branch_use_r_out),
    .jump_inst_out(jump_inst_out),
    .jump_use_r_out(jump_use_r_out)
 );
@@ -154,9 +169,16 @@ register_bank_u0
    .rst_n(rst_n),
    .rd_reg1_addr(reg_rd_addr1),
    .rd_reg2_addr(reg_rd_addr2),
-   .write_address(wb_reg_wr_addr_in),
-   .write_enable(wb_write_enable_in),
-   .write_data(wb_write_data_in),
+//   .write_address(wb_reg_wr_addr_in),
+//   .write_enable(wb_write_enable_in),
+//   .write_data(wb_write_data_in),
+   .reg_a_wr_addr(reg_a_wr_addr_in),
+   .reg_b_wr_addr(reg_b_wr_addr_in),
+   .reg_a_wr_data(reg_a_wr_data_in),
+   .reg_b_wr_data(reg_b_wr_data_in),
+   .reg_a_wr_en(reg_a_wr_en_in),
+   .reg_b_wr_en(reg_b_wr_en_in),
+
    .rd_reg1_data_out(data_alu_a_out),
    .rd_reg2_data_out(data_alu_b_out)
 );

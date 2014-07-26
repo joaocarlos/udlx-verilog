@@ -44,12 +44,12 @@ always@(posedge clk or negedge rst_n)begin
       instruction_reg_out <= 0;
    end else if(!stall)begin
       new_pc_out <= pc_in;
-      if(flush)begin
-         instruction_reg_out <= 0;
-      end
-      else begin
+//      if(flush)begin
+//         instruction_reg_out <= 0;
+//      end
+//      else begin
          instruction_reg_out <= inst_mem_data_in;
-      end
+//      end
    end
 end
 

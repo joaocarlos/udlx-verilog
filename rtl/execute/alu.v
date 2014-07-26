@@ -34,6 +34,7 @@ module alu
 (
    input clk,
    input rst_n,
+   input en,
    input [DATA_WIDTH-1:0] alu_data_a_in,        // Input data from register file port A
    input [DATA_WIDTH-1:0] alu_data_b_in,        // Input data from register file port A
    input [OPCODE_WIDTH-1:0] alu_opcode_in,      // Instruction opcode
@@ -189,7 +190,7 @@ module alu
     always@(posedge clk or negedge rst_n) begin
       if(~rst_n) begin
          flags_reg <= {FLAGS_WIDTH{1'b0}};
-      end else
+      end else if(en)
          flags_reg <= {flag_over_underflow,flag_above,flag_equal,flag_error};
     end
 endmodule

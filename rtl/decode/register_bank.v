@@ -31,6 +31,7 @@ module register_bank
 (/*autoport*/
    input clk,
    input rst_n,
+   input en,
    input [ADDRESS_WIDTH-1:0] rd_reg1_addr,
    input [ADDRESS_WIDTH-1:0] rd_reg2_addr,
 //   input [ADDRESS_WIDTH-1:0] write_address,
@@ -62,7 +63,7 @@ module register_bank
             reg_file[i] <= {DATA_WIDTH{1'b0}};
          end
       end
-      else begin
+      else if(en) begin
          if (reg_a_wr_en)
             reg_file[reg_a_wr_addr] <= reg_a_wr_data;
          if (reg_b_wr_en)

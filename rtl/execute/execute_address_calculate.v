@@ -36,6 +36,7 @@ module execute_address_calculate
 (
    input clk,
    input rst_n,
+   input en,
 
    input [OPCODE_WIDTH-1:0] alu_opcode_in,
    input [FUNCTION_WIDTH-1:0] alu_function_in,

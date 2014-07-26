@@ -30,6 +30,7 @@ module if_id_reg
 )(
    input clk,    // Clock
    input rst_n,  // Asynchronous reset active low
+   input en,
    input stall,                                              // Indicates a stall insertion on the datapath
    input flush,                                              // Force flush in pipeline registers
    input [INSTRUCTION_WIDTH-1:0] inst_mem_data_in,           // SRAM input data
@@ -42,7 +43,7 @@ always@(posedge clk or negedge rst_n)begin
    if(!rst_n) begin
       new_pc_out <= 0;
       instruction_reg_out <= 0;
-   end else if(!stall)begin
+   end else if((!stall)&en)begin
       new_pc_out <= pc_in;
 //      if(flush)begin
 //         instruction_reg_out <= 0;

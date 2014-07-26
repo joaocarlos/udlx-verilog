@@ -33,7 +33,7 @@ module dlx_processor
 (
    input clk,
    input rst_n,
-//   input enable, //removed the clock gate
+   input enable,
    output instr_rd_en,
    output [INST_ADDR_WIDTH-1:0] instr_addr,
    input [DATA_WIDTH-1:0] instruction,
@@ -200,6 +200,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
 
       .stall(stall),
 
@@ -223,6 +224,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .stall(stall),
       .flush(flush),
       .inst_mem_data_in(instruction),
@@ -250,6 +252,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
 
       .instruction_in(if_id_instruction),
       
@@ -319,6 +322,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .flush_in(decode_flush),
 
       .data_alu_a_in(data_alu_a),
@@ -390,6 +394,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
 
       .alu_opcode_in(id_ex_opcode),
       .alu_function_in(id_ex_function),
@@ -452,6 +457,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .flush_in(flush),
 
       .mem_data_rd_en_in(id_ex_mem_data_rd_en),
@@ -505,6 +511,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .write_back_mux_sel_in(ex_mem_write_back_mux_sel),
       .alu_data_in(ex_mem_alu_data),
       .hi_data_in(ex_mem_hi_data),

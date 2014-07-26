@@ -32,6 +32,7 @@ module mem_wb_reg
 (
    input clk,
    input rst_n,
+   input en,
    input write_back_mux_sel_in,
    input [DATA_WIDTH-1:0] alu_data_in,
    input [DATA_WIDTH-1:0] hi_data_in,
@@ -70,7 +71,7 @@ always@(posedge clk or negedge rst_n) begin
       reg_b_wr_en_out <= 0;
       instruction_out <= 0;
    end
-   else begin
+   else if(en) begin
       write_back_mux_sel_out <= write_back_mux_sel_in;
       alu_data_out <= alu_data_in;
       hi_data_out <= hi_data_in;

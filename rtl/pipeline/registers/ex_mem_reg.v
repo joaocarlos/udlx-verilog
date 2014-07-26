@@ -33,6 +33,7 @@ module ex_mem_reg
 (
    input clk,
    input rst_n,
+   input en,
 
    input flush_in,
 
@@ -90,7 +91,7 @@ always@(posedge clk, negedge rst_n)begin
       new_pc_out <= 0;
       instruction_out <= 0;
    end
-   else begin
+   else if(en) begin
       if(flush_in)begin
           mem_data_rd_en_out <= 0;
           mem_data_wr_en_out <= 0;

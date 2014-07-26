@@ -38,6 +38,7 @@ module id_ex_reg
 (
    input clk,
    input rst_n,
+   input en,
    input flush_in,
 
    input [DATA_WIDTH-1:0] data_alu_a_in,
@@ -123,7 +124,7 @@ always@(posedge clk, negedge rst_n)begin
       jump_inst_out <= 0;
       jump_use_r_out <= 0;
    end
-   else begin
+   else if(en) begin
       if(flush_in)begin
          data_alu_a_out <= 0;
          data_alu_b_out <= 0;

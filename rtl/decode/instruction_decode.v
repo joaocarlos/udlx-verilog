@@ -38,6 +38,7 @@ module instruction_decode
 (
    input clk,
    input rst_n,
+   input en,
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
    // input [PC_WIDTH-1:0] new_pc_in,
    
@@ -167,6 +168,7 @@ register_bank_u0
 (
    .clk(clk),
    .rst_n(rst_n),
+   .en(en),
    .rd_reg1_addr(reg_rd_addr1),
    .rd_reg2_addr(reg_rd_addr2),
 //   .write_address(wb_reg_wr_addr_in),

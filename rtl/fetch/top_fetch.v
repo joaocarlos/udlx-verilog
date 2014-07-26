@@ -31,6 +31,7 @@ module top_fetch
 )(
     input clk,                                                // CPU core clock
     input rst_n,                                              // CPU core reset active low
+    input en,
     input stall,                                              // Indicates a stall insertion on the datapath
     // input flush,                                              // Force flush in pipeline registers
 
@@ -81,7 +82,7 @@ always@(posedge clk or negedge rst_n) begin
     else if (boot_mode) begin
         pc <= PC_INITIAL_ADDRESS;
     end
-    else if(!stall) begin
+    else if((!stall)&en) begin
         pc <= pc_mux_data;
     end
 end

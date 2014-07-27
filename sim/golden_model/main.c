@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+//#include "main.h"
 
 //Global Variables:
 //pc: Program Counter
@@ -14,7 +15,7 @@ int  pc=0, registers[32], mem[1000];
 // j - J-type Instruction
 char identify_instruction_type(int instruction_opcode){
 	char result;
-	if(instruction_opcode == 0x23 || instruction_opcode == 0x2b || instruction_opcode == 0x2a || instruction_opcode == 0x08 || instruction_opcode == 0x10 || instruction_opcode == 0x12 || instruction_opcode == 0x13 || instruction_opcode == 0x04 || instruction_opcode == 0x05 || instruction_opcode == 0x16 ){
+	if(instruction_opcode == 0x23 || instruction_opcode == 0x2b || instruction_opcode == 0x2a || instruction_opcode == 0x08 || instruction_opcode == 0x10 || instruction_opcode == 0x0c || instruction_opcode == 0x13 || instruction_opcode == 0x04 || instruction_opcode == 0x05){
 		result = 'i';
 	}
 	else if (instruction_opcode == 0x00){
@@ -49,7 +50,7 @@ void decode_i_type(unsigned int instruction_opcode, unsigned int instruction){
 		mem[registers[rs1] + imm] = registers[rd];
 	}
 	//brfl - TBD
-	else if(instruction_opcode == 0x2a){
+	else if(instruction_opcode == 0x09){
 		printf("TBD");
 	}
 	//addi - RD = RS1 + Sext(imm)
@@ -63,7 +64,7 @@ void decode_i_type(unsigned int instruction_opcode, unsigned int instruction){
 		printf("Valor escrito no registrador %x eh: %x\n", rd, registers[rd]);
 	}
 	//andi RD = RS1 ^ Sext(imm)
-	else if(instruction_opcode == 0x12){
+	else if(instruction_opcode == 0x0c){
 		registers[rd] = registers[rs1] & imm;
 		printf("Valor escrito no registrador %x eh: %x\n", rd, registers[rd]);
 	}
@@ -78,19 +79,21 @@ void decode_i_type(unsigned int instruction_opcode, unsigned int instruction){
 			pc = pc + imm;
 		}
 		else{
-			pc = pc;
+			pc = pc ;
 		}
 		printf("Valor de PC : %x\n", pc);
 	}
 	//bnez Fixme
 	else if(instruction_opcode == 0x05){
-		printf("TBD");
+		if(registers[rs1] != 0){
+			pc = pc + imm;
+		}
+		else{
+			pc = pc ;
+		}
+		printf("BNEZ - Valor de PC : %x\n", pc);
 	}
-	//jr PC = RS1
-	else if(instruction_opcode == 0x16){
-		pc = registers[rs1];
-		printf("Valor de PC: %x\n", pc);
-	}	
+	
 }
 
 //Function responsible to reproduce the results of the r-type instructions
@@ -135,16 +138,17 @@ void decode_r_type(unsigned int instruction_opcode, unsigned int instruction){
 	}
 	//cmp - RD = RS1 cmp RS2
 	else if(function == 0x1C){
-		if(registers[rs1]==registers[rs2]){
-			registers[rd] = 1;
-		}
-		else{
-			registers[rd] = 0;
-		}
+		registers[rd] = registers[rs1] - registers[rs2];
+
 	}
 	//not - RD = ~RS2
 	else if(function == 0x1D){
 		registers[rd] = ~registers[rs2];
+	}
+	//jr PC = RS1
+	else if(function == 0x08){
+		pc = registers[rs1] -1;// -1 because the increment of for.
+		printf("JR - Valor de PC: %x\n", pc);
 	}
 }
 
@@ -176,7 +180,7 @@ void write_results(void){
 		fprintf(arq_registers, "%x\n", registers[j]);
 	}
 	
-	for(j=0;j<100;j++){
+	for(j=0;j<1000;j++){
 		fprintf(arq_mem, "%x\n", mem[j]);
 	}
 	
@@ -216,8 +220,7 @@ void main (int argc, char *argv[]){
 		//reading_result = fgets(instruction, 8, arq_instructions);  
 
 		reading_result = fscanf(arq_instructions, "%x", &instruction[size_instruction]); 
-	
-		printf("Li uma Instrucao\n");
+
 	}
 	printf("size_instruction %d\n", size_instruction);
 	fclose(arq_instructions);

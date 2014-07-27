@@ -2,7 +2,7 @@
 module data_memory_controll
       #(
          parameter DATA_WIDTH = 32,
-         parameter ADDR_WIDTH = 20,
+         parameter ADDR_WIDTH = 32,
          parameter SDRAM_DATA_WIDTH = 32,
          parameter SDRAM_ADDR_WIDTH = 20,
          parameter SDRAM_DQM_WIDTH = 4,
@@ -81,9 +81,9 @@ localparam  INITIALIZE_SDRAM = 0,
             WRITE_DATA_ACT = 8;
 localparam COUNT_WIDTH = 5;
 //Wires
-wire [9:0] row_address;
+wire [12:0] row_address;
 wire [1:0] bank_address;
-wire [1:0] col_address;
+wire [9:0] col_address;
  
 //Registers
 reg [SDRAM_COMMAND_WIDTH-1:0] sdram_command;
@@ -102,9 +102,20 @@ reg data_wr_en_reg;
 reg [ADDR_WIDTH-1:0] data_addr_reg;
 reg [DATA_WIDTH-1:0] data_in_reg;
 
-assign bank_address = data_addr_reg[12:11];
-assign row_address = data_addr_reg[10:1];
-assign col_address = {1'b0, data_addr_reg[0]};
+//IS4216320B
+//assign bank_address = data_addr_reg[13:12];
+//assign row_address = data_addr_reg[26:14];
+//assign col_address = data_addr_reg[11:2];
+
+//MT48LC8M16A2
+assign bank_address = data_addr_reg[12:11]; //2
+assign row_address = data_addr_reg[24:13]; //12
+assign col_address = data_addr_reg[10:2]; //9
+
+
+//assign bank_address = data_addr_reg[12:11];
+//assign row_address = data_addr_reg[10:1];
+//assign col_address = {1'b0, data_addr_reg[0]};
 assign dram_dq_out = data_in_reg;
 
 
@@ -301,9 +312,9 @@ always @(*) begin
          dram_cas_n = 1'b0;
          dram_we_n = 1'b1;
          dram_ba = bank_address; //valid
-         dram_addr[12:11] = col_address; //valid
+         dram_addr[12:11] = 0;//col_address; //valid
          dram_addr[10] = 1'b0;
-         dram_addr[9:0] = row_address; //valid
+         dram_addr[9:0] = col_address; //valid
          dram_cke = 1'b1;
       end
       READ_AUTO_CMD: begin
@@ -323,9 +334,9 @@ always @(*) begin
          dram_cas_n = 1'b0;
          dram_we_n = 1'b0;
          dram_ba = bank_address; //valid
-         dram_addr[12:11] = col_address; //valid
+         dram_addr[12:11] = 0;//col_address; //valid
          dram_addr[10] = 1'b0;
-         dram_addr[9:0] = row_address; //valid
+         dram_addr[9:0] = col_address; //valid
          dram_cke = 1'b1;
       end
       WRITE_AUTO_CMD: begin
@@ -385,7 +396,7 @@ always @(*) begin
          dram_ba = bank_address; //valid
          dram_addr[12:11] = col_address; //valid
          dram_addr[10] = 1'b0;
-         dram_addr[9:0] = row_address; //valid
+         dram_addr[12:0] = row_address; //valid
          dram_cke = 1'b1;
       end
       AUTO_REFRESH_CMD: begin

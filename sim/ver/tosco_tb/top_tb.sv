@@ -3,7 +3,7 @@
 module top_tb;
 
 parameter DATA_WIDTH = 32;
-parameter DATA_ADDR_WIDTH = 20;
+parameter DATA_ADDR_WIDTH = 32;
 parameter INST_ADDR_WIDTH = 20;
 parameter DQM_WIDTH = 4;
 parameter BA_WIDTH = 2;

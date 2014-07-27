@@ -38,6 +38,7 @@ module id_ex_reg
 (
    input clk,
    input rst_n,
+   input en,
    input flush_in,
 
    input [DATA_WIDTH-1:0] data_alu_a_in,
@@ -48,8 +49,12 @@ module id_ex_reg
    input [FUNCTION_WIDTH-1:0] inst_function_in,
    input [REG_ADDR_WIDTH-1:0] reg_rd_addr1_in,
    input [REG_ADDR_WIDTH-1:0] reg_rd_addr2_in,
-   input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
-   input reg_wr_en_in,
+//   input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
+//   input reg_wr_en_in,
+   input [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_in,
+   input [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_in,
+   input reg_a_wr_en_in,
+   input reg_b_wr_en_in,
    input [DATA_WIDTH-1:0] constant_in,
    input imm_inst_in,
 //   input [IMEDIATE_WIDTH-1:0] immediate_in,
@@ -58,6 +63,7 @@ module id_ex_reg
    input mem_data_wr_en_in,
    input write_back_mux_sel_in,
    input branch_inst_in,
+   input branch_use_r_in,
    input jump_inst_in,
    input jump_use_r_in,
 
@@ -70,8 +76,12 @@ module id_ex_reg
 //   output reg [FUNCTION_WIDTH-1:0] inst_function,
    output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr1_out,
    output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
-   output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
-   output reg reg_wr_en_out,
+//   output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
+//   output reg reg_wr_en_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_out,
+   output reg reg_a_wr_en_out,
+   output reg reg_b_wr_en_out,
    output reg [DATA_WIDTH-1:0] constant_out,
    output reg imm_inst_out,
 //   output reg [IMEDIATE_WIDTH-1:0] immediate_out,
@@ -80,6 +90,7 @@ module id_ex_reg
    output reg mem_data_wr_en_out,
    output reg write_back_mux_sel_out,
    output reg branch_inst_out,
+   output reg branch_use_r_out,
    output reg jump_inst_out,
    output reg jump_use_r_out
 );
@@ -94,8 +105,13 @@ always@(posedge clk, negedge rst_n)begin
       inst_function_out <= 0;
       reg_rd_addr1_out <= 0;
       reg_rd_addr2_out <= 0;
-      reg_wr_addr_out <= 0;
-      reg_wr_en_out <= 0;
+//      reg_wr_addr_out <= 0;
+//      reg_wr_en_out <= 0;
+      reg_a_wr_addr_out <= 0;
+      reg_b_wr_addr_out <= 0;
+      reg_a_wr_en_out <= 0;
+      reg_b_wr_en_out <= 0;
+
       constant_out <= 0;
       imm_inst_out <= 0;
 //      immediate_out <= 0;
@@ -104,10 +120,11 @@ always@(posedge clk, negedge rst_n)begin
       mem_data_wr_en_out <= 0;
       write_back_mux_sel_out <= 0;
       branch_inst_out <= 0;
+      branch_use_r_out <= 0;
       jump_inst_out <= 0;
       jump_use_r_out <= 0;
    end
-   else begin
+   else if(en) begin
       if(flush_in)begin
          data_alu_a_out <= 0;
          data_alu_b_out <= 0;
@@ -117,8 +134,13 @@ always@(posedge clk, negedge rst_n)begin
          inst_function_out <= 0;
          reg_rd_addr1_out <= 0;
          reg_rd_addr2_out <= 0;
-         reg_wr_addr_out <= 0;
-         reg_wr_en_out <= 0;
+//         reg_wr_addr_out <= 0;
+//         reg_wr_en_out <= 0;
+         reg_a_wr_addr_out <= 0;
+         reg_b_wr_addr_out <= 0;
+         reg_a_wr_en_out <= 0;
+         reg_b_wr_en_out <= 0;
+
          constant_out <= 0;
          imm_inst_out <= 0;
          pc_offset_out <= 0;
@@ -126,6 +148,7 @@ always@(posedge clk, negedge rst_n)begin
          mem_data_wr_en_out <= 0;
          write_back_mux_sel_out <= 0;
          branch_inst_out <= 0;
+         branch_use_r_out <= 0;
          jump_inst_out <= 0;
          jump_use_r_out <= 0;
       end
@@ -138,8 +161,12 @@ always@(posedge clk, negedge rst_n)begin
          inst_function_out <= inst_function_in;
          reg_rd_addr1_out <= reg_rd_addr1_in;
          reg_rd_addr2_out <= reg_rd_addr2_in;
-         reg_wr_addr_out <= reg_wr_addr_in;
-         reg_wr_en_out <= reg_wr_en_in;
+//         reg_wr_addr_out <= reg_wr_addr_in;
+//         reg_wr_en_out <= reg_wr_en_in;
+         reg_a_wr_addr_out <= reg_a_wr_addr_in;
+         reg_b_wr_addr_out <= reg_b_wr_addr_in;
+         reg_a_wr_en_out <= reg_a_wr_en_in;
+         reg_b_wr_en_out <= reg_b_wr_en_in;
          constant_out <= constant_in;
          imm_inst_out <= imm_inst_in;
 //         immediate_out <= immediate_in;
@@ -148,6 +175,7 @@ always@(posedge clk, negedge rst_n)begin
          mem_data_wr_en_out <= mem_data_wr_en_in;
          write_back_mux_sel_out <= write_back_mux_sel_in;
          branch_inst_out <= branch_inst_in;
+         branch_use_r_out <= branch_use_r_in;
          jump_inst_out <= jump_inst_in;
          jump_use_r_out <= jump_use_r_in;
       end

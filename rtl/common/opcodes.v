@@ -38,7 +38,7 @@ localparam ANDI_OPCODE = 6'h0c;//6'h12;
 localparam ORI_OPCODE = 6'h13;
 localparam BEQZ_OPCODE = 6'h04;
 localparam BNEZ_OPCODE = 6'h05;
-localparam JR_OPCODE = 6'h06;
+
 
 // -----------------------------------------------------------------------------
 // R-Type Instructions OpCode
@@ -57,11 +57,14 @@ localparam DIV_FUNCTION = 6'h1A;
 localparam MULT_FUNCTION = 6'h18;
 localparam CMP_FUNCTION = 6'h1C;
 localparam NOT_FUNCTION = 6'h1D;
+localparam JR_FUNCTION = 6'h08;
+localparam JALR_FUNCTION = 6'h09;
 
 
 // -----------------------------------------------------------------------------
 // J-Type Instructions OpCode
 // -----------------------------------------------------------------------------
 localparam JPC_OPCODE = 6'h02;
-localparam CALL_OPCODE = 6'h3E;
-localparam RET_OPCODE = 6'h3F;
+localparam JAL_OPCODE = 6'h03;
+localparam CALL_OPCODE = 6'h3E; //identico ao JAL
+localparam RET_OPCODE = 6'h3F; //JR para enderço R[31]

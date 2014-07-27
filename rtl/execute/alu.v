@@ -25,25 +25,30 @@
 // -----------------------------------------------------------------------------
 module alu
 #(
-   parameter DATA_WIDTH = 32,
+   parameter DATA_WIDTH = 'd32,
    parameter OPCODE_WIDTH = 6,
    parameter FUNCTION_WIDTH = 6,
+   parameter PC_WIDTH = 'd32,
    parameter FLAGS_WIDTH = 4
 )
 (
    input clk,
-   input rst,
+   input rst_n,
+   input en,
    input [DATA_WIDTH-1:0] alu_data_a_in,        // Input data from register file port A
    input [DATA_WIDTH-1:0] alu_data_b_in,        // Input data from register file port A
    input [OPCODE_WIDTH-1:0] alu_opcode_in,      // Instruction opcode
    input [FUNCTION_WIDTH-1:0] alu_function_in,  // Instruction function
+   input [PC_WIDTH-1:0] pc_in,
 
    output reg alu_branch_result_out,
-   output [DATA_WIDTH-1:0] alu_data_out         // ALU output result data
+   output [DATA_WIDTH-1:0] alu_data_out,        // ALU output result data
+   output [DATA_WIDTH-1:0] hi_data_out
 
 );
 
    reg [DATA_WIDTH:0] alu_result_reg;
+   reg [DATA_WIDTH-1:0] hi_result_reg;
    reg flag_over_underflow;
    reg flag_above;
    reg flag_equal;
@@ -58,19 +63,30 @@ module alu
    wire [DATA_WIDTH-1:0] and_result;
    wire [DATA_WIDTH-1:0] or_result;
 
+   wire [2*DATA_WIDTH-1:0] mult_result;
+   wire [DATA_WIDTH-1:0] div_result;
+   wire [DATA_WIDTH-1:0] mod_result;
+
 
    assign sum_result = alu_data_a_in + alu_data_b_in;
    assign sub_result = alu_data_a_in - alu_data_b_in;
    assign and_result = alu_data_a_in & alu_data_b_in;
    assign or_result  = alu_data_a_in | alu_data_b_in;
    assign zero_cmp   = alu_data_a_in == {DATA_WIDTH{1'b0}};
+   
+   assign mult_result = alu_data_a_in*alu_data_b_in;
+   assign div_result = alu_data_a_in/alu_data_b_in;
+   assign mod_result = alu_data_a_in%alu_data_b_in;
 
    assign alu_data_out = alu_result_reg;
+
+   assign hi_data_out = hi_result_reg;
 
 
    always@(*)
    begin
       alu_result_reg = {DATA_WIDTH{1'b0}};
+      hi_result_reg = {DATA_WIDTH{1'b0}};
       if(alu_opcode_in == R_TYPE_OPCODE)begin
          case (alu_function_in)
             ADD_FUNCTION :
@@ -81,14 +97,20 @@ module alu
                alu_result_reg = and_result;
             OR_FUNCTION :
                alu_result_reg = or_result;
-            MULT_FUNCTION :
-               alu_result_reg = alu_data_a_in * alu_data_b_in;
-            DIV_FUNCTION :
-               alu_result_reg = alu_data_a_in / alu_data_b_in;
+            MULT_FUNCTION : begin
+               alu_result_reg = mult_result[15:0];
+               hi_result_reg = mult_result[31:16];
+            end
+            DIV_FUNCTION : begin
+               alu_result_reg = div_result[15:0];
+               hi_result_reg = mod_result[31:16];
+            end
             // CMP_FUNCTION :
             //    alu_result_reg = alu_data_a_in - alu_data_b_in;
             NOT_FUNCTION :
                alu_result_reg = ~alu_data_b_in;
+            JALR_FUNCTION :
+               alu_result_reg = pc_in;
             default :
                alu_result_reg = {DATA_WIDTH{1'b0}};
          endcase
@@ -103,6 +125,9 @@ module alu
                alu_result_reg = and_result;
             ORI_OPCODE :
                alu_result_reg = or_result;
+//            JAL_OPCODE, JALR_OPCODE, CALL_OPCODE :
+            JAL_OPCODE, CALL_OPCODE :
+               alu_result_reg = pc_in;
             default :
                alu_result_reg = {DATA_WIDTH{1'b0}};
          endcase
@@ -162,10 +187,10 @@ module alu
       end
     end
 
-    always@(posedge clk or negedge rst) begin
-      if(~rst) begin
+    always@(posedge clk or negedge rst_n) begin
+      if(~rst_n) begin
          flags_reg <= {FLAGS_WIDTH{1'b0}};
-      end else
+      end else if(en)
          flags_reg <= {flag_over_underflow,flag_above,flag_equal,flag_error};
     end
 endmodule

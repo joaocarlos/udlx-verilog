@@ -84,6 +84,7 @@ dlx_processor_u0
    (
    .clk(clk_proc),
    .rst_n(rst_n),
+   .enable(1'b1),
 
    .instr_rd_en(inst_mem_rd_en_proc),
    .instr_addr(inst_mem_addr_proc),

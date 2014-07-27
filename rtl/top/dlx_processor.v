@@ -33,7 +33,7 @@ module dlx_processor
 (
    input clk,
    input rst_n,
-//   input enable, //removed the clock gate
+   input enable,
    output instr_rd_en,
    output [INST_ADDR_WIDTH-1:0] instr_addr,
    input [DATA_WIDTH-1:0] instruction,
@@ -81,8 +81,12 @@ module dlx_processor
    wire [FUNCTION_WIDTH-1:0] inst_function;
    wire [REG_ADDR_WIDTH-1:0] reg_rd_addr1;
    wire [REG_ADDR_WIDTH-1:0] reg_rd_addr2;
-   wire [REG_ADDR_WIDTH-1:0] reg_wr_addr;
-   wire reg_wr_en;
+//   wire [REG_ADDR_WIDTH-1:0] reg_wr_addr;
+//   wire reg_wr_en;
+   wire [REG_ADDR_WIDTH-1:0] reg_a_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] reg_b_wr_addr;
+   wire reg_a_wr_en;
+   wire reg_b_wr_en;
    wire imm_inst;
    wire [DATA_WIDTH-1:0] constant;
    wire [PC_OFFSET_WIDTH-1:0] pc_offset;
@@ -90,6 +94,7 @@ module dlx_processor
    wire mem_data_rd_en;
    wire write_back_mux_sel;
    wire branch_inst;
+   wire branch_use_r;
    wire jump_inst;
    wire jump_use_r;
    wire decode_flush;
@@ -102,9 +107,13 @@ module dlx_processor
    wire id_ex_mem_data_rd_en;
    wire id_ex_mem_data_wr_en;
    wire id_ex_write_back_mux_sel;
-   wire id_ex_reg_rd_en;
-   wire id_ex_reg_wr_en;
-   wire [REG_ADDR_WIDTH-1:0] id_ex_reg_wr_addr;
+//   wire id_ex_reg_rd_en; TODO see
+//   wire id_ex_reg_wr_en;
+//   wire [REG_ADDR_WIDTH-1:0] id_ex_reg_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] id_ex_reg_a_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] id_ex_reg_b_wr_addr;
+   wire id_ex_reg_a_wr_en;
+   wire id_ex_reg_b_wr_en;
    wire [DATA_WIDTH-1:0] id_ex_constant;
    //wire id_ex_imm_inst;
    wire [DATA_WIDTH-1:0] id_ex_data_alu_a;
@@ -112,6 +121,7 @@ module dlx_processor
    wire [PC_WIDTH-1:0] id_ex_new_pc;
    wire [PC_OFFSET_WIDTH-1:0] id_ex_pc_offset;
    wire id_ex_branch_inst;
+   wire id_ex_branch_use_r;
    wire id_ex_jump_inst;
    wire id_ex_jump_use_r;
 
@@ -122,9 +132,17 @@ module dlx_processor
    wire ex_mem_data_wr_en;
    wire [DATA_WIDTH-1:0] ex_mem_data_write;
    wire [DATA_WIDTH-1:0] ex_mem_alu_data;
+   wire [DATA_WIDTH-1:0] ex_mem_hi_data;
    wire [DATA_WIDTH-1:0] ex_mem_reg_data;
-   wire ex_mem_reg_wr_en;
-   wire [REG_ADDR_WIDTH-1:0] ex_mem_reg_wr_addr;
+//   wire ex_mem_reg_wr_en;
+//   wire [REG_ADDR_WIDTH-1:0] ex_mem_reg_wr_addr;   
+   wire [REG_ADDR_WIDTH-1:0] ex_mem_reg_a_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] ex_mem_reg_b_wr_addr;
+//   wire [DATA_WIDTH-1:0] ex_mem_reg_a_wr_data;
+//   wire [DATA_WIDTH-1:0] ex_mem_reg_b_wr_data;
+   wire ex_mem_reg_a_wr_en;
+   wire ex_mem_reg_b_wr_en;
+
    wire ex_mem_write_back_mux_sel;
    wire ex_mem_select_new_pc;
    wire [PC_WIDTH-1:0] ex_mem_new_pc;
@@ -132,6 +150,7 @@ module dlx_processor
 
    wire [DATA_WIDTH-1:0] mem_data;
    wire [DATA_WIDTH-1:0] alu_data;
+   wire [DATA_WIDTH-1:0] hi_data;
 
    wire fetch_select_new_pc;
    wire [PC_WIDTH-1:0] fetch_new_pc;
@@ -140,18 +159,32 @@ module dlx_processor
    // MEM/WB wires
    // -----------------------------------------------------------------------------
    wire mem_wb_write_back_mux_sel;
-   wire [DATA_WIDTH-1:0] mem_wb_mem_data;
+//   wire [DATA_WIDTH-1:0] mem_wb_mem_data;
    wire [DATA_WIDTH-1:0] mem_wb_alu_data;
-   wire mem_wb_reg_wr_en;
-   wire [REG_ADDR_WIDTH-1:0] mem_wb_reg_wr_addr;
+   wire [DATA_WIDTH-1:0] mem_wb_hi_data;
+//   wire mem_wb_reg_wr_en;
+//   wire [REG_ADDR_WIDTH-1:0] mem_wb_reg_wr_addr;   
+   wire [REG_ADDR_WIDTH-1:0] mem_wb_reg_a_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] mem_wb_reg_b_wr_addr;
+//   wire [DATA_WIDTH-1:0] mem_wb_reg_a_wr_data; 
+//   wire [DATA_WIDTH-1:0] mem_wb_reg_b_wr_data;
+   wire mem_wb_reg_a_wr_en;
+   wire mem_wb_reg_b_wr_en;
+
    wire [INSTRUCTION_WIDTH-1:0] mem_wb_instruction;
 
    // -----------------------------------------------------------------------------
    // WB wires
    // -----------------------------------------------------------------------------
-   wire wb_write_enable;
-   wire [DATA_WIDTH-1:0] wb_write_data;
-   wire [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr;
+//   wire wb_write_enable;
+//   wire [DATA_WIDTH-1:0] wb_write_data;
+//   wire [REG_ADDR_WIDTH-1:0] wb_reg_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] wb_reg_a_wr_addr;
+   wire [REG_ADDR_WIDTH-1:0] wb_reg_b_wr_addr;
+   wire [DATA_WIDTH-1:0] wb_reg_a_wr_data;
+   wire [DATA_WIDTH-1:0] wb_reg_b_wr_data;
+   wire wb_reg_a_wr_en;
+   wire wb_reg_b_wr_en;
 
    // -----------------------------------------------------------------------------
    // Instruction Fetch modules
@@ -167,6 +200,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
 
       .stall(stall),
 
@@ -190,6 +224,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .stall(stall),
       .flush(flush),
       .inst_mem_data_in(instruction),
@@ -217,15 +252,27 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
 
       .instruction_in(if_id_instruction),
-      .wb_write_enable_in(wb_write_enable),
-      .wb_write_data_in(wb_write_data),
-      .wb_reg_wr_addr_in(wb_reg_wr_addr),
+      
+      // write back
+      .reg_a_wr_addr_in(wb_reg_a_wr_addr),
+      .reg_b_wr_addr_in(wb_reg_b_wr_addr),
+      .reg_a_wr_data_in(wb_reg_a_wr_data),
+      .reg_b_wr_data_in(wb_reg_b_wr_data),
+      .reg_a_wr_en_in(wb_reg_a_wr_en),
+      .reg_b_wr_en_in(wb_reg_b_wr_en),
+
+//      .wb_write_enable_in(wb_write_enable),
+//      .wb_write_data_in(wb_write_data),
+//      .wb_reg_wr_addr_in(wb_reg_wr_addr),
+
+
       .select_new_pc_in(ex_mem_select_new_pc),
       // ----- Hazzard control -----
       .id_ex_mem_data_rd_en_in(id_ex_mem_data_rd_en),
-      .id_ex_reg_wr_addr_in(id_ex_reg_wr_addr),
+      .id_ex_reg_wr_addr_in(id_ex_reg_a_wr_addr),
       // -----
       .reg_rd_addr1_out(reg_rd_addr1), //(id_ex_reg_a_addr),
       .reg_rd_addr2_out(reg_rd_addr2), //(id_ex_reg_b_addr),
@@ -234,8 +281,12 @@ module dlx_processor
       .mem_data_rd_en_out(mem_data_rd_en),//(id_ex_mem_data_rd_en),
       .mem_data_wr_en_out(mem_data_wr_en),//(id_ex_mem_data_wr_en),
       .write_back_mux_sel_out(write_back_mux_sel),//(id_ex_write_back_mux_sel),
-      .reg_wr_en_out(reg_wr_en),//(id_ex_reg_wr_en),
-      .reg_wr_addr_out(reg_wr_addr),//(id_ex_reg_wr_addr),
+//      .reg_wr_en_out(reg_wr_en),(id_ex_reg_wr_en),
+//      .reg_wr_addr_out(reg_wr_addr),(id_ex_reg_wr_addr),
+      .reg_a_wr_addr_out(reg_a_wr_addr),
+      .reg_b_wr_addr_out(reg_b_wr_addr),
+      .reg_a_wr_en_out(reg_a_wr_en),
+      .reg_b_wr_en_out(reg_b_wr_en),
       .constant_out(constant), //(id_ex_constant),
       .imm_inst_out(imm_inst), //(id_ex_imm_inst),
       .data_alu_a_out(data_alu_a),//(id_ex_data_alu_a),
@@ -243,6 +294,7 @@ module dlx_processor
 
       .pc_offset_out(pc_offset),//(id_ex_pc_offset),
       .branch_inst_out(branch_inst),//(id_ex_branch_inst),
+      .branch_use_r_out(branch_use_r),
       .jump_inst_out(jump_inst),//(id_ex_jump_inst),
       .jump_use_r_out(jump_use_r),//(id_ex_jump_use_r),
 
@@ -270,6 +322,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .flush_in(decode_flush),
 
       .data_alu_a_in(data_alu_a),
@@ -280,8 +333,12 @@ module dlx_processor
       .inst_function_in(inst_function),
       .reg_rd_addr1_in(reg_rd_addr1),
       .reg_rd_addr2_in(reg_rd_addr2),
-      .reg_wr_addr_in(reg_wr_addr),
-      .reg_wr_en_in(reg_wr_en),
+//      .reg_wr_addr_in(reg_wr_addr),
+//      .reg_wr_en_in(reg_wr_en),
+      .reg_a_wr_addr_in(reg_a_wr_addr),
+      .reg_b_wr_addr_in(reg_b_wr_addr),
+      .reg_a_wr_en_in(reg_a_wr_en),
+      .reg_b_wr_en_in(reg_b_wr_en),
       .constant_in(constant),
       .imm_inst_in(imm_inst),
       .pc_offset_in(pc_offset),
@@ -289,6 +346,7 @@ module dlx_processor
       .mem_data_rd_en_in(mem_data_rd_en),
       .write_back_mux_sel_in(write_back_mux_sel),
       .branch_inst_in(branch_inst),
+      .branch_use_r_in(branch_use_r),
       .jump_inst_in(jump_inst),
       .jump_use_r_in(jump_use_r),
 
@@ -301,8 +359,12 @@ module dlx_processor
       .inst_function_out(id_ex_function),
       .reg_rd_addr1_out(id_ex_reg_a_addr),
       .reg_rd_addr2_out(id_ex_reg_b_addr),
-      .reg_wr_addr_out(id_ex_reg_wr_addr),
-      .reg_wr_en_out(id_ex_reg_wr_en),
+//      .reg_wr_addr_out(id_ex_reg_wr_addr),
+//      .reg_wr_en_out(id_ex_reg_wr_en),
+      .reg_a_wr_addr_out(id_ex_reg_a_wr_addr),
+      .reg_b_wr_addr_out(id_ex_reg_b_wr_addr),
+      .reg_a_wr_en_out(id_ex_reg_a_wr_en),
+      .reg_b_wr_en_out(id_ex_reg_b_wr_en),
       .constant_out(id_ex_constant),
       .imm_inst_out(id_ex_imm_inst),
       .pc_offset_out(id_ex_pc_offset),
@@ -310,6 +372,7 @@ module dlx_processor
       .mem_data_rd_en_out(id_ex_mem_data_rd_en),
       .write_back_mux_sel_out(id_ex_write_back_mux_sel),
       .branch_inst_out(id_ex_branch_inst),
+      .branch_use_r_out(id_ex_branch_use_r),
       .jump_inst_out(id_ex_jump_inst),
       .jump_use_r_out(id_ex_jump_use_r)
     );
@@ -331,6 +394,7 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
 
       .alu_opcode_in(id_ex_opcode),
       .alu_function_in(id_ex_function),
@@ -343,19 +407,29 @@ module dlx_processor
       .new_pc_in(id_ex_new_pc),
       .pc_offset_in(id_ex_pc_offset),
       .branch_inst_in(id_ex_branch_inst),
+      .branch_use_r_in(id_ex_branch_use_r),
       .jmp_inst_in(id_ex_jump_inst),
       .jmp_use_r_in(id_ex_jump_use_r),
       .instruction_in(id_ex_instruction),
 
-      .ex_mem_reg_data_in(ex_mem_reg_data),//input
-      .ex_mem_reg_addr_in(ex_mem_reg_wr_addr),//input
-      .ex_mem_reg_wr_ena_in(ex_mem_reg_wr_en),//input
-      .wb_reg_data_in(wb_write_data),
-      .wb_reg_addr_in(wb_reg_wr_addr),
-      .wb_reg_wr_ena_in(wb_write_enable),
+      //fowarding input
+      .ex_mem_reg_a_data_in(ex_mem_alu_data),//ex_mem_reg_a_wr_data),//input
+      .ex_mem_reg_b_data_in(ex_mem_hi_data),//ex_mem_reg_b_wr_data),//input
+      .ex_mem_reg_a_addr_in(ex_mem_reg_a_wr_addr),//input
+      .ex_mem_reg_b_addr_in(ex_mem_reg_b_wr_addr),//input
+      .ex_mem_reg_a_wr_ena_in(ex_mem_reg_a_wr_en),//input
+      .ex_mem_reg_b_wr_ena_in(ex_mem_reg_b_wr_en),//input
+      .wb_reg_a_data_in(wb_reg_a_wr_data),
+      .wb_reg_b_data_in(wb_reg_b_wr_data),
+      .wb_reg_a_addr_in(wb_reg_a_wr_addr),
+      .wb_reg_b_addr_in(wb_reg_b_wr_addr),
+      .wb_reg_a_wr_ena_in(wb_reg_a_wr_en),
+      .wb_reg_b_wr_ena_in(wb_reg_b_wr_en),
 
       .mem_data_out(mem_data),
       .alu_data_out(alu_data),
+
+      .hi_data_out(hi_data),
 
       .fetch_new_pc_out(fetch_new_pc),
       .fetch_select_new_pc_out(fetch_select_new_pc)
@@ -383,14 +457,20 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
-      .flush_in(flush_in),
+      .en(enable),
+      .flush_in(flush),
 
       .mem_data_rd_en_in(id_ex_mem_data_rd_en),
       .mem_data_wr_en_in(id_ex_mem_data_wr_en),
       .mem_data_in(mem_data),
       .alu_data_in(alu_data),
-      .reg_wr_en_in(id_ex_reg_wr_en),
-      .reg_wr_addr_in(id_ex_reg_wr_addr),
+      .hi_data_in(hi_data),
+//      .reg_wr_en_in(id_ex_reg_wr_en),
+//      .reg_wr_addr_in(id_ex_reg_wr_addr),
+      .reg_a_wr_addr_in(id_ex_reg_a_wr_addr),
+      .reg_b_wr_addr_in(id_ex_reg_b_wr_addr),
+      .reg_a_wr_en_in(id_ex_reg_a_wr_en),
+      .reg_b_wr_en_in(id_ex_reg_b_wr_en),
       .write_back_mux_sel_in(id_ex_write_back_mux_sel),
       .select_new_pc_in(fetch_select_new_pc),
       .new_pc_in(fetch_new_pc),
@@ -400,8 +480,13 @@ module dlx_processor
       .mem_data_wr_en_out(ex_mem_data_wr_en),
       .mem_data_out(ex_mem_data_write),
       .alu_data_out(ex_mem_alu_data),
-      .reg_wr_en_out(ex_mem_reg_wr_en),
-      .reg_wr_addr_out(ex_mem_reg_wr_addr),
+      .hi_data_out(ex_mem_hi_data),
+//      .reg_wr_en_out(ex_mem_reg_wr_en),
+//      .reg_wr_addr_out(ex_mem_reg_wr_addr),
+      .reg_a_wr_addr_out(ex_mem_reg_a_wr_addr),
+      .reg_b_wr_addr_out(ex_mem_reg_b_wr_addr),
+      .reg_a_wr_en_out(ex_mem_reg_a_wr_en),
+      .reg_b_wr_en_out(ex_mem_reg_b_wr_en),
       .write_back_mux_sel_out(ex_mem_write_back_mux_sel),
       .select_new_pc_out(ex_mem_select_new_pc),
       .new_pc_out(ex_mem_new_pc),
@@ -426,16 +511,29 @@ module dlx_processor
    (
       .clk(clk),
       .rst_n(rst_n),
+      .en(enable),
       .write_back_mux_sel_in(ex_mem_write_back_mux_sel),
       .alu_data_in(ex_mem_alu_data),
-      .reg_wr_en_in(ex_mem_reg_wr_en),
-      .reg_wr_addr_in(ex_mem_reg_wr_addr),
+      .hi_data_in(ex_mem_hi_data),
+//      .reg_wr_en_in(ex_mem_reg_wr_en),
+//      .reg_wr_addr_in(ex_mem_reg_wr_addr),
+      .reg_a_wr_addr_in(ex_mem_reg_a_wr_addr),
+      .reg_b_wr_addr_in(ex_mem_reg_b_wr_addr),
+      .reg_a_wr_en_in(ex_mem_reg_a_wr_en),
+      .reg_b_wr_en_in(ex_mem_reg_b_wr_en),
+
       .instruction_in(ex_mem_instruction),
 
       .write_back_mux_sel_out(mem_wb_write_back_mux_sel),
       .alu_data_out(mem_wb_alu_data),
-      .reg_wr_en_out(mem_wb_reg_wr_en),
-      .reg_wr_addr_out(mem_wb_reg_wr_addr),
+      .hi_data_out(mem_wb_hi_data),
+//      .reg_wr_en_out(mem_wb_reg_wr_en),
+//      .reg_wr_addr_out(mem_wb_reg_wr_addr),
+      .reg_a_wr_addr_out(mem_wb_reg_a_wr_addr),
+      .reg_b_wr_addr_out(mem_wb_reg_b_wr_addr),
+      .reg_a_wr_en_out(mem_wb_reg_a_wr_en),
+      .reg_b_wr_en_out(mem_wb_reg_b_wr_en),
+
       .instruction_out(mem_wb_instruction)
    );
 
@@ -451,12 +549,21 @@ module dlx_processor
    (
       .mem_data_in(data_read),
       .alu_data_in(mem_wb_alu_data),
-      .reg_wr_en_in(mem_wb_reg_wr_en),
-      .reg_wr_addr_in(mem_wb_reg_wr_addr),
+      .hi_data_in(mem_wb_hi_data),
+//      .reg_wr_en_in(mem_wb_reg_wr_en),
+//      .reg_wr_addr_in(mem_wb_reg_wr_addr),
+      .reg_a_wr_addr_in(mem_wb_reg_a_wr_addr),
+      .reg_b_wr_addr_in(mem_wb_reg_b_wr_addr),
+      .reg_a_wr_en_in(mem_wb_reg_a_wr_en),
+      .reg_b_wr_en_in(mem_wb_reg_b_wr_en),
       .write_back_mux_sel(mem_wb_write_back_mux_sel),
-      .reg_wr_addr_out(wb_reg_wr_addr),
-      .reg_wr_data_out(wb_write_data),
-      .reg_wr_en_out(wb_write_enable)
+
+      .reg_a_wr_addr_out(wb_reg_a_wr_addr),
+      .reg_b_wr_addr_out(wb_reg_b_wr_addr),
+      .reg_a_wr_data_out(wb_reg_a_wr_data),
+      .reg_b_wr_data_out(wb_reg_b_wr_data),
+      .reg_a_wr_en_out(wb_reg_a_wr_en),
+      .reg_b_wr_en_out(wb_reg_b_wr_en)
    );
 
 

@@ -33,6 +33,7 @@ module ex_mem_reg
 (
    input clk,
    input rst_n,
+   input en,
 
    input flush_in,
 
@@ -41,9 +42,14 @@ module ex_mem_reg
    input mem_data_wr_en_in,
    input [DATA_WIDTH-1:0] mem_data_in,
    input [DATA_WIDTH-1:0] alu_data_in, //w_mem_wr_data_in and w_reg_data
+   input [DATA_WIDTH-1:0] hi_data_in, 
    //register signals
-   input reg_wr_en_in,
-   input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
+//   input reg_wr_en_in,
+//   input [REG_ADDR_WIDTH-1:0] reg_wr_addr_in,
+   input [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_in,
+   input [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_in,
+   input reg_a_wr_en_in,
+   input reg_b_wr_en_in,
    input write_back_mux_sel_in,
    input select_new_pc_in,
    input [PC_WIDTH-1:0] new_pc_in,
@@ -53,8 +59,13 @@ module ex_mem_reg
    output reg mem_data_wr_en_out,
    output reg [DATA_WIDTH-1:0] mem_data_out,
    output reg [DATA_WIDTH-1:0] alu_data_out, //w_mem_wr_data_out and w_reg_data
-   output reg reg_wr_en_out,
-   output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
+   output reg [DATA_WIDTH-1:0] hi_data_out, 
+//   output reg reg_wr_en_out,
+//   output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_out,
+   output reg reg_a_wr_en_out,
+   output reg reg_b_wr_en_out,
    output reg write_back_mux_sel_out,
    output reg select_new_pc_out,
    output reg [PC_WIDTH-1:0] new_pc_out,
@@ -68,22 +79,33 @@ always@(posedge clk, negedge rst_n)begin
       mem_data_out <= 0;
 //      mem_addr_out <= 0;
       alu_data_out <= 0;
-      reg_wr_en_out <= 0;
-      reg_wr_addr_out <= 0;
+      hi_data_out <= 0;
+//      reg_wr_en_out <= 0;
+//      reg_wr_addr_out <= 0;
+      reg_a_wr_addr_out <= 0;
+      reg_b_wr_addr_out <= 0;
+      reg_a_wr_en_out <= 0;
+      reg_b_wr_en_out <= 0;
       write_back_mux_sel_out <= 0;
       select_new_pc_out <= 0;
       new_pc_out <= 0;
       instruction_out <= 0;
    end
-   else begin
+   else if(en) begin
       if(flush_in)begin
           mem_data_rd_en_out <= 0;
           mem_data_wr_en_out <= 0;
           mem_data_out <= 0;
 //          mem_addr_out <= 0;
           alu_data_out <= 0;
-          reg_wr_en_out <= 0;
-          reg_wr_addr_out <= 0;
+          hi_data_out <= 0;
+//          reg_wr_en_out <= 0;
+//          reg_wr_addr_out <= 0;
+          reg_a_wr_addr_out <= 0;
+          reg_b_wr_addr_out <= 0;
+          reg_a_wr_en_out <= 0;
+          reg_b_wr_en_out <= 0;
+
           write_back_mux_sel_out <= 0;
           select_new_pc_out <= 0;
           new_pc_out <= 0;
@@ -96,8 +118,13 @@ always@(posedge clk, negedge rst_n)begin
           mem_data_out <= mem_data_in;
 //          mem_addr_out <= mem_addr_in;
           alu_data_out <= alu_data_in;
-          reg_wr_en_out <= reg_wr_en_in;
-          reg_wr_addr_out <= reg_wr_addr_in;
+          hi_data_out <= hi_data_in;
+//          reg_wr_en_out <= reg_wr_en_in;
+//          reg_wr_addr_out <= reg_wr_addr_in;
+          reg_a_wr_addr_out <= reg_a_wr_addr_in;
+          reg_b_wr_addr_out <= reg_b_wr_addr_in;
+          reg_a_wr_en_out <= reg_a_wr_en_in;
+          reg_b_wr_en_out <= reg_b_wr_en_in;
           write_back_mux_sel_out <= write_back_mux_sel_in;
           select_new_pc_out <= select_new_pc_in;
           new_pc_out <= new_pc_in;

@@ -31,11 +31,19 @@ module register_bank
 (/*autoport*/
    input clk,
    input rst_n,
+   input en,
    input [ADDRESS_WIDTH-1:0] rd_reg1_addr,
    input [ADDRESS_WIDTH-1:0] rd_reg2_addr,
-   input [ADDRESS_WIDTH-1:0] write_address,
-   input write_enable,
-   input [DATA_WIDTH-1:0] write_data,
+//   input [ADDRESS_WIDTH-1:0] write_address,
+//   input write_enable,
+//   input [DATA_WIDTH-1:0] write_data,
+   input [ADDRESS_WIDTH-1:0] reg_a_wr_addr,
+   input [ADDRESS_WIDTH-1:0] reg_b_wr_addr,
+   input [DATA_WIDTH-1:0] reg_a_wr_data,
+   input [DATA_WIDTH-1:0] reg_b_wr_data,
+   input reg_a_wr_en,
+   input reg_b_wr_en,
+
    output [DATA_WIDTH-1:0] rd_reg1_data_out,
    output [DATA_WIDTH-1:0] rd_reg2_data_out
 );
@@ -55,9 +63,11 @@ module register_bank
             reg_file[i] <= {DATA_WIDTH{1'b0}};
          end
       end
-      else begin
-         if (write_enable)
-            reg_file[write_address] <= write_data;
+      else if(en) begin
+         if (reg_a_wr_en)
+            reg_file[reg_a_wr_addr] <= reg_a_wr_data;
+         if (reg_b_wr_en)
+            reg_file[reg_b_wr_addr] <= reg_b_wr_data;
       end
    end
 
@@ -65,9 +75,11 @@ module register_bank
    // Output registers
    // ------------------------------------------------------
 
-   assign rd_reg2_data_out = (write_enable&(write_address==rd_reg2_addr))?
-                             write_data:reg_file[rd_reg2_addr];
-   assign rd_reg1_data_out = (write_enable&(write_address==rd_reg1_addr))?
-                             write_data:reg_file[rd_reg1_addr];
+   assign rd_reg2_data_out = (reg_a_wr_en&(reg_a_wr_addr==rd_reg2_addr))?
+                             reg_a_wr_data: (reg_b_wr_en&(reg_b_wr_addr==rd_reg2_addr))?
+			     reg_b_wr_data:reg_file[rd_reg2_addr];
+   assign rd_reg1_data_out = (reg_a_wr_en&(reg_a_wr_addr==rd_reg1_addr))?
+                             reg_a_wr_data: (reg_b_wr_en&(reg_b_wr_addr==rd_reg1_addr))?
+			     reg_b_wr_data:reg_file[rd_reg1_addr];
 
 endmodule

@@ -41,8 +41,10 @@ module instruction_decoder
    output reg [REG_ADDR_WIDTH-1:0] reg_rd_addr2_out,
    output reg reg_rd_en1_out,
    output reg reg_rd_en2_out,
-   output reg [REG_ADDR_WIDTH-1:0] reg_wr_addr_out,
-   output reg reg_wr_en_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_a_wr_addr_out,
+   output reg [REG_ADDR_WIDTH-1:0] reg_b_wr_addr_out,
+   output reg reg_a_wr_en_out,
+   output reg reg_b_wr_en_out,
    output reg [IMEDIATE_WIDTH-1:0] immediate_out,
    output reg imm_inst_out,
    output reg [PC_OFFSET_WIDTH-1:0] pc_offset,
@@ -50,6 +52,7 @@ module instruction_decoder
    output reg mem_data_wr_en_out,
    output reg write_back_mux_sel_out,
    output reg branch_inst_out,
+   output reg branch_use_r_out,
    output reg jump_inst_out,
    output reg jump_use_r_out
 );
@@ -60,8 +63,12 @@ module instruction_decoder
 
 `include "opcodes.v"
 
+
+//   wire [OPCODE_WIDTH-1:0] opcode;
+   wire [FUNCTION_WIDTH-1:0] inst_function_in;
    // Gather intruction OpCode
    assign opcode = instruction_in[31:26];
+   assign inst_function_in = instruction_in[5:0];
 
    always @(*) begin
       if(instruction_in=={INSTRUCTION_WIDTH{1'b0}})begin // NOP Instruction condigion
@@ -70,8 +77,10 @@ module instruction_decoder
          reg_rd_addr2_out = 0;
          reg_rd_en1_out = 0;
          reg_rd_en2_out = 0;
-         reg_wr_addr_out = 0;
-         reg_wr_en_out = 1'b0;
+         reg_a_wr_addr_out = 0;
+         reg_b_wr_addr_out = 0;
+         reg_a_wr_en_out = 1'b0;
+         reg_b_wr_en_out = 1'b0;
          immediate_out = 0;
          imm_inst_out = 1'b0;
          pc_offset = 0;
@@ -79,6 +88,7 @@ module instruction_decoder
          mem_data_wr_en_out = 1'b0;
          write_back_mux_sel_out = 1'b0;
          branch_inst_out = 1'b0;
+         branch_use_r_out = 1'b0;
          jump_inst_out = 1'b0;
          jump_use_r_out = 1'b0;
       end
@@ -89,23 +99,91 @@ module instruction_decoder
             //  -------- ----- ----- ---- ----- ------
             //      6      5     5     5    5      6
             R_TYPE_OPCODE: begin
-               inst_function = instruction_in[5:0];
-               reg_rd_addr1_out = instruction_in[25:21];
-               reg_rd_addr2_out = instruction_in[20:16];
-               reg_rd_en1_out = 1'b1;
-               reg_rd_en2_out = 1'b1;
-               reg_wr_addr_out = instruction_in[15:11];
-               reg_wr_en_out = 1'b1;
-               immediate_out = 0;
-               imm_inst_out = 1'b0;
-               pc_offset = 0;
-               mem_data_rd_en_out = 1'b0;
-               mem_data_wr_en_out = 1'b0;
-               write_back_mux_sel_out = 1'b0;
-               branch_inst_out = 1'b0;
-               jump_inst_out = 1'b0;
-               jump_use_r_out = 1'b0;
+              case(inst_function_in)
+               MULT_FUNCTION, DIV_FUNCTION : begin
+                  inst_function = instruction_in[5:0];
+                  reg_rd_addr1_out = instruction_in[25:21];
+                  reg_rd_addr2_out = instruction_in[20:16];
+                  reg_rd_en1_out = 1'b1;
+                  reg_rd_en2_out = 1'b1;
+                  reg_a_wr_addr_out = instruction_in[25:21];
+                  reg_b_wr_addr_out = instruction_in[20:16];
+                  reg_a_wr_en_out = 1'b1;
+                  reg_b_wr_en_out = 1'b1;
+                  immediate_out = 0;
+                  imm_inst_out = 1'b0;
+                  pc_offset = 0;
+                  mem_data_rd_en_out = 1'b0;
+                  mem_data_wr_en_out = 1'b0;
+                  write_back_mux_sel_out = 1'b0;
+                  branch_inst_out = 1'b0;
+                  branch_use_r_out = 1'b0;
+                  jump_inst_out = 1'b0;
+                  jump_use_r_out = 1'b0;
                end
+               JR_FUNCTION: begin
+                  reg_rd_addr1_out = instruction_in[25:21];
+                  reg_rd_addr2_out = 0;
+                  reg_rd_en1_out = 1;
+                  reg_rd_en2_out = 0;
+                  reg_a_wr_addr_out = 0;
+                  reg_b_wr_addr_out = 0;
+                  reg_a_wr_en_out = 1'b0;
+                  reg_b_wr_en_out = 1'b0;
+                  immediate_out = instruction_in[15:0];//not used
+                  imm_inst_out = 1'b0;
+                  pc_offset = 0;
+                  mem_data_rd_en_out = 1'b0;
+                  mem_data_wr_en_out = 1'b0;
+                  write_back_mux_sel_out = 1'b0;
+                  branch_inst_out = 1'b0;
+                  branch_use_r_out = 1'b0;
+                  jump_inst_out = 1'b1;
+                  jump_use_r_out = 1'b1;
+               end
+               JALR_FUNCTION: begin
+                  reg_rd_addr1_out = instruction_in[20:16];
+                  reg_rd_addr2_out = 0;
+                  reg_rd_en1_out = 1;
+                  reg_rd_en2_out = 0;
+                  reg_a_wr_addr_out = instruction_in[15:11];
+                  reg_b_wr_addr_out = 0;
+                  reg_a_wr_en_out = 1'b1;
+                  reg_b_wr_en_out = 1'b0;
+                  immediate_out = instruction_in[15:0];//not used
+                  imm_inst_out = 1'b0;
+                  pc_offset = 0;
+                  mem_data_rd_en_out = 1'b0;
+                  mem_data_wr_en_out = 1'b0;
+                  write_back_mux_sel_out = 1'b0;
+                  branch_inst_out = 1'b0;
+                  branch_use_r_out = 1'b0;
+                  jump_inst_out = 1'b1;
+                  jump_use_r_out = 1'b1;
+               end
+               default: begin
+                  inst_function = instruction_in[5:0];
+                  reg_rd_addr1_out = instruction_in[25:21];
+                  reg_rd_addr2_out = instruction_in[20:16];
+                  reg_rd_en1_out = 1'b1;
+                  reg_rd_en2_out = 1'b1;
+                  reg_a_wr_addr_out = instruction_in[15:11];
+                  reg_b_wr_addr_out = 0;
+                  reg_a_wr_en_out = 1'b1;
+                  reg_b_wr_en_out = 1'b0;
+                  immediate_out = 0;
+                  imm_inst_out = 1'b0;
+                  pc_offset = 0;
+                  mem_data_rd_en_out = 1'b0;
+                  mem_data_wr_en_out = 1'b0;
+                  write_back_mux_sel_out = 1'b0;
+                  branch_inst_out = 1'b0;
+                  branch_use_r_out = 1'b0;
+                  jump_inst_out = 1'b0;
+                  jump_use_r_out = 1'b0;
+               end
+	       endcase
+            end
             //  -------- ----- ---- -----------
             // | Opcode | RS1 | RD | Immediate |
             //  -------- ----- ---- -----------
@@ -115,8 +193,10 @@ module instruction_decoder
                reg_rd_addr2_out = 0;
                reg_rd_en1_out = 1;
                reg_rd_en2_out = 0;
-               reg_wr_addr_out = instruction_in[20:16];
-               reg_wr_en_out = 1'b1;
+               reg_a_wr_addr_out = instruction_in[20:16];
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b1;
+               reg_b_wr_en_out = 1'b0;
                immediate_out = instruction_in[15:0];
                imm_inst_out = 1'b1;
                pc_offset = 0;
@@ -124,6 +204,7 @@ module instruction_decoder
                mem_data_wr_en_out = 1'b0;
                write_back_mux_sel_out = 1'b0;
                branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
                jump_inst_out = 1'b0;
                jump_use_r_out = 1'b0;
             end
@@ -136,8 +217,10 @@ module instruction_decoder
                reg_rd_addr2_out = 0;
                reg_rd_en1_out = 1;
                reg_rd_en2_out = 0;
-               reg_wr_addr_out = instruction_in[20:16];
-               reg_wr_en_out = 1'b1;
+               reg_a_wr_addr_out = instruction_in[20:16];
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b1;
+               reg_b_wr_en_out = 1'b0;
                immediate_out = instruction_in[15:0];
                imm_inst_out = 1'b1;
                pc_offset = 0;
@@ -145,6 +228,7 @@ module instruction_decoder
                mem_data_wr_en_out = 1'b0;
                write_back_mux_sel_out = 1'b1;
                branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
                jump_inst_out = 1'b0;
                jump_use_r_out = 1'b0;
             // end
@@ -158,8 +242,10 @@ module instruction_decoder
                reg_rd_addr2_out = instruction_in[20:16];
                reg_rd_en1_out = 1;
                reg_rd_en2_out = 1;
-               reg_wr_addr_out = 0;
-               reg_wr_en_out = 1'b0;
+               reg_a_wr_addr_out = 0;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b0;
+               reg_b_wr_en_out = 1'b0;
                immediate_out = instruction_in[15:0];
                imm_inst_out = 1'b1;
                pc_offset = 0;
@@ -167,6 +253,7 @@ module instruction_decoder
                mem_data_wr_en_out = 1'b1;
                write_back_mux_sel_out = 1'b0;
                branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
                jump_inst_out = 1'b0;
                jump_use_r_out = 1'b0;
             end
@@ -174,13 +261,15 @@ module instruction_decoder
             // | Opcode | RS1 | RD | Immediate |
             //  -------- ----- ---- -----------
             //      6      5     5       16
-            BEQZ_OPCODE,BNEZ_OPCODE,BRFL_OPCODE: begin
+            BEQZ_OPCODE,BNEZ_OPCODE: begin
                reg_rd_addr1_out = instruction_in[25:21];
                reg_rd_addr2_out = 0;
                reg_rd_en1_out = 1;
                reg_rd_en2_out = 0;
-               reg_wr_addr_out = instruction_in[20:16];
-               reg_wr_en_out = 1'b0;
+               reg_a_wr_addr_out = 0;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b0;
+               reg_b_wr_en_out = 1'b0;
                immediate_out = instruction_in[15:0];
                imm_inst_out = 1'b1;
                pc_offset = 0;
@@ -188,30 +277,78 @@ module instruction_decoder
                mem_data_wr_en_out = 1'b0;
                write_back_mux_sel_out = 1'b0;
                branch_inst_out = 1'b1;
+               branch_use_r_out = 1'b0;
                jump_inst_out = 1'b0;
                jump_use_r_out = 1'b0;
             end
-            //  -------- ----- ----- -----------
-            // | Opcode | RS1 | N/A |    N/A    |
-            //  -------- ----- ----- -----------
-            //      6      5     5       16
-            JR_OPCODE: begin
+            BRFL_OPCODE: begin
                reg_rd_addr1_out = instruction_in[25:21];
                reg_rd_addr2_out = 0;
                reg_rd_en1_out = 1;
                reg_rd_en2_out = 0;
-               reg_wr_addr_out = instruction_in[20:16];//not used
-               reg_wr_en_out = 1'b0;
-               immediate_out = instruction_in[15:0];//not used
-               imm_inst_out = 1'b0;
+               reg_a_wr_addr_out = 0;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b0;
+               reg_b_wr_en_out = 1'b0;
+               immediate_out = instruction_in[15:0];
+               imm_inst_out = 1'b1;
                pc_offset = 0;
                mem_data_rd_en_out = 1'b0;
                mem_data_wr_en_out = 1'b0;
                write_back_mux_sel_out = 1'b0;
-               branch_inst_out = 1'b0;
-               jump_inst_out = 1'b1;
-               jump_use_r_out = 1'b1;
+               branch_inst_out = 1'b1;
+               branch_use_r_out = 1'b1;
+               jump_inst_out = 1'b0;
+               jump_use_r_out = 1'b0;
             end
+//            //  -------- ----- ----- -----------
+//            // | Opcode | RS1 | N/A |    N/A    |
+//            //  -------- ----- ----- -----------
+//            //      6      5     5       16
+//            JR_OPCODE: begin
+//               reg_rd_addr1_out = instruction_in[25:21];
+//               reg_rd_addr2_out = 0;
+//               reg_rd_en1_out = 1;
+//               reg_rd_en2_out = 0;
+//               reg_a_wr_addr_out = 0;
+//               reg_b_wr_addr_out = 0;
+//               reg_a_wr_en_out = 1'b0;
+//               reg_b_wr_en_out = 1'b0;
+//               immediate_out = instruction_in[15:0];//not used
+//               imm_inst_out = 1'b0;
+//               pc_offset = 0;
+//               mem_data_rd_en_out = 1'b0;
+//               mem_data_wr_en_out = 1'b0;
+//               write_back_mux_sel_out = 1'b0;
+//               branch_inst_out = 1'b0;
+//               branch_use_r_out = 1'b0;
+//               jump_inst_out = 1'b1;
+//               jump_use_r_out = 1'b1;
+//            end
+//            //  -------- ----- ----- -----------
+//            // | Opcode | RS1 | RS2 |    N/A    |
+//            //  -------- ----- ----- -----------
+//            //      6      5     5       16
+//            JALR_OPCODE: begin
+//               reg_rd_addr1_out = instruction_in[20:16];
+//               reg_rd_addr2_out = 0;
+//               reg_rd_en1_out = 1;
+//               reg_rd_en2_out = 0;
+//               reg_a_wr_addr_out = instruction_in[25:21];
+//               reg_b_wr_addr_out = 0;
+//               reg_a_wr_en_out = 1'b1;
+//               reg_b_wr_en_out = 1'b0;
+//               immediate_out = instruction_in[15:0];//not used
+//               imm_inst_out = 1'b0;
+//               pc_offset = 0;
+//               mem_data_rd_en_out = 1'b0;
+//               mem_data_wr_en_out = 1'b0;
+//               write_back_mux_sel_out = 1'b0;
+//               branch_inst_out = 1'b0;
+//               branch_use_r_out = 1'b0;
+//               jump_inst_out = 1'b1;
+//               jump_use_r_out = 1'b1;
+//            end
             //  -------- ----- -----
             // | Opcode | PC Offset |
             //  -------- -----------
@@ -221,8 +358,10 @@ module instruction_decoder
                reg_rd_addr2_out = 0;
                reg_rd_en1_out = 0;
                reg_rd_en2_out = 0;
-               reg_wr_addr_out = 0;
-               reg_wr_en_out = 1'b0;
+               reg_a_wr_addr_out = 0;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b0;
+               reg_b_wr_en_out = 1'b0;
                immediate_out = 0;
                imm_inst_out = 1'b0;
                pc_offset = instruction_in[25:0];
@@ -230,17 +369,69 @@ module instruction_decoder
                mem_data_wr_en_out = 1'b0;
                write_back_mux_sel_out = 1'b0;
                branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
                jump_inst_out = 1'b1;
                jump_use_r_out = 1'b0;
             end
+            //  -------- ----- -----
+            // | Opcode | PC Offset |
+            //  -------- -----------
+            //      6        26
+            JAL_OPCODE,CALL_OPCODE: begin
+               reg_rd_addr1_out = 0;
+               reg_rd_addr2_out = 0;
+               reg_rd_en1_out = 0;
+               reg_rd_en2_out = 0;
+               reg_a_wr_addr_out = 'd31;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b1;
+               reg_b_wr_en_out = 1'b0;
+               immediate_out = instruction_in[25:0];//not used
+               imm_inst_out = 1'b0;
+               pc_offset = 0;
+               mem_data_rd_en_out = 1'b0;
+               mem_data_wr_en_out = 1'b0;
+               write_back_mux_sel_out = 1'b0;
+               branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
+               jump_inst_out = 1'b1;
+               jump_use_r_out = 1'b0;
+            end
+            //  -------- ----- ----- -----------
+            // | Opcode | N/A | N/A |    N/A    |
+            //  -------- ----- ----- -----------
+            //      6      5     5       16
+	    RET_OPCODE :begin //JR_OPCODE: begin
+               reg_rd_addr1_out = 31;
+               reg_rd_addr2_out = 0;
+               reg_rd_en1_out = 1;
+               reg_rd_en2_out = 0;
+               reg_a_wr_addr_out = 0;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b0;
+               reg_b_wr_en_out = 1'b0;
+               immediate_out = instruction_in[15:0];//not used
+               imm_inst_out = 1'b0;
+               pc_offset = 0;
+               mem_data_rd_en_out = 1'b0;
+               mem_data_wr_en_out = 1'b0;
+               write_back_mux_sel_out = 1'b0;
+               branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
+               jump_inst_out = 1'b1;
+               jump_use_r_out = 1'b1;
+            end
+
             default : begin
                inst_function = 0;
                reg_rd_addr1_out = 0;
                reg_rd_addr2_out = 0;
                reg_rd_en1_out = 0;
                reg_rd_en2_out = 0;
-               reg_wr_addr_out = 0;
-               reg_wr_en_out = 1'b0;
+               reg_a_wr_addr_out = 0;
+               reg_b_wr_addr_out = 0;
+               reg_a_wr_en_out = 1'b0;
+               reg_b_wr_en_out = 1'b0;
                immediate_out = 0;
                imm_inst_out = 1'b0;
                pc_offset = 0;
@@ -248,6 +439,7 @@ module instruction_decoder
                mem_data_wr_en_out = 1'b0;
                write_back_mux_sel_out = 1'b0;
                branch_inst_out = 1'b0;
+               branch_use_r_out = 1'b0;
                jump_inst_out = 1'b0;
                jump_use_r_out = 1'b0;
             end

@@ -36,6 +36,7 @@ module execute_address_calculate
 (
    input clk,
    input rst_n,
+   input en,
 
    input [OPCODE_WIDTH-1:0] alu_opcode_in,
    input [FUNCTION_WIDTH-1:0] alu_function_in,
@@ -48,18 +49,30 @@ module execute_address_calculate
    input [PC_WIDTH-1:0] new_pc_in,
    input [PC_OFFSET_WIDTH-1:0] pc_offset_in,
    input branch_inst_in,
+   input branch_use_r_in,
    input jmp_inst_in,
    input jmp_use_r_in,
-   input [DATA_WIDTH-1:0] ex_mem_reg_data_in,
-   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_addr_in,
-   input ex_mem_reg_wr_ena_in,
-   input [DATA_WIDTH-1:0] wb_reg_data_in,
-   input [REG_ADDR_WIDTH-1:0] wb_reg_addr_in,
-   input wb_reg_wr_ena_in,
+
+   // fowarding
+   input [DATA_WIDTH-1:0] ex_mem_reg_a_data_in,
+   input [DATA_WIDTH-1:0] ex_mem_reg_b_data_in,
+   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_a_addr_in,
+   input [REG_ADDR_WIDTH-1:0] ex_mem_reg_b_addr_in,
+   input ex_mem_reg_a_wr_ena_in,
+   input ex_mem_reg_b_wr_ena_in,
+   input [DATA_WIDTH-1:0] wb_reg_a_data_in,
+   input [DATA_WIDTH-1:0] wb_reg_b_data_in,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_a_addr_in,
+   input [REG_ADDR_WIDTH-1:0] wb_reg_b_addr_in,
+   input wb_reg_a_wr_ena_in,
+   input wb_reg_b_wr_ena_in,
+
    input [INSTRUCTION_WIDTH-1:0] instruction_in,
 
    output [DATA_WIDTH-1:0] mem_data_out,
    output [DATA_WIDTH-1:0] alu_data_out,
+
+   output [DATA_WIDTH-1:0] hi_data_out,
 
    output [PC_WIDTH-1:0] fetch_new_pc_out,
    output fetch_select_new_pc_out
@@ -88,6 +101,7 @@ module execute_address_calculate
    (
       .jmp_inst_in(jmp_inst_in),
       .jmp_use_r_in(jmp_use_r_in),
+      .branch_use_r_in(branch_use_r_in),
       .branch_inst_in(branch_inst_in),
       .branch_result_in(branch_result),
       .pc_in(new_pc_in),
@@ -113,12 +127,18 @@ module execute_address_calculate
       .data_alu_b_in(data_alu_b_in),
       .addr_alu_a_in(reg_a_addr_in),
       .addr_alu_b_in(reg_b_addr_in),
-      .ex_mem_data_in(ex_mem_reg_data_in),
-      .ex_mem_reg_addr_in(ex_mem_reg_addr_in),
-      .ex_mem_reg_wr_ena_in(ex_mem_reg_wr_ena_in),
-      .wb_reg_data_in(wb_reg_data_in),
-      .wb_reg_addr_in(wb_reg_addr_in),
-      .wb_reg_wr_ena_in(wb_reg_wr_ena_in),
+      .ex_mem_reg_a_data_in(ex_mem_reg_a_data_in),
+      .ex_mem_reg_b_data_in(ex_mem_reg_b_data_in),
+      .ex_mem_reg_a_addr_in(ex_mem_reg_a_addr_in),
+      .ex_mem_reg_b_addr_in(ex_mem_reg_b_addr_in),
+      .ex_mem_reg_a_wr_ena_in(ex_mem_reg_a_wr_ena_in),
+      .ex_mem_reg_b_wr_ena_in(ex_mem_reg_b_wr_ena_in),
+      .wb_reg_a_data_in(wb_reg_a_data_in),
+      .wb_reg_b_data_in(wb_reg_b_data_in),
+      .wb_reg_a_addr_in(wb_reg_a_addr_in),
+      .wb_reg_b_addr_in(wb_reg_b_addr_in),
+      .wb_reg_a_wr_ena_in(wb_reg_a_wr_ena_in),
+      .wb_reg_b_wr_ena_in(wb_reg_b_wr_ena_in),
 
       .alu_a_mux_sel_out(alu_data_in_a),
       .alu_b_mux_sel_out(alu_b_mux_sel)
@@ -145,20 +165,23 @@ module execute_address_calculate
    alu
    #(
       .DATA_WIDTH(DATA_WIDTH),
+      .PC_WIDTH(PC_WIDTH),
       .OPCODE_WIDTH(OPCODE_WIDTH)
    )
    alu_u0
    (
      .clk(clk),
-     .rst(rst),
+     .rst_n(rst_n),
      .alu_data_a_in(alu_data_in_a),
      .alu_data_b_in(alu_data_in_b),
      .alu_opcode_in(alu_opcode_in),
      .alu_function_in(alu_function_in),
+     .pc_in(new_pc_in),
 
 
      .alu_branch_result_out(branch_result),
-     .alu_data_out(alu_data_out)
+     .alu_data_out(alu_data_out),
+     .hi_data_out(hi_data_out)
    );
 
    assign mem_data_out = alu_b_mux_sel;

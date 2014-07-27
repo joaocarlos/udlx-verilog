@@ -103,14 +103,14 @@ reg [ADDR_WIDTH-1:0] data_addr_reg;
 reg [DATA_WIDTH-1:0] data_in_reg;
 
 //IS4216320B
-//assign bank_address = data_addr_reg[13:12];
-//assign row_address = data_addr_reg[26:14];
-//assign col_address = data_addr_reg[11:2];
+assign bank_address = data_addr_reg[13:12];
+assign row_address = data_addr_reg[26:14];
+assign col_address = data_addr_reg[11:2];
 
 //MT48LC8M16A2
-assign bank_address = data_addr_reg[12:11]; //2
-assign row_address = data_addr_reg[24:13]; //12
-assign col_address = data_addr_reg[10:2]; //9
+//assign bank_address = data_addr_reg[12:11]; //2
+//assign row_address = data_addr_reg[24:13]; //12
+//assign col_address = data_addr_reg[10:2]; //9
 
 
 //assign bank_address = data_addr_reg[12:11];

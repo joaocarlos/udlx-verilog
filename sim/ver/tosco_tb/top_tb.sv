@@ -3,7 +3,7 @@
 module top_tb;
 
 parameter DATA_WIDTH = 32;
-parameter DATA_ADDR_WIDTH = 20;
+parameter DATA_ADDR_WIDTH = 32;
 parameter INST_ADDR_WIDTH = 20;
 parameter DQM_WIDTH = 4;
 parameter BA_WIDTH = 2;
@@ -105,13 +105,9 @@ wire clk_dl;
 
 assign #3 clk_dl =  dram_clk;
 
-mt48lc8m16a2
-  #(
-    .data_bits(DATA_WIDTH/2),
-    .addr_bits(DATA_ADDR_WIDTH)
-  )
+IS42S16320
   sdram_memory_2
-  (/*autoinst*/
+  (
     .Dq(dram_dq[31:16]),
     .Addr(dram_addr),
     .Ba(dram_ba),
@@ -124,13 +120,9 @@ mt48lc8m16a2
     .Dqm(dram_dqm)
   );
 
-mt48lc8m16a2
-  #(
-    .data_bits(DATA_WIDTH/2),
-    .addr_bits(DATA_ADDR_WIDTH)
-  )
+IS42S16320
   sdram_memory_1
-  (/*autoinst*/
+  (
     .Dq(dram_dq[15:0]),
     .Addr(dram_addr),
     .Ba(dram_ba),

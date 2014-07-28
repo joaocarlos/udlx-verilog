@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------------
 
 localparam DATA_WIDTH = 32;
-localparam DATA_ADDR_WIDTH = 20;
+localparam DATA_ADDR_WIDTH = 32;
 localparam MAX_LENGTH = 100000;
 localparam INST_ADDR_WIDTH = 20;
 localparam DQM_WIDTH = 4;

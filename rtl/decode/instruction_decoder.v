@@ -142,7 +142,7 @@ module instruction_decoder
                   jump_use_r_out = 1'b1;
                end
                JALR_FUNCTION: begin
-                  reg_rd_addr1_out = instruction_in[20:16];
+                  reg_rd_addr1_out = instruction_in[25:21];
                   reg_rd_addr2_out = 0;
                   reg_rd_en1_out = 1;
                   reg_rd_en2_out = 0;

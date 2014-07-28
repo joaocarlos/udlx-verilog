@@ -271,7 +271,7 @@ wire [DATA_WIDTH-1:0] gpio_o;
          .dram_ras_n(DRAM_RAS_N),    // sdram row address strobe
          .dram_cs_n(DRAM_CS_N),     // sdram chip select
          .dram_ba(DRAM_BA),       // sdram bank address
-         .dram_clk(DRAM_CLK),      // sdram clock
+         .dram_clk(),      // sdram clock
          .dram_cke(DRAM_CKE),
          // .rst_sync_n(rst_sync_n),
          // .clk_out(clk_out),
@@ -282,6 +282,8 @@ wire [DATA_WIDTH-1:0] gpio_o;
          .we_gpio(we_gpio)
       );
 
+assign DRAM_CLK = clk_10_3ns_dly;
+		
 boot_rom 
 rom_u0
 (
@@ -296,9 +298,9 @@ rom_u0
    
 
 clk_40 
-   clk_40_u0  (
+   clk_10_3ns_delay_u0  (
       .inclk0(CLOCK_50),
-      .c0(clk_40) 
+      .c0(clk_10_3ns_dly) 
    );
 clk_10mhz 
    clk_10_u0  (
@@ -310,6 +312,8 @@ clk_1mhz
       .inclk0(CLOCK_50),
       .c0(clk_1) 
    );
+	
+
 
 // rom
 //    rom_u0

@@ -5,7 +5,7 @@ nop
 nop
 nop
 nop
-cmp $15,$0,$1
+sub $15,$1,$0
 nop
 nop
 nop

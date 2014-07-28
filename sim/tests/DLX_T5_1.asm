@@ -1,5 +1,5 @@
-addi $0,$0, 13
-addi $1,$1, 32
+addi $0,$0, 0x34
+addi $1,$1, 0x80
 nop
 nop
 nop

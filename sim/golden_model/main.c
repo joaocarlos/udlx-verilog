@@ -147,7 +147,7 @@ void decode_r_type(unsigned int instruction_opcode, unsigned int instruction){
 	}
 	//jr PC = RS1
 	else if(function == 0x08){
-		pc = registers[rs1] -1;// -1 because the increment of for.
+		pc = registers[rs1] - 1;// -1 because the increment of for.
 		printf("JR - Valor de PC: %x\n", pc);
 	}
 }
@@ -157,13 +157,13 @@ void decode_j_type(unsigned int instruction_opcode, unsigned int instruction){
 	int pc_offset;
 	
 	pc_offset = (instruction & 0x3FFFFFF);
-	
-	if(pc_offset == 0x02){
-		pc = pc + pc_offset;
+	//pc = pc offset
+	if(instruction_opcode == 0x02){
+		pc = pc_offset - 1;// -1 because the increment of for.
 	}
-	else if(pc_offset == 0x3e){
+	else if(instruction_opcode == 0x3e){
 	}
-	else if(pc_offset == 0x3f){
+	else if(instruction_opcode == 0x3f){
 		
 	}
 }

@@ -297,14 +297,15 @@ Some arithmetic immediate instructions were added because they make easier assem
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
 	 100011/0x23 	& lw & $R_D = mem$ \\ \hline
 	 101011/0x2b 	& sw & $mem = R_D$ \\ \hline
-	 001001/0x09 	& brfl & $TBD$ \\ \hline
+	 001001/0x09 	& brfl & $if(STATUS[3:0]==Instruction[3:0]) -> PC = R_S1$ \\ \hline
 	 001000/0x08 & addi & $R_D = R_S1 + Sext(imm)$ \\ \hline
 	 010000/0x10 & subi & $R_D = R_S1 - Sext(imm)$ \\ \hline
 	 001100/0x0c & andi & $R_D = R_S1 \land Sext(imm)$ \\ \hline
 	 010011/0x13 & ori & $R_D = R_S1 \lor Sext(imm)$ \\ \hline
 	 000100/0x04 & beqz & $PC = PC + 4 +(R_S1 = 0~?~SExt(imm): 0)$ \\ \hline
 	 000101/0x05 & bnez & $Fixme$ \\ \hline
-	 000110/0x06 & jr & $PC = R_S1$ \\ \hline
+	 
+	 
       \end{tabular}
     \end{center}
   \end{table} 
@@ -329,6 +330,8 @@ This instructions realize registers operations, most operations are arithmetic. 
 	 011010/0x1A & div & $R_D = R_S1 ~/~ R_S2$ \\ \hline
 	 011100/0x1C & cmp & $R_D = R_S1 ~cmp~ R_S2$ \\ \hline
 	 011101/0x1D & not & $R_D = \lnot R_S2$ \\ \hline
+	 001000/0x08 & jr & $PC = R_S1$ \\ \hline
+	 001001/0x09 & jalr & $PC = R_S1; \newline R_D = PC$ \\ \hline
 
       \end{tabular}
     \end{center}
@@ -345,12 +348,11 @@ Instructions related with instruction memory jump. The instructions are JPC (J),
       \multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{OPCODE}} & 
       \multicolumn{1}{c|}{\cellcolor[gray]{0.9}\textbf{Mneumonic}} & 
       \multicolumn{1}{m{9cm}|}{\cellcolor[gray]{0.9}\textbf{Operation}} \\ \hline
-	 000010/0x02 	& jpc(j) & PC = PC + 4 \\ \hline
-	 111110/0x3e 	& call(trap) & 
-   trap = 1; \newline EPC = PC; \newline PC = SISR;
-   \newline ESR = SR; \newline ECA = masked CA; \newline SR = 0; 
-   \newline EDATA = SExt(imm); \newline Clear CA but catch new interrupt events \\ \hline
-	 111111/0x3f 	& ret(rfe) & SR = ESR; \newline PC = EPC \\ \hline
+	 000010/0x02 	& jpc(j) & PC = PC Offset << 2 \\ \hline
+	 000011/0x03 	& jal & PC = PC Offset << 2; \newline REG[31] = PC \\ \hline
+	 111110/0x3e 	& call(trap) & PC = PC Offset << 2; \newline REG[31] = PC \\ \hline
+	 111111/0x3f 	& ret(rfe) & PC = REG[31] \\ \hline
+	 
 
       \end{tabular}
     \end{center}

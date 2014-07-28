@@ -229,6 +229,8 @@ Through the assertions, the verification ensure, mainly, that the Forwarding, Br
 	When the software ends, the monitor identify it and call the Checker.
 The Checker is responsible to execute the Golden Model with the same software that was used by DUT and compare the data stored in data memory and in registers. If any mismatch are found, the errors are reported.
 
+	The test that will be executed in the Golden Model, needs to be defined in defines.sv file.
+
 	\subsection{Golden Model}
 	To ensure that the DLX Processor execute the instructions correctly, was created a Golden Model that simulate the same behavior of the DLX Processor.
 	
@@ -301,8 +303,8 @@ The Checker is responsible to execute the Golden Model with the same software th
         \endlastfoot
       	DLX\_F1      & Instruction must activate the signals corresponding to the functionality  &	10 \\ \hline   	
       	DLX\_F2      & Forwarding Unit should identify and forward data correctly  &	8 \\ \hline 
-      	DLX\_F3      & During a load hazard the stall should work correctly  &	8 \\ \hline
-      	DLX\_F4      & Jump hazard should flush before instructions and change PC  &	8 \\ \hline
+      	%DLX\_F3      & During a load hazard the stall should work correctly  &	8 \\ \hline
+      	%DLX\_F4      & Jump hazard should flush before instructions and change PC  &	8 \\ \hline
       	DLX\_F5      & Communication with SRAM must work properly  &	9 \\ \hline
       	DLX\_F6      & Read and write operation to the SDRAM  &	9 \\ \hline
       	DLX\_F7      & The registers of the Register Bank must be reading and writing  &	10 \\ \hline
@@ -368,12 +370,11 @@ The Checker is responsible to execute the Golden Model with the same software th
       	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline 
        	DLX\_T5\_1   & Execution of jr instruction. Execute a software that have jr instructions and use more than one register as source.   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline   
        	DLX\_T5\_2   & Execution of jpc instruction.  &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline   
-	DLX\_T6      & Test forwarding unit in all possible situations  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 0\% \\ \hline   
-	DLX\_T7      & Test the load hazard  &	Sim & Unit & DLX\_F1, DLX\_F3 & 4 & Igo & 0\% \\ \hline   
-	DLX\_T8      & Test the SDRAM access  &	Assertion & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
-	DLX\_T9      & Test the SRAM access  &	Assertion & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
-	DLX\_T10      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5, DLX\_F6 & 8 & Igo & 0\% \\ \hline        
-	DLX\_T11      & Test All interfaces protocols  & Assertion & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
+	DLX\_T6      & Test forwarding unit in all possible situations. Including the possibility of dealing with 3 consecutive RAW hazards.  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 0\% \\ \hline    
+	DLX\_T7      & Test the SDRAM access  &	Assertion & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
+	DLX\_T8      & Test the SRAM access  &	Assertion & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
+	DLX\_T9      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5, DLX\_F6 & 8 & Igo & 0\% \\ \hline        
+	DLX\_T10      & Test All interfaces protocols  & Assertion & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
 
       \end{longtable}
     \end{center}		
@@ -387,7 +388,7 @@ The Checker is responsible to execute the Golden Model with the same software th
 			\rowcolors{1}{white}{gray!25} 
       \begin{longtable}[pos]{| c | l | c |} \hline  %14cm
 	      \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Number}}} & 
         \multicolumn{1}{m{9cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
         \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}}  \\ \hline
         \endfirsthead
@@ -396,7 +397,7 @@ The Checker is responsible to execute the Golden Model with the same software th
         {{\bfseries continued from previous page}} \\
         \hline
         \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Number}}} & 
         \multicolumn{1}{m{9cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
         \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}}  \\ \hline
         \endhead
@@ -405,58 +406,58 @@ The Checker is responsible to execute the Golden Model with the same software th
 
         \hline
         \endlastfoot
-      	06/25/2014      & Assertion to the correct fecth\_top operation  &	Completed \\ \hline   	
-      	06/25/2014      & Assertion to verify the decode operation 			 &	Completed \\ \hline
-      	07/02/2014      & Assertion for the execution block operation 			 &	Completed \\ \hline      	
-      	07/02/2014      & Assertion for the memory read and write back 			 &	Completed \\ \hline      	
-      	07/02/2014      & Assertion to forwarding operation 			 &	Not started yet \\ \hline      	
-      	07/02/2014      & Assertion during branches and jumps 			 &	Not started yet \\ \hline      	
-      	07/02/2014      & Assertion during load hazard 			 &	Not started yet \\ \hline
-      	07/02/2014      & Assertion to verify interfaces protocols 			 &	Not started yet \\ \hline      	
+      	DLX\_A1      & Assertion to the correct fecth\_top operation.  &	Completed \\ \hline   	
+      	DLX\_A2      & Assertion to verify the decode operation. 			 &	Completed \\ \hline
+      	DLX\_A3      & Assertion for the execution block operation. 			 &	Completed \\ \hline      	
+      	DLX\_A4      & Assertion for the memory read and write back. 			 &	Completed \\ \hline      	
+      	DLX\_A5      & Assertion to forwarding operation. 			 &	Completed \\ \hline      	
+      	DLX\_A6      & Assertion to branches and jumps operations. 			 &	Completed \\ \hline      	
+      	DLX\_A7      & Assertion to verify interfaces protocols. 			 &	Completed \\ \hline    
+      	DLX\_A8      & Assertion to verify interfaces with memories. 			 &	Completed \\ \hline  	
       	
       \end{longtable}
     \end{center}		
 	
 	\newpage
-	\section{Coverage and Completion Requirements}
-  \FloatBarrier
-    \begin{center}
-			\rowcolors{1}{white}{gray!25} 
-      \begin{longtable}[pos]{| c | l | c | c | c |} \hline  %14cm
-	      \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
-        \multicolumn{1}{m{4cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
-        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Required Level}}} &
-        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Current Level}}} &
-        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}} \\ \hline
-        \endfirsthead
-        \hline
-        \multicolumn{5}{|l|}
-        {{\bfseries continued from previous page}} \\
-        \hline
-        \rowcolor{black}
-        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
-        \multicolumn{1}{m{4cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
-        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Required Level}}} &
-        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Current Level}}} &
-        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}} \\ \hline
-        \endhead
-        \hline \multicolumn{5}{|r|}{{continued on next page}} \\ \hline
-        \endfoot
-
-        \hline
-        \endlastfoot
-      	06/25/2014      & Block coverage  				&	98\% & 0\% & Not started yet \\ \hline   	
-      	06/25/2014      & Expression coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
-      	06/25/2014      & Toggle coverage 	 	&	90\% & 0\% & Not started yet \\ \hline      	
-      	06/25/2014      & Code coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
-      	06/25/2014      & State coverage on FSM 	 	&	100\% & 0\% & Not started yet \\ \hline      	
-      	06/25/2014      & Arc coverage on FSM 	 	&	100\% & 0\% & Not started yet \\ \hline      	
-      	06/25/2014      & Functional coverage 	 	&	100\% & 0\% & Not started yet \\ \hline      	
-      	06/25/2014      & Bug report rate for SPI 	 	&	< 1 bug/day & - & Not started yet \\ \hline      	
-
-      \end{longtable}
-    \end{center}	
+%	\section{Coverage and Completion Requirements}
+%  \FloatBarrier
+%    \begin{center}
+%			\rowcolors{1}{white}{gray!25} 
+%      \begin{longtable}[pos]{| c | l | c | c | c |} \hline  %14cm
+%	      \rowcolor{black}
+%        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+%        \multicolumn{1}{m{4cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
+%        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Required Level}}} &
+%        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Current Level}}} &
+%        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}} \\ \hline
+%        \endfirsthead
+%        \hline
+%        \multicolumn{5}{|l|}
+%        {{\bfseries continued from previous page}} \\
+%        \hline
+%        \rowcolor{black}
+%        \multicolumn{1}{|c|}{\textbf{\textcolor{white}{Date}}} & 
+%        \multicolumn{1}{m{4cm}|}{\centering\textbf{\textcolor{white}{Criteria}}} &
+%        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Required Level}}} &
+%        \multicolumn{1}{m{2cm}|}{\centering\textbf{\textcolor{white}{Current Level}}} &
+%        \multicolumn{1}{c|}{\textbf{\textcolor{white}{Status}}} \\ \hline
+%        \endhead
+%        \hline \multicolumn{5}{|r|}{{continued on next page}} \\ \hline
+%        \endfoot
+%
+%        \hline
+%        \endlastfoot
+%      	06/25/2014      & Block coverage  				&	98\% & 0\% & Not started yet \\ \hline   	
+%      	06/25/2014      & Expression coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
+%      	06/25/2014      & Toggle coverage 	 	&	90\% & 0\% & Not started yet \\ \hline      	
+%      	06/25/2014      & Code coverage 	 	&	95\% & 0\% & Not started yet \\ \hline      	
+%      	06/25/2014      & State coverage on FSM 	 	&	100\% & 0\% & Not started yet \\ \hline      	
+%      	06/25/2014      & Arc coverage on FSM 	 	&	100\% & 0\% & Not started yet \\ \hline      	
+%      	06/25/2014      & Functional coverage 	 	&	100\% & 0\% & Not started yet \\ \hline      	
+%      	06/25/2014      & Bug report rate for SPI 	 	&	< 1 bug/day & - & Not started yet \\ \hline      	
+%
+%      \end{longtable}
+%    \end{center}	
   
   \newpage
 	\section{Resource Requirements}

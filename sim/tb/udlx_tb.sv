@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------
 // PURPOSE: Testbench for UDLX Processor.
 // -----------------------------------------------------------------------------
-
+`include "../../fpga/rtl/dlx_de2_115_defines.v"
 module udlx_tb;
 
 `include "../tb/udlx_monitor.sv"
@@ -115,13 +115,9 @@ wire clk_dl;
 
 assign #3 clk_dl =  dram_clk;
 
-mt48lc8m16a2
-  #(
-    .data_bits(DATA_WIDTH/2),
-    .addr_bits(DATA_ADDR_WIDTH)
-  )
+IS42S16320
   sdram_memory_2
-  (/*autoinst*/
+  (
     .Dq(dram_dq[31:16]),
     .Addr(dram_addr),
     .Ba(dram_ba),
@@ -134,13 +130,9 @@ mt48lc8m16a2
     .Dqm(dram_dqm)
   );
 
-mt48lc8m16a2
-  #(
-    .data_bits(DATA_WIDTH/2),
-    .addr_bits(DATA_ADDR_WIDTH)
-  )
+IS42S16320
   sdram_memory_1
-  (/*autoinst*/
+  (
     .Dq(dram_dq[15:0]),
     .Addr(dram_addr),
     .Ba(dram_ba),
@@ -161,7 +153,7 @@ rom
 rom_u0
 (
    .clk(clk_proc),
-   .rst_n(dut_if.rst_n),
+   .rst_n(rst_n),
    .rd_ena(boot_rom_rd_en),
    .address(boot_rom_addr),
    .data(boot_rom_rd_data)
@@ -174,7 +166,7 @@ initial begin
 end
 
 always begin
-   #50  clk = ~clk;
+   #100  clk = ~clk;
 end
 
 always begin

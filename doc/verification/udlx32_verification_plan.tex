@@ -110,8 +110,8 @@
       \begin{tabular}[pos]{|m{5cm} | m{8cm}|} 
         \hline % este comando coloca uma linha na tabela
         \cellcolor[gray]{0.9}\textbf{Name} & \cellcolor[gray]{0.9}\textbf{Roles/Responsibilities} \\ \hline
-        Igo Amauri Luz & TBD \\ \hline
-        Lauê Rami Costa & TBD \\ \hline
+        Igo Amauri Luz & Verification Engineer \\ \hline
+        Lauê Rami Costa & Verification Engineer \\ \hline
       \end{tabular}
     \end{center}
   \end{table} 
@@ -198,6 +198,8 @@ The Figure \ref{fig:top_architecture} shows the Top Architecture of the $\mu$DLX
     	\caption{$\mu$DLX Verification Environment.}
     	\label{fig:ver_env}
   	\end{figure} 
+
+	In the directory sim\//tb/scripts have a script that can be used to execute the verification. This script have the name: run\_udlx\_verification\_env.run	
 	
 	\subsection{Design Under Test Interface (DUT\_IF)}
 	
@@ -226,10 +228,10 @@ Through the assertions, the verification ensure, mainly, that the Forwarding, Br
 	
 	The monitor observe the behavior of the control signals and, when necessary, capture the data that is stored in data memory and in registers.
 	
-	When the software ends, the monitor identify it and call the Checker.
+	When the software ends, the monitor identify it and call the Checker. The monitor identify as the end of software a consecutive sequence of six nop instruction.
 The Checker is responsible to execute the Golden Model with the same software that was used by DUT and compare the data stored in data memory and in registers. If any mismatch are found, the errors are reported.
 
-	The test that will be executed in the Golden Model, needs to be defined in defines.sv file.
+	The test that will be executed in the Golden Model, needs to be defined in sim\//tb/defines.sv file. To run the test in DUT, the test needs to be changed in 'read\_memh' in rtl\//commom/rom.v file.
 
 	\subsection{Golden Model}
 	To ensure that the DLX Processor execute the instructions correctly, was created a Golden Model that simulate the same behavior of the DLX Processor.
@@ -268,7 +270,7 @@ The Checker is responsible to execute the Golden Model with the same software th
       	Application 		          			& Cadence Incisive  	\\ \hline
       	Languages 		          			& System Verilog  	\\ \hline
       	Verification Environmentv 	&	Custom testbench  \\ \hline	
-      	Testbench files				&	At directory: \\ \hline
+      	Testbench files				&	At directory: sim/tb \\ \hline
       	Formal Verification Components	&	Cadence Encounter Conformal \\ \hline
       	Application		&		\\ \hline
       	Technologies	&	FPGA DE2-115  \\ \hline
@@ -305,10 +307,10 @@ The Checker is responsible to execute the Golden Model with the same software th
       	DLX\_F2      & Forwarding Unit should identify and forward data correctly  &	8 \\ \hline 
       	%DLX\_F3      & During a load hazard the stall should work correctly  &	8 \\ \hline
       	%DLX\_F4      & Jump hazard should flush before instructions and change PC  &	8 \\ \hline
-      	DLX\_F5      & Communication with SRAM must work properly  &	9 \\ \hline
-      	DLX\_F6      & Read and write operation to the SDRAM  &	9 \\ \hline
-      	DLX\_F7      & The registers of the Register Bank must be reading and writing  &	10 \\ \hline
-      	DLX\_F8      & All interfaces protocols must work properly  &	9 \\ \hline     	
+      	DLX\_F3      & Communication with SRAM must work properly  &	9 \\ \hline
+      	DLX\_F4      & Read and write operation to the SDRAM  &	9 \\ \hline
+      	DLX\_F5      & The registers of the Register Bank must be reading and writing  &	10 \\ \hline
+      	DLX\_F6      & All interfaces protocols must work properly  &	9 \\ \hline     	
       \end{longtable}
     \end{center}	
 
@@ -348,33 +350,33 @@ The Checker is responsible to execute the Golden Model with the same software th
 
         \hline
         \endlastfoot
-      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 64\% \\ \hline   
-        DLX\_T1\_1    & Execution of addi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline	
-        DLX\_T1\_2    & Execution of subi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline	
-        DLX\_T1\_3    & Execution of add instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 100\% \\ \hline	
-        DLX\_T1\_4    & Execution of sub instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Igo & 100\% \\ \hline	
-        DLX\_T1\_5    & Execution of cmp instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the comparison   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
-        DLX\_T1\_6    & Execution of not instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
-      	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-        DLX\_T2\_1    & Execution of sw instruction. Store determined value in all positions of memory   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
-        DLX\_T2\_2    & Execution of lw instruction. Load the values previously stored in all positions of memory   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline
-      	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline  
-        DLX\_T3\_1    & Execution of andi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T3\_2    & Execution of ori instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline	
-        DLX\_T3\_3    & Execution of and instruction. All the registers are used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline	
-         DLX\_T3\_4    & Execution of or instruction. All the registers are used to store the results of the operations   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline
+      	DLX\_T1      & Execution of all instructions of the Arithmetic category.  &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo, Lauê & 100\% \\ \hline   
+        DLX\_T1\_1    & Execution of addi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Lauê & 100\% \\ \hline	
+        DLX\_T1\_2    & Execution of subi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Lauê & 100\% \\ \hline	
+        DLX\_T1\_3    & Execution of add instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 100\% \\ \hline	
+        DLX\_T1\_4    & Execution of sub instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 100\% \\ \hline	
+        %DLX\_T1\_5    & Execution of cmp instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the comparison   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 0\% \\ \hline
+        DLX\_T1\_5    & Execution of not instruction. All the registers are used to store the results and a lot of combinations of sources registers are used to perform the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Lauê & 100\% \\ \hline
+      	DLX\_T2      & Execution of all instructions of the Data Transfer category.  &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo, Lauê & 100\% \\ \hline   
+        DLX\_T2\_1    & Execution of sw instruction. Store determined value in all positions of memory   &	Sim & Unit & DLX\_F1,  DLX\_F5 & 5 & Lauê & 100\% \\ \hline
+        DLX\_T2\_2    & Execution of lw instruction. Load the values previously stored in all positions of memory   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 100\% \\ \hline
+      	DLX\_T3      & Execution of all instructions of the Logical category.   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo, Lauê & 100\% \\ \hline  
+        DLX\_T3\_1    & Execution of andi instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Lauê & 100\% \\ \hline	
+        DLX\_T3\_2    & Execution of ori instruction. All the registers are used to store the results of the operation   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Lauê & 100\% \\ \hline	
+        DLX\_T3\_3    & Execution of and instruction. All the registers are used to store the results of the operations   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 100\% \\ \hline	
+         DLX\_T3\_4    & Execution of or instruction. All the registers are used to store the results of the operations   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 100\% \\ \hline
 
-      	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline 
-      	DLX\_T4\_1   & Execution of beqz instruction. Execute a software that have beqz instruction, and, at least, the condition is satisfied and not.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-      	DLX\_T4\_2   & Execution of bnez instruction. Execute a software that have bnez instruction, and, at least, the condition is satisfied and not.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline   
-      	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 0\% \\ \hline 
-       	DLX\_T5\_1   & Execution of jr instruction. Execute a software that have jr instructions and use more than one register as source.   &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline   
-       	DLX\_T5\_2   & Execution of jpc instruction.  &	Sim & Unit & DLX\_F1 & 5 & Igo & 0\% \\ \hline   
-	DLX\_T6      & Test forwarding unit in all possible situations. Including the possibility of dealing with 3 consecutive RAW hazards.  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 0\% \\ \hline    
-	DLX\_T7      & Test the SDRAM access  &	Assertion & Unit & DLX\_F6 & 7 & Lauê & 0\% \\ \hline        
-	DLX\_T8      & Test the SRAM access  &	Assertion & Unit & DLX\_F5 & 9 & Lauê & 0\% \\ \hline        
-	DLX\_T9      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F5, DLX\_F6 & 8 & Igo & 0\% \\ \hline        
-	DLX\_T10      & Test All interfaces protocols  & Assertion & Unit & DLX\_F8 & 8 & Igo & 0\% \\ \hline        
+      	DLX\_T4      & Execution of all instructions of the Conditional Branch category.   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo, Lauê & 100\% \\ \hline 
+      	DLX\_T4\_1   & Execution of beqz instruction. Execute a software that have beqz instruction, and, at least, the condition is satisfied and not.   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Lauê & 100\% \\ \hline   
+      	DLX\_T4\_2   & Execution of bnez instruction. Execute a software that have bnez instruction, and, at least, the condition is satisfied and not.   &	Sim & Unit & DLX\_F1, DLX\_F5 & 5 & Igo & 100\% \\ \hline   
+      	DLX\_T5      & Execution of all instructions of the Unconditional Jump category.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline 
+       	DLX\_T5\_1   & Execution of jr instruction. Execute a software that have jr instructions and use more than one register as source.   &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline   
+       	DLX\_T5\_2   & Execution of jpc instruction.  &	Sim & Unit & DLX\_F1 & 5 & Lauê & 100\% \\ \hline   
+	DLX\_T6      & Test forwarding unit in all possible situations. Including the possibility of dealing with 3 consecutive RAW hazards.  &	Sim & Unit & DLX\_F1, DLX\_F2 & 5 & Igo & 100\% \\ \hline    
+	DLX\_T7      & Test the SDRAM access  &	Assertion & Unit & DLX\_F4 & 7 & Lauê & 100\% \\ \hline        
+	DLX\_T8      & Test the SRAM access  &	Assertion & Unit & DLX\_F3 & 9 & Lauê & 100\% \\ \hline        
+	DLX\_T9      & Run programs with the complete architecture  &	Sim & Unit & DLX\_F3, DLX\_F4 & 8 & Lauê & 100\% \\ \hline        
+	DLX\_T10      & Test All interfaces protocols  & Assertion & Unit & DLX\_F6 & 8 & Igo & 100\% \\ \hline        
 
       \end{longtable}
     \end{center}		
@@ -531,12 +533,12 @@ The Checker is responsible to execute the Golden Model with the same software th
 
         \hline
         \endlastfoot
-      	Lauê Rami      					& 06/20/14	&	2 Days 	& Develop Verification Test Plan 	& N/A \\ \hline
-      	Igo Amauri      					& 06/22/14	&	1 Day 	& Review \& Approve Test Plan 	& N/A \\ \hline
-      	Lauê Rami      					& 06/25/14	&	5 Days 	& Create Verification Environment 	& Server 1 \\ \hline
-      	Igo Amauri      					& 06/28/14	&	3 Days 	& Features F1,F2,F3, and F4 Verification 	& Server 1 \\ \hline
-      	Igo Amauri      					& 07/02/14	&	4 Days 	& Add assertion and code coverage 	& Server 1 \\ \hline
-      	Lauê Rami      					& 07/10/14	&	2 Days 	& Complete System simulation and functional verification 	& Server 1 \\ \hline
+      	Igo, Lauê     					& 06/20/14	&	2 Days 	& Develop Verification Test Plan 	& N/A \\ \hline
+      	Igo, Lauê      					& 06/22/14	&	1 Day 	& Review \& Approve Test Plan 	& N/A \\ \hline
+      	Igo, Lauê      					& 06/25/14	&	5 Days 	& Create Verification Environment 	& Server 1 \\ \hline
+      	Igo, Lauê      					& 06/28/14	&	10 Days 	& Features F1,F2,F3, and F4 Verification 	& Server 1 \\ \hline
+      	Igo, Lauê      					& 07/08/14	&	7 Days 	& Add assertion and code coverage 	& Server 1 \\ \hline
+      	Igo, Lauê      					& 07/16/14	&	11 Days 	& Complete System simulation and functional verification 	& Server 1 \\ \hline
 
 
       \end{longtable}

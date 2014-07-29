@@ -48,8 +48,9 @@ class udlx_monitor;
     fork
       forever begin
         //$display("----------------- READ DATA MONITOR --------------------");
-        @(posedge dut_if.data_wr_en);
-        data_collected.data_write[dut_if.data_addr] = dut_if.data_write;
+        @(posedge dut_if.clk_dlx);
+        if(dut_if.data_wr_en)
+           data_collected.data_write[dut_if.data_addr] = dut_if.data_write;
       end
     join_none
   endtask

@@ -203,7 +203,8 @@ always@(*)begin
    end
    dut_if.reg_rd_en1_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.reg_rd_en1_out;
    dut_if.reg_rd_en2_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.reg_rd_en2_out;
-   dut_if.reg_wr_en_out  = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.reg_wr_en_out;
+   dut_if.reg_a_wr_en_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.reg_a_wr_en_out;
+   dut_if.reg_b_wr_en_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.reg_b_wr_en_out;
    dut_if.imm_inst_out   = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.imm_inst_out;
    dut_if.mem_data_rd_en_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.mem_data_rd_en_out;
    dut_if.mem_data_wr_en_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.mem_data_wr_en_out;
@@ -211,6 +212,7 @@ always@(*)begin
    dut_if.branch_inst_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.branch_inst_out;
    dut_if.jump_inst_out   = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.jump_inst_out;
    dut_if.jump_use_r_out  = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.jump_use_r_out;
+   dut_if.branch_use_r_out = top_u0.dlx_processor_u0.instruction_decode_u0.instruction_decoder_u0.branch_use_r_out;
    dut_if.clk_dl = clk_dl;
    dut_if.dram_cke = dram_cke;
    dut_if.dram_cs_n = dram_cs_n;

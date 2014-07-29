@@ -1,0 +1,344 @@
+# SimVision Command Script (Mon Jul 28 10:53:59 PM BRT 2014)
+#
+# Version 12.10.p001
+#
+# You can restore this configuration with:
+#
+#      irun -f ../srclist/udlx_test.srclist -access +rwc -vtimescale 1ns/10ps -s -input /home/users/ljesus/cadence/Laue_project/udlx-verilog-master/sim/run/dlx_verif.tcl
+#
+
+
+#
+# Preferences
+#
+preferences set toolbar-Standard-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-SimControl-WatchList {
+  usual
+  hide set_break
+}
+preferences set txe-locate-add-fibers 1
+preferences set txe-navigate-search-locate 0
+preferences set txe-view-hold 0
+preferences set toolbar-Windows-WatchWindow {
+  usual
+  shown 0
+}
+preferences set txe-navigate-waveform-locate 1
+preferences set txe-view-hidden 0
+preferences set txe-search-show-linenumbers 1
+preferences set toolbar-OperatingMode-WaveWindow {
+  usual
+  position -pos 5
+  name OperatingMode
+}
+preferences set plugin-enable-svdatabrowser 0
+preferences set toolbar-txe_waveform_toggle-WaveWindow {
+  usual
+  position -pos 4
+}
+preferences set plugin-enable-groupscope 0
+preferences set key-bindings {Simulation>ReinvokeSimulator Ctrl+r}
+preferences set plugin-enable-interleaveandcompare 0
+preferences set toolbar-SimControl-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-Windows-WaveWindow {
+  usual
+  position -pos 2
+}
+preferences set txe-navigate-waveform-next-child 1
+preferences set txe-locate-scroll-x 1
+preferences set txe-locate-scroll-y 1
+preferences set txe-locate-pop-waveform 1
+preferences set toolbar-TimeSearch-WatchWindow {
+  usual
+  shown 0
+}
+
+#
+# Simulator
+#
+database require simulator -hints {
+	simulator "irun -f ../srclist/udlx_test.srclist -access +rwc -GUI -vtimescale 1ns/10ps -s -input dlx_verif.tcl"
+}
+
+#
+# Groups
+#
+catch {group new -name verification_environment -overlay 0}
+catch {group new -name boot -overlay 0}
+catch {group new -name dlx -overlay 0}
+catch {group new -name data_mem_ctrl -overlay 0}
+catch {group new -name Assertions -overlay 0}
+
+group using verification_environment
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.dut_if.boot_mode}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.branch_inst_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.branch_use_r_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.clk_dl}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.clk_env}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_addr[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_read[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.data_write[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.dram_addr[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.dram_cas_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.dram_cke}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.dram_cs_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.dram_ras_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.dram_we_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.imm_inst_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.instr_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.instruction[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.jump_inst_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.jump_use_r_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.mem_data_rd_en_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.mem_data_wr_en_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.reg_a_wr_en_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.reg_b_wr_en_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.reg_rd_en1_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.reg_rd_en2_out}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.regs[0:31]}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.rst_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.write_back_mux_sel_out}]} ]
+
+group using boot
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mem_rd_data[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mem_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.boot_mode}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.count[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.inst_mem_addr[19:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.inst_mem_wr_data[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.inst_mem_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.next_state[1:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.rst_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.bootloader_u0.state[1:0]}]} ]
+
+group using dlx
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.boot_mode}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_addr[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.enable}]} ] \
+    [subst  {[format {signed(simulator::udlx_tb.top_u0.dlx_processor_u0.instr_addr)}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.instr_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.rst_n}]} ]
+
+group using data_mem_ctrl
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.bus_busy}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.data_addr[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.data_in[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.data_out[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.data_out_valid}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.data_rd_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.data_wr_en}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_addr[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_ba[1:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_cas_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_cke}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_clk}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_cs_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_dq_in[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_dq_out[31:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_dqm[3:0]}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_ras_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.dram_we_n}]} ] \
+    [subst  {simulator::[format {udlx_tb.top_u0.data_memory_controll_u0.rst_n}]} ]
+
+group using Assertions
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_rt0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_sw0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_add0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_beq0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_brfl0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_jal0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_jalcal0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_jpc0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_jr0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_lw0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_muldiv0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_control_signals_ret0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_sdram_rd_signals0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.activate_sdram_wr_signals0}]} ] \
+    [subst  {simulator::[format {udlx_tb.dut_if.sdram_dlx_addr_cmp0}]} ]
+
+#
+# Cursors
+#
+set time 1177542268ps
+if {[catch {cursor new -name  TimeA -time $time}] != ""} {
+    cursor set -using TimeA -time $time
+}
+
+#
+# Mnemonic Maps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+mmap new -reuse -name instruction_map -radix %x -contents {{%x=00000000 -bgcolor #ffffff -font -*-courier-medium-r-normal--12-* -label NOP -shape bus -textcolor #000000}
+{%b=100011?????????????????????????? -bgcolor #b1ff2b -font -*-courier-medium-r-normal--12-* -label LW -shape bus -textcolor #000000}
+{%b=101011?????????????????????????? -bgcolor #66bc09 -font -*-courier-medium-r-normal--12-* -label SW -shape bus -textcolor #000000}
+{%b=001000?????????????????????????? -bgcolor #ff0000 -font -*-courier-medium-r-normal--12-* -label ADDI -shape bus -textcolor #000000}
+{%b=010000?????????????????????????? -bgcolor #d34121 -font -*-courier-medium-r-normal--12-* -label SUBI -shape bus -textcolor #000000}
+{%b=001100?????????????????????????? -bgcolor #ff8c0b -font -*-courier-medium-r-normal--12-* -label ANDI -shape bus -textcolor #000000}
+{%b=010011?????????????????????????? -bgcolor #f3c41c -font -*-courier-medium-r-normal--12-* -label ORI -shape bus -textcolor #000000}
+{%b=001001?????????????????????????? -bgcolor #5e6e14 -font -*-courier-medium-r-normal--12-* -label BRFL -shape bus -textcolor #000000}
+{%b=000100?????????????????????????? -bgcolor #085b24 -font -*-courier-medium-r-normal--12-* -label BNEZ -shape bus -textcolor #000000}
+{%b=000101?????????????????????????? -bgcolor #002600 -font -*-courier-medium-r-normal--12-* -label BEQZ -shape bus -textcolor #000000}
+{%b=000000????????????????????001000 -bgcolor #9900ff -font -*-courier-medium-r-normal--12-* -label JR -shape bus -textcolor #000000}
+{%b=000010?????????????????????????? -bgcolor #710099 -font -*-courier-medium-r-normal--12-* -label JPC -shape bus -textcolor #000000}
+{%b=111110?????????????????????????? -bgcolor #ff00ff -font -*-courier-medium-r-normal--12-* -label CALL -shape bus -textcolor #000000}
+{%b=111111?????????????????????????? -bgcolor #ff0099 -font -*-courier-medium-r-normal--12-* -label RET -shape bus -textcolor #000000}
+{%b=000000????????????????????100000 -bgcolor #0000ff -font -*-courier-medium-r-normal--12-* -label ADD -shape bus -textcolor #000000}
+{%b=000000????????????????????100010 -bgcolor #0099ff -font -*-courier-medium-r-normal--12-* -label SUB -shape bus -textcolor #000000}
+{%b=000000????????????????????100100 -bgcolor #00c183 -font -*-courier-medium-r-normal--12-* -label AND -shape bus -textcolor #000000}
+{%b=000000????????????????????100111 -bgcolor #58ecb8 -font -*-courier-medium-r-normal--12-* -label NOR -shape bus -textcolor #000000}
+{%b=000000????????????????????100101 -bgcolor #608e99 -font -*-courier-medium-r-normal--12-* -label OR -shape bus -textcolor #000000}
+{%b=000000????????????????????101010 -bgcolor #5bf879 -font -*-courier-medium-r-normal--12-* -label DIV -shape bus -textcolor #000000}
+{%b=000000????????????????????101000 -bgcolor #007054 -font -*-courier-medium-r-normal--12-* -label MULT -shape bus -textcolor #000000}
+{%b=000000????????????????????101100 -bgcolor #513e21 -font -*-courier-medium-r-normal--12-* -label CMP -shape bus -textcolor #000000}
+{%b=000000????????????????????011101 -bgcolor #241e49 -font -*-courier-medium-r-normal--12-* -label NOT -shape bus -textcolor #ffffff}}
+
+#
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 1280x948+0+25}] != ""} {
+    window geometry "Design Browser 1" 1280x948+0+25
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set -scope [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0}]} ]
+browser set \
+    -showinternals 0 \
+    -signalsort name
+browser yview see [subst  {simulator::[format {udlx_tb.top_u0.dlx_processor_u0}]} ]
+browser timecontrol set -lock 0
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1276x944+0+25}] != ""} {
+    window geometry "Waveform 1" 1276x944+0+25
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 231 \
+    -units ps \
+    -valuewidth 171
+cursor set -using TimeA -time 1,177,542,268ps
+waveform baseline set -time 1,178,871,823ps
+
+
+set groupId0 [waveform add -groups boot]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups dlx]
+set gpGlist0 [waveform hierarchy contents $groupId0]
+set gpID0 [lindex $gpGlist0 0]
+foreach {name attrs} [subst  {
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.boot_mode}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.clk}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_addr[31:0]}]} {-radix %d}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_rd_en}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_read[31:0]}]} {-radix instruction_map}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_wr_en}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.data_write[31:0]}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.enable}]} {}
+    {[format {signed(simulator::udlx_tb.top_u0.dlx_processor_u0.instr_addr)}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.instr_rd_en}]} {}
+    {simulator::[format {udlx_tb.top_u0.dlx_processor_u0.rst_n}]} {}
+}] childcmds {
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+    {}
+} {
+    set expected [ join [waveform signals -format fullpath $gpID0] ]
+    if {[string equal $name $expected] || $name == "cdivider"} {
+        if {$attrs != ""} {
+            eval waveform format $gpID0 $attrs
+        }
+        if { $childcmds != ""} {
+            eval $childcmds
+        }
+    }
+    set gpGlist0 [lrange $gpGlist0 1 end]
+    set gpID0 [lindex $gpGlist0 0]
+}
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups data_mem_ctrl]
+waveform hierarchy collapse $groupId0
+
+
+set groupId0 [waveform add -groups Assertions]
+waveform hierarchy collapse $groupId0
+
+set id [waveform add -signals [subst  {
+	{simulator::[format {udlx_tb.dut_if.clk_dlx}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {udlx_tb.top_u0.dlx_processor_u0.instruction[31:0]}]}
+	} ]]
+waveform format $id -radix instruction_map
+
+waveform xview limits 1158287815ps 1198125223ps
+
+#
+# Waveform Window Links
+#
+

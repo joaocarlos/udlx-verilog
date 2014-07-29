@@ -4,4 +4,4 @@ irun \
 -timescale $TIMESCALE \
 -f ../srclist/udlx_test.srclist \
 -access +rwc  -GUI \
--s -input ../run/verif1.tcl
+-s -input ../run/dlx_verif.tcl
